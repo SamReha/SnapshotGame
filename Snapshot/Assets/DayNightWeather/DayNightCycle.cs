@@ -13,7 +13,7 @@ public class DayNightCycle : MonoBehaviour {
     public float minPoint = -0.2f;
 
     public float maxAmbient = 1f;
-    public float minAmbient = 0f;
+    public float minAmbient = .15f;
     public float minAmbientPoint = -0.2f;
 
     public Gradient nightDayFogColor;
