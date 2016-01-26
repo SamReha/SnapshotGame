@@ -5,19 +5,19 @@ using UnityStandardAssets.ImageEffects;
 
 namespace UnityStandardAssets.ImageEffects {
 	public class SnapshotCam : MonoBehaviour {
-		List<Texture2D> pics;
+		List<Texture2D> pics = new List<Texture2D>();
 		float[] apertureSize = {0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
 		int apertureInt = 3;
 		// Use this for initialization
 		void Start () {
-		
+
 		}
-		
+
 		// Update is called once per frame
 		void Update () {
 			if (Input.GetMouseButtonDown (1)) {
 				RenderTexture rt = new RenderTexture (1024, 1024, 24);
-				Camera c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+				Camera c = GameObject.FindGameObjectWithTag ("PlayerCamera").GetComponent<Camera>();
 				c.targetTexture = rt;
 				Texture2D t2d = new Texture2D (1024, 1024, TextureFormat.RGB24, false);
 				c.Render ();
