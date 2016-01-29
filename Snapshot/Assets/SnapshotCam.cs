@@ -17,7 +17,7 @@ namespace UnityStandardAssets.ImageEffects {
 		void Update () {
 			if (Input.GetMouseButtonDown (1)) {
 				RenderTexture rt = new RenderTexture (1024, 1024, 24);
-				Camera c = GameObject.FindGameObjectWithTag ("PlayerCamera").GetComponent<Camera>();
+				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
 				c.targetTexture = rt;
 				Texture2D t2d = new Texture2D (1024, 1024, TextureFormat.RGB24, false);
 				c.Render ();
@@ -35,14 +35,14 @@ namespace UnityStandardAssets.ImageEffects {
 				DepthOfField d = GameObject.Find ("PlayerCam").GetComponent<DepthOfField> ();
 				apertureInt += 1;
 				d.aperture = apertureSize [apertureInt];
-				print (d.aperture);
+				print ("Aperture: " + d.aperture);
 
 			}
 			if (Input.GetKeyDown (KeyCode.Q) && apertureInt > 0) {
 				DepthOfField d = GameObject.Find ("PlayerCam").GetComponent<DepthOfField> ();
 				apertureInt -= 1;
 				d.aperture = apertureSize [apertureInt];
-				print (d.aperture);
+				print ("Aperture: " + d.aperture);
 			}
 		}
 	}

@@ -76,11 +76,13 @@ public class DayNightCycle : MonoBehaviour {
             transform.RotateAround(Vector3.zero, Vector3.right, nightRotateSpeed * Time.deltaTime * skySpeed);
             moon.transform.RotateAround(Vector3.zero, Vector3.right, nightRotateSpeed * Time.deltaTime * skySpeed);
         }
+		//  Rotate the stars slower than the sun to give a sense of distance
+		//stars.transform.rotation = this.gameObject.transform.rotation;
 
 
         //  For debugging purposes, map keys to control day/night cycle speed
-        if (Input.GetKeyDown(KeyCode.Q)) skySpeed *= 0.5f;
-        if (Input.GetKeyDown(KeyCode.E)) skySpeed *= 2f;
+        if (Input.GetKeyDown(KeyCode.Z)) skySpeed *= 0.5f;
+        if (Input.GetKeyDown(KeyCode.X)) skySpeed *= 2f;
         
     }
 }
