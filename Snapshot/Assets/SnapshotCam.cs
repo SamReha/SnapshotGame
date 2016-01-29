@@ -20,7 +20,7 @@ namespace UnityStandardAssets.ImageEffects {
 		void Update () {
 			if (Input.GetMouseButtonDown (1)) {
 				RenderTexture rt = new RenderTexture (1024, 1024, 24);
-				Camera c = GameObject.FindGameObjectWithTag ("PlayerCamera").GetComponent<Camera>();
+				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
 				c.targetTexture = rt;
 				Texture2D t2d = new Texture2D (1024, 1024, TextureFormat.RGB24, false);
 				c.Render ();
@@ -71,7 +71,6 @@ namespace UnityStandardAssets.ImageEffects {
 				t2d.SetPixels(newColor);
 				t2d.Apply ();
 				print (whiteBalanceColor);
-
 			}
 		}
 	}
