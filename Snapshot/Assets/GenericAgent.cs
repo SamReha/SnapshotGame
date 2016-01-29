@@ -12,8 +12,9 @@ public class GenericAgent : MonoBehaviour {
 	public int meanderingExpirationTime = 100;
 	int meanderingExpirationCountdown = -1;  //  Set to negative to indicate inactive countdown
 	int currentPathIndex = 0; //  Keeps track of which wandering waypoint in the list is active
+	double oneSecond = 62.5;
 	bool meandering = false;  //  Start the creature's wandering behavior to get to the first path
-	public Vector3 direct_waypoint;  //  This is the position that the animal always tries to follow
+    Vector3 direct_waypoint;  //  This is the position that the animal always tries to follow
 
 	// Use this for initialization
 	void Start () {
@@ -22,17 +23,22 @@ public class GenericAgent : MonoBehaviour {
 		//  Load in the path of the creature here
 		path_waypoints = new Vector3[3];// <--- Don't forget to update this number as the waypoint list grows
 		path_waypoints[0] =  (new Vector3(-125.5f, 0.0f, 214.4f));
-		path_waypoints[1] =  (new Vector3(-115.5f, 0.0f, 214.4f));
-		path_waypoints[2] =  (new Vector3(-125.5f, 0.0f, 150.4f));
+		path_waypoints[1] =  (new Vector3(187.2f, 0.0f, 214.4f));
+		path_waypoints[2] =  (new Vector3(187.2f, 0.0f, -76.7f));
 		//  After loading in the path of the creature, set the direct Waypoint to the first in the array
 		direct_waypoint = path_waypoints[currentPathIndex];
 	}
 
 	// Update is called once per frame
 	void Update () {
-		meanderingExpirationCountdown--;//  Decrement the timer continuously
+		oneSecond--;
+		//Debug.Log("oneSecond: " + oneSecond + " meanderingCD: " + meanderingExpirationCountdown);
+		if (oneSecond <= 0) {
+			meanderingExpirationCountdown--;//  Decrement the timer continuously
+			oneSecond = 62.5;
+		}
 		if (meandering){ //  If the animal has reached their destination waypoint,
-			float distanceToDirect = Vector3.Distance(animalPosition.position, path_waypoints[currentPathIndex]);
+			float distanceToDirect = Vector3.Distance(animalPosition.position,  direct_waypoint);
 			if (distanceToDirect < waypoint_detection_range){
 				//  If the animal reaches their direct waypoint while meandering, don't stop moving.
 				//  instead, give the animal another position to go to.
@@ -64,4 +70,5 @@ public class GenericAgent : MonoBehaviour {
 		return new Vector3(center.x + Random.Range(-meandering_radius, meandering_radius), 
 			                 center.y, center.z + Random.Range(-meandering_radius, meandering_radius));
 	}
+		
 }
