@@ -50,6 +50,9 @@ public class DayNightCycle : MonoBehaviour {
         //  where 1 is when the sun is at the highest point
         float timeOfDay = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
 
+		skyMat.SetFloat("_Blend", timeOfDay);
+		Debug.Log ("Time of day is: " + timeOfDay);
+
         //  Linearly change the sun's brightness depending on the time
         float i = ((maxIntensity - minIntensity) * timeOfDay) * minAmbient;
         RenderSettings.ambientIntensity = i;
@@ -67,6 +70,7 @@ public class DayNightCycle : MonoBehaviour {
         //  Linearly change the atmosphere thickness
         i = ((dayAtmosphereThickness - nightAtmosphereThickness) * timeOfDay) + nightAtmosphereThickness;
         skyMat.SetFloat("_AtmosphereThickness", i);
+		//  Blend the skyboxes
 
         //  Seperates the speed of night and day
         if (timeOfDay > 0) {
@@ -77,7 +81,7 @@ public class DayNightCycle : MonoBehaviour {
             moon.transform.RotateAround(Vector3.zero, Vector3.right, nightRotateSpeed * Time.deltaTime * skySpeed);
         }
 		//  Rotate the stars slower than the sun to give a sense of distance
-		//stars.transform.rotation = this.gameObject.transform.rotation;
+		stars.transform.rotation = this.gameObject.transform.rotation;
 
 
         //  For debugging purposes, map keys to control day/night cycle speed
