@@ -6,10 +6,14 @@ using UnityStandardAssets.ImageEffects;
 namespace UnityStandardAssets.ImageEffects {
 	public class SnapshotCam : MonoBehaviour {
 		List<Texture2D> pics = new List<Texture2D>();
+
 		float[] apertureSize = {0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
 		float[] apertureLight = {0.0f, 0.3f, 0.6f, 0.9f, 1.2f , 1.5f};
 		int apertureInt = 3;
+
 		Color whiteBalanceColor = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+
+		bool cam = false;
 
 		// Use this for initialization
 		void Start () {
@@ -18,7 +22,34 @@ namespace UnityStandardAssets.ImageEffects {
 
 		// Update is called once per frame
 		void Update () {
-			if (Input.GetMouseButtonDown (1)) {
+			if (Input.GetMouseButtonDown (0)) {
+				if (cam) {
+					RenderTexture rt = new RenderTexture (1024, 1024, 24);
+					Camera c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+					c.targetTexture = rt;
+					Texture2D t2d = new Texture2D (1024, 1024, TextureFormat.RGB24, false);
+					c.Render ();
+					RenderTexture.active = rt;
+					t2d.ReadPixels (new Rect (0, 0, 1024, 1024), 0, 0);
+					c.targetTexture = null;
+					RenderTexture.active = null;
+					Destroy(rt);
+					cam = !cam;
+				} else {
+					RenderTexture rt = new RenderTexture (1024, 1024, 24);
+					Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
+					c.targetTexture = rt;
+					Texture2D t2d = new Texture2D (1024, 1024, TextureFormat.RGB24, false);
+					c.Render ();
+					RenderTexture.active = rt;
+					t2d.ReadPixels (new Rect (0, 0, 1024, 1024), 0, 0);
+					c.targetTexture = null;
+					RenderTexture.active = null;
+					Destroy(rt);
+					cam = !cam;
+				}
+			}
+			if (Input.GetMouseButtonDown (1) && cam) {
 				RenderTexture rt = new RenderTexture (1024, 1024, 24);
 				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
 				c.targetTexture = rt;

@@ -51,7 +51,7 @@ public class DayNightCycle : MonoBehaviour {
         float timeOfDay = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
 
 		skyMat.SetFloat("_Blend", timeOfDay);
-		Debug.Log ("Time of day is: " + timeOfDay);
+		//Debug.Log ("Time of day is: " + timeOfDay);
 
         //  Linearly change the sun's brightness depending on the time
         float i = ((maxIntensity - minIntensity) * timeOfDay) * minAmbient;
