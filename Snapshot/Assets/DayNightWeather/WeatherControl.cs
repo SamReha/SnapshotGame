@@ -41,7 +41,7 @@ public class WeatherControl : MonoBehaviour {
 			overcast_back
 		);
 
-		SetCurrentWeather (overcast, 0);
+		SetCurrentWeather (cloudynight, 0);
 	}
 
 	void SetCurrentWeather( WeatherProfile nextProfile , int stepsToTransition){

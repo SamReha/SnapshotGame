@@ -33,6 +33,7 @@ public class DayNightCycle : MonoBehaviour {
     Material skyMat;
     public ParticleSystem stars;
     public Transform moon;
+	public Material moonMaterial;
 
 	// Use this for initialization
 	void Start () {
@@ -61,6 +62,8 @@ public class DayNightCycle : MonoBehaviour {
 
         //  Set the ambient light to the same color as the sunlight
         RenderSettings.ambientLight = mainLight.color;
+		moonMaterial.SetColor ("_EmissionColor", mainLight.color);
+		skyMat.color = mainLight.color;
 
         //  Determine fog color/density depending on the time of the day
         RenderSettings.fogColor = nightDayFogColor.Evaluate(timeOfDay);
@@ -75,9 +78,11 @@ public class DayNightCycle : MonoBehaviour {
         if (timeOfDay > 0) {
             transform.RotateAround(Vector3.zero, Vector3.right, dayRotateSpeed * Time.deltaTime * skySpeed);
             moon.transform.RotateAround(Vector3.zero, Vector3.right, dayRotateSpeed * Time.deltaTime * skySpeed);
+			stars.startLifetime = 0;
         } else {
             transform.RotateAround(Vector3.zero, Vector3.right, nightRotateSpeed * Time.deltaTime * skySpeed);
-            moon.transform.RotateAround(Vector3.zero, Vector3.right, nightRotateSpeed * Time.deltaTime * skySpeed);
+			moon.transform.RotateAround(Vector3.zero, Vector3.right, nightRotateSpeed * Time.deltaTime * skySpeed);
+			stars.startLifetime = 10;
         }
 		//  Rotate the stars slower than the sun to give a sense of distance
 		stars.transform.rotation = this.gameObject.transform.rotation;
