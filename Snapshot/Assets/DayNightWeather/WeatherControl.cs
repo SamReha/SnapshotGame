@@ -21,9 +21,17 @@ public class WeatherControl : MonoBehaviour {
 	public Texture overcast_right;
 	public Texture overcast_back;
 
+	WeatherProfile sunset;
+	public Texture sunset_top;
+	public Texture sunset_front;
+	public Texture sunset_bottom;
+	public Texture sunset_left;
+	public Texture sunset_right;
+	public Texture sunset_back;
+
 	//  Minor variables
 	int transitionTimer;
-	int originalTimeSet; 
+	float originalTimeSet; 
 	Material skyMat;
 
 	// Use this for initialization
@@ -40,25 +48,68 @@ public class WeatherControl : MonoBehaviour {
 			overcast_left, overcast_right,
 			overcast_back
 		);
+		sunset = new WeatherProfile (sunset_top,
+			sunset_front, sunset_bottom,
+			sunset_left, sunset_right,
+			sunset_back
+		);
 
-		SetCurrentWeather (cloudynight, 0);
+		currentWeather = sunset;
+		SetCurrentWeather (sunset, 1);
 	}
 
 	void SetCurrentWeather( WeatherProfile nextProfile , int stepsToTransition){
+		WeatherProfile oldProf = currentWeather;
+		skyMat.SetTexture("_FrontTex", oldProf.front);
+		skyMat.SetTexture("_BackTex", oldProf.back);
+		skyMat.SetTexture("_DownTex", oldProf.bottom);
+		skyMat.SetTexture("_LeftTex", oldProf.left);
+		skyMat.SetTexture("_RightTex", oldProf.right);
+		skyMat.SetTexture("_UpTex", oldProf.top);
 		currentWeather = nextProfile;
+		skyMat.SetTexture("_FrontTex2", currentWeather.front);
+		skyMat.SetTexture("_BackTex2", currentWeather.back);
+		skyMat.SetTexture("_DownTex2", currentWeather.bottom);
+		skyMat.SetTexture("_LeftTex2", currentWeather.left);
+		skyMat.SetTexture("_RightTex2", currentWeather.right);
+		skyMat.SetTexture("_UpTex2", currentWeather.top);
 		transitionTimer = stepsToTransition;  //  Transition timer decrements every step.
 		originalTimeSet = stepsToTransition;  //  Keeps track of the original time to animate the skybox
 	}
 
 	// Update is called once per frame
 	void Update () {
+		float timeOfDay;
+		int timeZone;
+		timeOfDay = GetComponent<DayNightCycle>().timeOfDay;
+		timeZone = -1;  //  Prevents weather switcher from calling twice
         //  Decrement the steps timer
 		transitionTimer--;
-		if (transitionTimer > 0) {
+		Debug.Log ("Time:   " + timeOfDay);
+		if (transitionTimer >= 0) {
 			float progress = (originalTimeSet - transitionTimer) / originalTimeSet; /*  timePassed/total */
 			skyMat.SetFloat ("_Blend", progress);
 		} else {
-			skyMat.SetFloat ("_Blend", 1);
+			skyMat.SetFloat ("_Blend", 0);
 		}
+
+		if (transitionTimer < 0) {
+			//  Change the skybox depending on the time of the day
+			//  Debug.Log("Time of day: " + timeOfDay);
+			if (timeOfDay <= 0.17f && timeZone != 0) {
+				//  Night
+				SetCurrentWeather (cloudynight, 800);
+				timeZone = 0;
+			} else if (timeOfDay > 0.17f && timeOfDay <= .58f && timeZone != 1) {
+				//  Sunrise/ sunset
+				SetCurrentWeather (sunset, 800);
+				timeZone = 1;
+			} else if (timeOfDay > 0.58f && timeZone != 2) {
+				//  Day
+				SetCurrentWeather (overcast, 800);
+				timeZone = 2;
+			}
+		}
+
 	}
 }

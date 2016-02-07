@@ -26,7 +26,7 @@ public class DayNightCycle : MonoBehaviour {
     public float dayRotateSpeed;
     public float nightRotateSpeed;
     //  Adjust the skySpeed constant to speed up/slow down the time of day
-    float skySpeed = 1;
+    float skySpeed = .5f;
 
     Light mainLight;
     Skybox sky;
@@ -34,6 +34,7 @@ public class DayNightCycle : MonoBehaviour {
     public ParticleSystem stars;
     public Transform moon;
 	public Material moonMaterial;
+	public float timeOfDay;
 
 	// Use this for initialization
 	void Start () {
@@ -46,10 +47,9 @@ public class DayNightCycle : MonoBehaviour {
 
         //  how much time the day takes up
         float tRange = 1 - minPoint;
-
         //  timeOfDay returns a value between 1 and -1
         //  where 1 is when the sun is at the highest point
-        float timeOfDay = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
+        timeOfDay = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
 
 		//Debug.Log ("Time of day is: " + timeOfDay);
 
