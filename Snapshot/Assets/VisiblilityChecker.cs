@@ -21,13 +21,14 @@ public class VisiblilityChecker : MonoBehaviour {
 	}
 
 	void OnBecameVisible(){
-		List<string> v = GameObject.Find ("Camera Prefab").GetComponent<Visible> ().visibleObjs;
-		v.Add (gameObject.name);
+		List<GameObject> v = (List<GameObject>)GameObject.Find ("Camera Prefab").GetComponent<Visible> ().visibleObjs;
+		//  organize the list by distance to cam
+		v.Add (gameObject );
 	}
 
 	void OnBecameInvisible(){
-		List<string> v = GameObject.Find ("Camera Prefab").GetComponent<Visible> ().visibleObjs;
-		v.Remove (gameObject.name);
+		List<GameObject> v = (List<GameObject>)GameObject.Find ("Camera Prefab").GetComponent<Visible> ().visibleObjs;
+		v.Remove (gameObject);
 	}
 
 	// Update is called once per frame
@@ -35,11 +36,9 @@ public class VisiblilityChecker : MonoBehaviour {
 		
         planes = GeometryUtility.CalculateFrustumPlanes(cam);
         
-		
 		//if (GeometryUtility.TestPlanesAABB(planes, anObjCollider.bounds))
-            //Debug.Log(anObject.name + " has been detected!");
+        //    Debug.Log(anObject.name + " has been detected!");
         //else
-           // Debug.Log("Nothing has been detected");
-		
+        //    Debug.Log("Nothing has been detected");
 	}
 }

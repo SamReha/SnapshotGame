@@ -85,7 +85,7 @@ public class WeatherControl : MonoBehaviour {
 		timeZone = -1;  //  Prevents weather switcher from calling twice
         //  Decrement the steps timer
 		transitionTimer--;
-		Debug.Log ("Time:   " + timeOfDay);
+		//Debug.Log ("Time:   " + timeOfDay);
 		if (transitionTimer >= 0) {
 			float progress = (originalTimeSet - transitionTimer) / originalTimeSet; /*  timePassed/total */
 			skyMat.SetFloat ("_Blend", progress);
@@ -96,11 +96,11 @@ public class WeatherControl : MonoBehaviour {
 		if (transitionTimer < 0) {
 			//  Change the skybox depending on the time of the day
 			//  Debug.Log("Time of day: " + timeOfDay);
-			if (timeOfDay <= 0.17f && timeZone != 0) {
+			if (timeOfDay <= 0.05f && timeZone != 0) {
 				//  Night
 				SetCurrentWeather (cloudynight, 800);
 				timeZone = 0;
-			} else if (timeOfDay > 0.17f && timeOfDay <= .58f && timeZone != 1) {
+			} else if (timeOfDay > 0.05f && timeOfDay <= .58f && timeZone != 1) {
 				//  Sunrise/ sunset
 				SetCurrentWeather (sunset, 800);
 				timeZone = 1;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Photo {
 
 	public Texture2D photo;
-	public List<string> visible = new List<string> ();
+	public List<GameObject> visible = new List<GameObject> ();
 
 
 	// Use this for initialization
