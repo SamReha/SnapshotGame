@@ -16,10 +16,10 @@ public class UIManager : MonoBehaviour {
 		if (Input.GetButtonDown("Cancel")) {
 			isPaused = !isPaused;
 		}
-		togglePause(isPaused);
+		setPause(isPaused);
 	}
 
-	void togglePause(bool pauseState) {
+	public void setPause(bool pauseState) {
 		GameObject player = GameObject.FindWithTag("Player");
 		// For some reason, this line causes who menu to break and seems to trigger
 		// null pointer excep in visibility checker as well.
@@ -30,5 +30,10 @@ public class UIManager : MonoBehaviour {
 			Time.timeScale = 0.0f;
 		} else
 			Time.timeScale = 1.0f;
+	}
+
+	// A handy method for when passing args is difficult
+	public void unPause() {
+		isPaused = false;
 	}
 }
