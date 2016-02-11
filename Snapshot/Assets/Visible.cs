@@ -23,6 +23,16 @@ public class Visible : MonoBehaviour {
 			}
 		}
 	}
+	
+		public Vector3[] gameObjectToVertexArray (GameObject go) {
+		MeshFilter[] meshList = go.GetComponentsInChildren<MeshFilter> ();
+		List<Vector3> vertexList = new List<Vector3> ();
+
+		foreach (MeshFilter filter in meshList) {
+			vertexList.AddRange(filter.mesh.vertices);
+		}
+		return vertexList.ToArray ();
+	}
 
 	public SortedList<float, GameObject> UnobstructedObjs( List<GameObject> objsToCheck ){
 		SortedList<float, GameObject> returnList = new SortedList<float, GameObject>();
