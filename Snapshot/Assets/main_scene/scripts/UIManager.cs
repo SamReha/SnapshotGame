@@ -4,6 +4,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class UIManager : MonoBehaviour {
 	public GameObject PanelPause;
+	public FirstPersonController player;
 	public bool isPaused;
 
 	// Use this for initialization
@@ -20,16 +21,23 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void setPause(bool pauseState) {
-		GameObject player = GameObject.FindWithTag("Player");
-		// For some reason, this line causes who menu to break and seems to trigger
-		// null pointer excep in visibility checker as well.
-		//player.GetComponent<FirstPersonController>().enabled = pauseState;
+		// Pass true to include inactive mouselooks
+		//MouseLook[] mLooks = player.GetComponentsInChildren<MouseLook>(true);
+		/*foreach (MouseLook mLook in mLooks){
+			// enables MouseLook when pauseState is false and vice versa
+			mLook.enabled = !pauseState;
+		}*/
+		player.m_MouseLook.enabled = !pauseState;
+		player.m_MouseLook.SetCursorLock (!pauseState);
 
 		PanelPause.SetActive(pauseState);
 		if (pauseState) {
 			Time.timeScale = 0.0f;
-		} else
+		} else {
 			Time.timeScale = 1.0f;
+		}
+
+		Debug.Log ("It's working!!");
 	}
 
 	// A handy method for when passing args is difficult
