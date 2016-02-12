@@ -42,6 +42,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+		// Publicized so it could be manipulated by UIManager
+		// Bad form? Maybe. Functional? You bet your sweet ass. -S
 		public MouseLook m_MouseLook;
 
         // Use this for initialization
