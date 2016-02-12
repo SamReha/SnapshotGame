@@ -21,12 +21,6 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void setPause(bool pauseState) {
-		// Pass true to include inactive mouselooks
-		//MouseLook[] mLooks = player.GetComponentsInChildren<MouseLook>(true);
-		/*foreach (MouseLook mLook in mLooks){
-			// enables MouseLook when pauseState is false and vice versa
-			mLook.enabled = !pauseState;
-		}*/
 		player.m_MouseLook.enabled = !pauseState;
 		player.m_MouseLook.SetCursorLock (!pauseState);
 
@@ -36,8 +30,6 @@ public class UIManager : MonoBehaviour {
 		} else {
 			Time.timeScale = 1.0f;
 		}
-
-		Debug.Log ("It's working!!");
 	}
 
 	// A handy method for when passing args is difficult
