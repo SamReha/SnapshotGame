@@ -23,6 +23,16 @@ public class Visible : MonoBehaviour {
 			}
 		}
 	}
+	
+	public Vector3[] gameObjectToVertexArray (GameObject go) {
+		MeshFilter[] meshList = go.GetComponentsInChildren<MeshFilter> ();
+		List<Vector3> vertexList = new List<Vector3> ();
+
+		foreach (MeshFilter filter in meshList) {
+			vertexList.AddRange(filter.mesh.vertices);
+		}
+		return vertexList.ToArray ();
+	}
 
 	public SortedList<float, GameObject> UnobstructedObjs( List<GameObject> objsToCheck ){
 		SortedList<float, GameObject> returnList = new SortedList<float, GameObject>();
@@ -34,13 +44,22 @@ public class Visible : MonoBehaviour {
 			//  IN PROGRESS
 		}
 		foreach(GameObject obj in returnList.Values){
-        //  second pass omits obstructed objects
-			RaycastHit hitInfo = new RaycastHit();
-			Ray obstructionChecker = new Ray (transform.position, //  origin of the ray
-				Quaternion.LookRotation (obj.transform.position).eulerAngles);
-			if ( Physics.Raycast( obstructionChecker, out hitInfo, 999999f)){
-				Debug.Log ("Raycasted " + obj.name);
-			}  //  Distance to trace
+                //  second pass omits obstructed objects
+                //  Calculate the visibility of the object
+                        Vector3[] vertices = gameObjectToVertexArray(obj);
+                        int totalVerts = vertices.Length;
+                        int visibleVerts = 0;
+                        //  Sort which vertices are visible
+                        foreach(Vector3 vertex in vertices){
+				RaycastHit hitInfo = new RaycastHit();
+				Ray obstructionChecker = new Ray (transform.position, //  origin of the ray
+					Quaternion.LookRotation (vertex).eulerAngles);
+				if ( Physics.Raycast( obstructionChecker, out hitInfo, 999999f)){
+					Debug.Log ("Raycasted " + obj.name);
+					visibleVerts++;
+				}  //  Distance to trace
+                        }
+	                Debug.Log("Object " + obj.name + " visibility: " + (float)visibleVerts/totalVerts);
 		}
 		return returnList;
 	}
