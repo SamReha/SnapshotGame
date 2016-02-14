@@ -77,7 +77,7 @@ public class Visible : MonoBehaviour {
 			}
 			Debug.Log(	"Object " + obj.Value.name + " visibility: " + visibleVerts + "/" + 
 				totalVerts/raySampleResolution + "=" + (float)visibleVerts/(totalVerts/raySampleResolution));
-				obj.Value.GetComponet<Photographable>().percentOccluded =  (float)visibleVerts / (totalVerts / raySampleResolution);
+				//obj.Value.GetComponet<GameObject>().percentOccluded =  (float)visibleVerts / (totalVerts / raySampleResolution);
 		}
 		return returnList;
 	}
