@@ -78,13 +78,17 @@ public class VisiblilityChecker : MonoBehaviour {
 
 		// Testing for isAllInFrame
 		for (int i = 0; i < v.Length; i++) {
-			isAllInFrame = false;
-			break;
+			if (cornerLocations [i] != 5) {
+				isAllInFrame = false;
+				break;
+			}
 		}
 		// Testing for noneInFrame
 		for (int i = 0; i < v.Length; i++) {
-			noneInFrame = false;
-			break;
+			if (cornerLocations[i] == 5) {
+				noneInFrame = false;
+				break;
+			}
 		}
 		if (isAllInFrame) {
 			// If all points are in frame object 100% in frame
