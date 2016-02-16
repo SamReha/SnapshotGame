@@ -28,8 +28,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void OpenBag(bool bagState){
-		player.m_MouseLook.enabled = !pauseState;
-		player.m_MouseLook.SetCursorLock (!pauseState);
+		//player.m_MouseLook.enabled = !bagState;
+		player.m_MouseLook.SetCursorLock (!bagState);
 
 		PanelBag.SetActive(bagState);
 		if (bagState) {
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void setPause(bool pauseState) {
-		player.m_MouseLook.enabled = !pauseState;
+		//player.m_MouseLook.enabled = !pauseState;
 		player.m_MouseLook.SetCursorLock (!pauseState);
 
 		PanelPause.SetActive(pauseState);
