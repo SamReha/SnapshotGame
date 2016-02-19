@@ -109,7 +109,7 @@ public class Visible : MonoBehaviour {
 				returnList.Remove (obj.Key);
 			} else {
 				Debug.Log(	"Object " + obj.Value.name + " visibility: " + (float)visibleVerts*100f/(totalVerts) + "%");
-				obj.Value.GetComponent<Photographable>().percentOccluded = (float)visibleVerts/(totalVerts)
+				obj.Value.GetComponent<Photographable> ().percentOccluded = (float)visibleVerts / (totalVerts);
 			}
 		}
 		return returnList;
