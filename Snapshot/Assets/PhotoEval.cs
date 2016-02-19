@@ -103,17 +103,13 @@ public class Visible : MonoBehaviour {
 			}
 			totalVerts = blockedVerts + visibleVerts;
 			//  Remove completely covered instances
-			//  First, get the object's Photographable component
-			Photographable visibilityData = obj.Value.GetComponentInParent(Photographable);
-			if (visibilityData != null) {
-				if (visibleVerts <= 0) {
-					Debug.Log ("Raycast missed. Removing " + obj.Value.name + " from the list.");
-					visibilityData.percentOccluded = 0;
-					returnList.Remove (obj.Key);
-				} else {
-					Debug.Log ("Object " + obj.Value.name + " visibility: " + (float)visibleVerts * 100f / (totalVerts) + "%");
-					visibilityData.percentOccluded = (float)visibleVerts / (totalVerts);
-				}
+			if (visibleVerts <= 0){
+				Debug.Log ("Raycast missed. Removing " + obj.Value.name + " from the list.");
+				obj.Value.GetComponent<Photographable>().percentOccluded = 0;
+				returnList.Remove (obj.Key);
+			} else {
+				Debug.Log(	"Object " + obj.Value.name + " visibility: " + (float)visibleVerts*100f/(totalVerts) + "%");
+				obj.Value.GetComponent<Photographable> ().percentOccluded = (float)visibleVerts / (totalVerts);
 			}
 		}
 		return returnList;
