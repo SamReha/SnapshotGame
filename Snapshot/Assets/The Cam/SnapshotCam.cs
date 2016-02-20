@@ -30,7 +30,7 @@ namespace UnityStandardAssets.ImageEffects {
 		void Start () {
 
 		}
-			
+
 		void Update () {
 
 			// Switches camera view from Player to Cam
@@ -55,6 +55,7 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Takes the photo
 			if (Input.GetButtonDown("Take Photo") && cam) {
+				GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
 				RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
 				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();	// Gets the camera to output to the render tuexture
 				c.targetTexture = rt; 
