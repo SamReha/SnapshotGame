@@ -55,7 +55,7 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Takes the photo
 			if (Input.GetButtonDown("Take Photo") && cam) {
-				GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
+				//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
 				RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
 				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();	// Gets the camera to output to the render tuexture
 				c.targetTexture = rt; 
@@ -73,6 +73,11 @@ namespace UnityStandardAssets.ImageEffects {
 				RenderTexture.active = null;
 				Destroy(rt); 
 				pics.Add (p);
+				byte[] bytes = t2d.EncodeToPNG(); 
+				string filename = Application.dataPath + "/screen" 
+					+ System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png"; 
+				System.IO.File.WriteAllBytes(filename, bytes);
+				Debug.Log(string.Format("Took screenshot to: {0}", filename)); 
 			}
 			// Aperture Size
 			// Increases Aperture Size
