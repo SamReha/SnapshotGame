@@ -64,7 +64,10 @@ namespace UnityStandardAssets.ImageEffects {
 				t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
 				Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
 				p.photo = t2d;
-				p.visible = GameObject.Find ("Camera Prefab").GetComponent<Visible> ().visibleObjs;
+				p.visible = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().visibleObjs;
+				p.balanceValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().balance;
+				p.spacingValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().spacing;
+				p.InterestingnessValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().interest;
 				c.targetTexture = null;
 				RenderTexture.active = null;
 				Destroy(rt); 

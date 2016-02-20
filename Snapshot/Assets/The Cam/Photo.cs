@@ -6,6 +6,10 @@ public class Photo {
 
 	public Texture2D photo;
 	public List<GameObject> visible = new List<GameObject> ();
+	public float balanceValue;
+	public float spacingValue;
+	public float InterestingnessValue;
+
 
 
 	// Use this for initialization
