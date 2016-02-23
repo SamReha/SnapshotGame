@@ -27,34 +27,44 @@ namespace UnityStandardAssets.ImageEffects {
 		// This is the render texture for the cams digital screen. Used during camera switches
 		public RenderTexture camView;
 
-		void Start () {
+		private AudioSource cameraAudio;
+		public AudioClip cam_click;
+		public AudioClip cam_shutter;
 
+		void Start () {
+			cameraAudio = GetComponent<AudioSource> ();
 		}
 
 		void Update () {
 
 			// Switches camera view from Player to Cam
-			if (Input.GetButtonDown("Camera Switch")) {
-				// Player view
-				if (cam) {
-					// Gets the two cameras one to set the view the other to set the render texture
-					Camera c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-					Camera c2 = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
-					c2.targetTexture = camView;	// Sets the render texture
-					c.Render ();	// Renders the Player view
-					c.targetTexture = null;
-					cam = !cam;
-				}
-				// Cam view
-				else {
-					Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera> ();	// Gets the Cam camera to set the view
-					c.Render ();	// Renders the Cam view
-					c.targetTexture = null;
-					cam = !cam;
-				}
+			//if (Input.GetButtonDown("Camera Switch")) {
+			cam  = !Input.GetButton("Camera Switch");
+			// Player view
+			if (cam) {
+				// Gets the two cameras one to set the view the other to set the render texture
+				Camera c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+				Camera c2 = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
+				c2.targetTexture = camView;	// Sets the render texture
+				c.Render ();	// Renders the Player view
+				c.targetTexture = null;
+				cam = !cam;
 			}
-			// Takes the photo
-			if (Input.GetButtonDown("Take Photo") && cam) {
+			// Cam view
+			else {
+				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera> ();	// Gets the Cam camera to set the view
+				c.Render ();	// Renders the Cam view
+				c.targetTexture = null;
+				cam = !cam;
+			}
+			//}
+
+			// When player presses down, a beep is heard
+			if (Input.GetButtonDown("Take Photo")){
+				cameraAudio.PlayOneShot (cam_click, 0.7f);  //  beep beep
+			//  Then upon release the photo is taken
+			} else if (Input.GetButtonUp("Take Photo")) {
+				cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
 				//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
 				RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
 				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();	// Gets the camera to output to the render tuexture
