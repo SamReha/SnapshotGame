@@ -90,7 +90,7 @@ public class PhotoEval : MonoBehaviour {
 			Debug.Log ("Position: " + viewPos.ToString("F4"));
 			CalcObjPercentage (corners, go);
 			Debug.Log ("Percent in Frame: " + percentInFrame);
-			IsFramed ();
+			IsFramed (i);
 			Debug.Log ("Centered: " + percentCentered);
 		}
 	}
