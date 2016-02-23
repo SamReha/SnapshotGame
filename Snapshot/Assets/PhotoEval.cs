@@ -14,8 +14,8 @@ public class PhotoEval : MonoBehaviour {
 
 	public Vector3 viewPos;
 	Vector3[] corners = new Vector3[8];
-	public float percentInFrame = -1f;
-	public float percentCentered = -1f;
+	public List<float> percentInFrame;
+	public List<float> percentCentered;
 	private Camera cam;
 
 	public float balance = -1f;
@@ -29,6 +29,8 @@ public class PhotoEval : MonoBehaviour {
 		raysHit = new List<Ray> ();
 		raysBlocked = new List<Ray> ();
 		raysGrounded = new List<Ray> ();
+		percentInFrame = new List<float> ();
+		percentCentered = new List<float> ();
 		cam = GameObject.Find ("PlayerCam").GetComponent<Camera> ();
 	}
 
@@ -52,7 +54,7 @@ public class PhotoEval : MonoBehaviour {
 				Debug.Log ("Position: " + viewPos.ToString("F4"));
 				CalcObjPercentage (corners, go);
 				Debug.Log ("Percent in Frame: " + percentInFrame);
-				IsFramed ();
+				IsFramed (i);
 				Debug.Log ("Centered: " + percentCentered);
 			}
 		}
@@ -88,8 +90,65 @@ public class PhotoEval : MonoBehaviour {
 			Debug.Log ("Position: " + viewPos.ToString("F4"));
 			CalcObjPercentage (corners, go);
 			Debug.Log ("Percent in Frame: " + percentInFrame);
-			IsFramed ();
+			IsFramed (i);
 			Debug.Log ("Centered: " + percentCentered);
+		}
+	}
+
+	public void CheckBalance() {
+/*		List<float> screenPercents = new List<float> ();
+		float mean = 0f;
+		for(int i = 0; i < subjectList.Count; i++){
+			float x = CalcScreenPercentage (subjectList [i]);
+			screenPercents.Add (x);
+			mean += x;
+		}
+		mean = mean / subjectList.Count;
+		List<float> deviation = new List<float>();
+		float variance = 0; 
+		for(int i = 0; i < subjectList.Count; i++){
+			float x = screenPercents[i] - mean;
+			variance += x * x;
+		}
+		variance = variance / subjectList.Count;
+		balance = Mathf.Sqrt(variance);
+*/
+	}
+
+	int framePosition() {
+		float x = viewPos.x;
+		float y = viewPos.y;
+
+		if(x >= 0.3f || x <= 0.36f && y >= 0.3f || y <= 0.36f){
+			return 1;
+		}
+		else if(x >= 0.63f || x <= 0.69f && y >= 0.3f || y <= 0.36f){
+			return 2;
+		}
+		else if(x >= 0.3f || x <= 0.36f && y >= 0.63f || y <= 0.69f){
+			return 3;
+		}else if(x >= 0.63f || x <= 0.69f && y >= 0.63f || y <= 0.69f){
+			return 4;
+		}else if(x >= 0.47f || x <= 0.53f && y >= 0.47f || y <= 0.53f){
+			return 5;
+		}else if(x <= 0.33f && y <= 0.33f){
+			return 6;
+		}else if(x <= 0.66f && y <= 0.33f){
+			return 7;
+		}else if(y <= 0.33f){
+			return 8;
+		}else if(x <= 0.33f && y <= 0.66f){
+			return 9;
+		}else if(x <= 0.66f && y <= 0.66f){
+			return 10;
+		}else if(y <= 0.66f){
+			return 11;
+		}else if(x >= 0.33f){
+			return 12;
+		}else if(x >= 0.66f){
+			return 13;
+		}else{
+			return 14;
 		}
 	}
 
@@ -172,7 +231,7 @@ public class PhotoEval : MonoBehaviour {
 
 	// Roughly estimates the percentage of an object that is on screen using the AABB
 	void CalcObjPercentage(Vector3[] v, GameObject go){
-		percentInFrame = 100;
+		float percent = 100;
 		int[] cornerLocations = new int[v.Length];	// An int array holds the positions of the corners of the bounding box
 		for (int i = 0; i < v.Length; i++) {
 			v[i] = go.transform.TransformPoint(v[i]);
@@ -201,20 +260,22 @@ public class PhotoEval : MonoBehaviour {
 			return;
 		} else if (noneInFrame) {
 			// If all points are out of frame 0%
-			percentInFrame = 0.0f;
+			percent = 0.0f;
 			// Unless center is in frame. Given arbitrary value at this point may need adjustment.
 			if (BoundsChecker (viewPos) == 5) {
-				percentInFrame = 50f;
+				percent = 50f;
 			}
+			percentInFrame.Add (percent);
 			return;
 		} else { 
 			// Caculate distance of all objects from edge of frame
 			for (int i = 0; i < v.Length; i++) {
-				CalcObjPoint (cornerLocations [i], v [i], 25f, -1.0f, 2.0f, -1.0f, 2.0f);
+				percent  = CalcObjPoint (cornerLocations [i], v [i], 25f, -1.0f, 2.0f, -1.0f, 2.0f);
 			}
 			// Edge case can go below 0% dependent on proximity
-			if (percentInFrame < 0) {
-				percentInFrame = 0;
+			if (percent < 0) {
+				percent = 0;
+				percentInFrame.Add (percent);
 			}
 		}
 	}
@@ -257,10 +318,11 @@ public class PhotoEval : MonoBehaviour {
 	}
 
 	// Calculates the relative position of a vector in comparison to the cameras viewport
-	void CalcObjPoint(int i, Vector3 v, float value, float minX, float maxX, float minY, float maxY){
+	float CalcObjPoint(int i, Vector3 v, float value, float minX, float maxX, float minY, float maxY){
 
 		float x = v.x;
 		float y = v.y;
+		float percent = 100f;
 
 		// There is a case for each point in the grid calculated with BoundChecker except 5
 		if (i == 0) {
@@ -269,105 +331,105 @@ public class PhotoEval : MonoBehaviour {
 		} else if (i == 1) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (x < minX || y > maxY) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame corner
 				float p = value * (Mathf.Sqrt (x * x + y * y) / Mathf.Sqrt (minX * minX + maxY * maxY));
-				percentInFrame -= p;
+				percent -= p;
 			}
 		} else if (i == 2) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (y > maxY) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame corner
 				float p = value * (y / maxY);
-				percentInFrame -= p;
+				percent -= p;
 			}
 		} else if (i == 3) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (x > maxX || y > maxY) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame corner
 				float p = value * (Mathf.Sqrt (x * x + y * y) / Mathf.Sqrt (maxX * maxX + maxY * maxY));
-				percentInFrame -= p;
+				percent -= p;
 			}
 		} else if (i == 4) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (x < minX) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame 
 				float p = value * (x / minX);
-				percentInFrame -= p;
+				percent -= p;
 			}
 		} else if (i == 6) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (x > maxX) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame
 				float p = value * (x / maxX);
-				percentInFrame -= p;
+				percent -= p;
 			}
 		} else if (i == 7) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (x < minX || y < minY) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame corner
 				float p = value * (Mathf.Sqrt (x * x + y * y) / Mathf.Sqrt (minX * minX + minY * minY));
-				percentInFrame -= p;
+				percent -= p;
 			}
 		} else if (i == 8) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (y < minY) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame
 				float p = value * (y / minY);
-				percentInFrame -= p;
+				percent -= p;
 			}
 		} else if (i == 9) {
 			// Check if inside the min/max values. If not subtract whole total
 			if (x > maxX || y < minY) {
-				percentInFrame -= value;
+				percent -= value;
 			} else {
 				//Calculate distance from frame corner
 				float p = value * (Mathf.Sqrt (x * x + y * y) / Mathf.Sqrt (maxX * maxX + minY * minY));
-				percentInFrame -= p;
+				percent -= p;
 			}
 		}
+		return percent;
 	}
 
 
 	// Checks how centered within the camera viewport the object is
 	// At the moment all values calculated are arbitrary
-	void IsFramed(){
-
+	void IsFramed(int i){
 		float x = viewPos.x;
 		float y = viewPos.y;
 
-		if (percentInFrame > 0) {
+		if (percentInFrame[i] > 0) {
 			if (x <= 0.6f && x >= 0.4f) {
 				if (y <= 0.6f && y >= 0.4f) {
-					percentCentered = percentInFrame;	// If the object essentially centered 
+					percentCentered.Add (percentInFrame [i]);	// If the object essentially centered 
 				} else if (y > 0.6f && y <= 1.0f || y < 0.4f && y >= 0.0f) {
-					percentCentered = percentInFrame * 0.7f;	// If the object is centered along x but not y
+					percentCentered.Add (percentInFrame [i] * 0.7f);	// If the object is centered along x but not y
 				} else {
-					percentCentered = 0.0f;	// If the object is outside of frame
+					percentCentered.Add (0.0f);	// If the object is outside of frame
 				}
 			} else if (x > 0.6f && x <= 1.0f || x < 0.4f && x >= 0.0f) {
 				if (y <= 0.6f && y >= 0.4f) {
-					percentCentered = percentInFrame * 0.7f;	// If the object is is centered along y but not x
+					percentCentered.Add (percentInFrame [i] * 0.7f);	// If the object is is centered along y but not x
 				} else if (y > 0.6f && y <= 1.0f || y < 0.4f && y >= 0.0f) {
-					percentCentered = percentInFrame * 0.3f;	// If the object is not centered on x or y but stil in frame
+					percentCentered.Add (percentInFrame [i] * 0.3f);	// If the object is not centered on x or y but stil in frame
 				} else {
-					percentCentered = 0.0f;	// If the object is outside of frame 
+					percentCentered.Add (0.0f);	// If the object is outside of frame 
 				}
 			} else {
-				percentCentered = 0.0f;	// If the object is outside of frame
+				percentCentered.Add(0.0f);	// If the object is outside of frame
 			}
 		}
 	}
