@@ -57,6 +57,9 @@ public class PhotoEval : MonoBehaviour {
 				IsFramed (i);
 				Debug.Log ("Centered: " + percentCentered);
 			}
+
+			GameObject subject = getSubject (visibleObjs);
+			Debug.Log ("Subject: " + subject);
 		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);
@@ -485,5 +488,26 @@ public class PhotoEval : MonoBehaviour {
 		corners[5]  = new Vector3(v3Center.x + v3Extents.x, v3Center.y + v3Extents.y, v3Center.z + v3Extents.z);  // Back top right corner C
 		corners[6]  = new Vector3(v3Center.x - v3Extents.x, v3Center.y - v3Extents.y, v3Center.z + v3Extents.z);  // Back bottom left corner F
 		corners[7]  = new Vector3(v3Center.x + v3Extents.x, v3Center.y - v3Extents.y, v3Center.z + v3Extents.z);  // Back bottom right corner G
+	}
+
+	/*
+	 * Returns the most likely subject based on the metrics derived for a photo object. Note that it changes the order
+	 * of visibleObjs, but we can use OrderBy() in place of Sort() to avoid that side-effect.
+	 */
+	GameObject getSubject(List<GameObject> visibleObjs) {
+		visibleObjs.Sort (delegate(GameObject left, GameObject right) {
+			// Exapand this to consider other photo object metrics
+			Photographable leftPhotoObject = left.GetComponent<Photographable>();
+			Photographable rightPhotoObject = right.GetComponent<Photographable>();
+			if (leftPhotoObject.baseScore > rightPhotoObject.baseScore
+				&& leftPhotoObject.percentOccluded < rightPhotoObject.percentOccluded) {
+				return 1;
+			} else if (leftPhotoObject.baseScore < rightPhotoObject.baseScore
+				&& leftPhotoObject.percentOccluded > rightPhotoObject.percentOccluded) {
+				return -1;
+			} else return 0;
+		});
+
+		return visibleObjs[0];
 	}
 }
