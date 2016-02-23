@@ -407,7 +407,6 @@ public class PhotoEval : MonoBehaviour {
 	// Checks how centered within the camera viewport the object is
 	// At the moment all values calculated are arbitrary
 	void IsFramed(int i){
-
 		float x = viewPos.x;
 		float y = viewPos.y;
 
@@ -429,7 +428,7 @@ public class PhotoEval : MonoBehaviour {
 					percentCentered.Add (0.0f);	// If the object is outside of frame 
 				}
 			} else {
-				percentCentered.Add(0.0f)	// If the object is outside of frame
+				percentCentered.Add(0.0f);	// If the object is outside of frame
 			}
 		}
 	}
