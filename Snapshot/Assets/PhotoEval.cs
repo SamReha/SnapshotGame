@@ -180,9 +180,10 @@ public class PhotoEval : MonoBehaviour {
 				//  raycast to each vertex on the object
 				RaycastHit hitInfo = new RaycastHit (); 
 				//  The vertex group is scaled to 90% of the actual object size to prevent edge vetices from missing their mark.
-				Vector3 dir = new Vector3(vertices[i].x*obj.Value.transform.lossyScale.x*0.9f, 
-					vertices[i].y*obj.Value.transform.lossyScale.y*0.9f, 
-					vertices[i].z*obj.Value.transform.lossyScale.z*0.9f) + 
+				Vector3 rotatedVertex = obj.Value.transform.rotation * vertices [i];
+				Vector3 dir = new Vector3( rotatedVertex.x*obj.Value.transform.lossyScale.x*0.9f, 
+					rotatedVertex.y*obj.Value.transform.lossyScale.y*0.9f, 
+					rotatedVertex.z*obj.Value.transform.lossyScale.z*0.9f) + 
 					obj.Value.transform.position - transform.position;  //  points toward the 
 				Ray obstructionRay = new Ray (transform.position, dir);
 				//  true if a collision is found
