@@ -60,6 +60,9 @@ public class PhotoEval : MonoBehaviour {
 
 			GameObject subject = getSubject (visibleObjs);
 			Debug.Log ("Subject: " + subject);
+
+			// Evaluate spacing
+			spacing = evaluateSpacing(visibleObjs);
 		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);
@@ -504,6 +507,7 @@ public class PhotoEval : MonoBehaviour {
 			// Exapand this to consider other photo object metrics
 			Photographable leftPhotoObject = left.GetComponent<Photographable>();
 			Photographable rightPhotoObject = right.GetComponent<Photographable>();
+
 			if (leftPhotoObject.baseScore > rightPhotoObject.baseScore
 				&& leftPhotoObject.percentOccluded < rightPhotoObject.percentOccluded) {
 				return 1;
@@ -514,5 +518,17 @@ public class PhotoEval : MonoBehaviour {
 		});
 
 		return visibleObjs[0];
+	}
+
+	float evaluateSpacing(List<GameObject> visibleObjs) {
+		float spacing = -1f;
+
+		//Dictionary<float, Delegate> heuristics = new Dictionary<float, Delegate>();
+		// Ought to have a map of float to function so that I can organize my weights and heuristic functions
+
+		// Key: wieght Value: value returned from heuristic
+		Dictionary<string, KeyValuePair<float, float>> heuristicMap;
+
+		return spacing;
 	}
 }
