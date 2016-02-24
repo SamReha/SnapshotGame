@@ -36,7 +36,7 @@ public class PhotoEval : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.G)) {
+		if (Input.GetButtonUp ("Take Photo")) {
 			SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
 			/*
 			foreach(GameObject obj in unobstructedList.Values){
@@ -54,7 +54,7 @@ public class PhotoEval : MonoBehaviour {
 				Debug.Log ("Position: " + viewPos.ToString("F4"));
 				CalcObjPercentage (corners, go);
 				Debug.Log ("Percent in Frame: " + percentInFrame);
-				IsFramed (i);
+				//IsFramed (i);
 				Debug.Log ("Centered: " + percentCentered);
 			}
 		}
@@ -82,8 +82,12 @@ public class PhotoEval : MonoBehaviour {
 		if (unobstructedList.Count == 0) {
 			print ("Empty");
 		}
-		for (int i = 0; i < visibleObjs.Count; i++) {
-			GameObject go = visibleObjs [i];
+		//  RK: Changed iteration from all of the objects within the frame 
+		//  to only those which are not blocked by other objects
+		int i = 0;
+		foreach ( KeyValuePair<float, GameObject> kvp in unobstructedList) {
+			i++;  //  i is a temporary solution. I suggest we work around using indecies
+			GameObject go = kvp.Value;
 			Debug.Log ("Object: " + go.name);
 			Corners (go);
 			viewPos = cam.WorldToViewportPoint (go.transform.position);
@@ -410,7 +414,7 @@ public class PhotoEval : MonoBehaviour {
 	void IsFramed(int i){
 		float x = viewPos.x;
 		float y = viewPos.y;
-
+		Debug.Log ("Percent in frame: size " + percentInFrame.Count + " while i is " + i);
 		if (percentInFrame[i] > 0) {
 			if (x <= 0.6f && x >= 0.4f) {
 				if (y <= 0.6f && y >= 0.4f) {
