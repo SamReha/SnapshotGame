@@ -22,6 +22,9 @@ public class PhotoEval : MonoBehaviour {
 	public float spacing = -1f;
 	public float interest = -1f;
 
+	// Key: value returned from heuristic Value: weight
+	Dictionary<System.Func<List<GameObject>, float>, float> spacingHeuristicMap;
+
 	// Use this for initialization
 	void Start () {
 		visibleObjs = new List<GameObject> ();
@@ -32,6 +35,10 @@ public class PhotoEval : MonoBehaviour {
 		percentInFrame = new List<float> ();
 		percentCentered = new List<float> ();
 		cam = GameObject.Find ("PlayerCam").GetComponent<Camera> ();
+
+		// Heuristic Setup
+		spacingHeuristicMap = new Dictionary<System.Func<List<GameObject>, float>, float>();
+		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.testHeuristic, 2f);
 	}
 
 	// Update is called once per frame
@@ -59,10 +66,9 @@ public class PhotoEval : MonoBehaviour {
 			}
 
 			GameObject subject = getSubject (visibleObjs);
-			Debug.Log ("Subject: " + subject);
 
 			// Evaluate spacing
-			spacing = evaluateSpacing(visibleObjs);
+			spacing = evaluateHeuristics(visibleObjs, spacingHeuristicMap);
 		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);
@@ -520,15 +526,18 @@ public class PhotoEval : MonoBehaviour {
 		return visibleObjs[0];
 	}
 
-	float evaluateSpacing(List<GameObject> visibleObjs) {
-		float spacing = -1f;
+	/*
+	 * Used for ALL heuristic evaluations - spacing, balance, interestingness, whatevs!
+	 * All you have to do is write your heuristic functions and store them in a heuristic / weight mapping dictionary
+	 * and this will do the rest.
+	 */
+	float evaluateHeuristics(List<GameObject> visibleObjs, Dictionary<System.Func<List<GameObject>, float>, float> heuristcs) {
+		float metric = 0f;
 
-		//Dictionary<float, Delegate> heuristics = new Dictionary<float, Delegate>();
-		// Ought to have a map of float to function so that I can organize my weights and heuristic functions
+		foreach (var func in heuristcs) {
+			metric += func.Key (visibleObjs) * func.Value;
+		}
 
-		// Key: wieght Value: value returned from heuristic
-		Dictionary<string, KeyValuePair<float, float>> heuristicMap;
-
-		return spacing;
+		return metric;
 	}
 }
