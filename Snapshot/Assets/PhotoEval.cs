@@ -22,8 +22,8 @@ public class PhotoEval : MonoBehaviour {
 	public float spacing = -1f;
 	public float interest = -1f;
 
-	// Key: value returned from heuristic Value: weight
-	Dictionary<System.Func<List<GameObject>, float>, float> spacingHeuristicMap;
+	// Key: heuristic function Value: weight
+	Dictionary<System.Func<List<GameObject>, Camera, float>, float> spacingHeuristicMap;
 
 	// Use this for initialization
 	void Start () {
@@ -37,7 +37,7 @@ public class PhotoEval : MonoBehaviour {
 		cam = GameObject.Find ("PlayerCam").GetComponent<Camera> ();
 
 		// Heuristic Setup
-		spacingHeuristicMap = new Dictionary<System.Func<List<GameObject>, float>, float>();
+		spacingHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
 		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.testHeuristic, 2f);
 	}
 
@@ -531,11 +531,11 @@ public class PhotoEval : MonoBehaviour {
 	 * All you have to do is write your heuristic functions and store them in a heuristic / weight mapping dictionary
 	 * and this will do the rest.
 	 */
-	float evaluateHeuristics(List<GameObject> visibleObjs, Dictionary<System.Func<List<GameObject>, float>, float> heuristcs) {
+	float evaluateHeuristics(List<GameObject> visibleObjs, Dictionary<System.Func<List<GameObject>, Camera, float>, float> heuristcs) {
 		float metric = 0f;
 
 		foreach (var func in heuristcs) {
-			metric += func.Key (visibleObjs) * func.Value;
+			metric += func.Key (visibleObjs, cam) * func.Value;
 		}
 
 		return metric;
