@@ -38,7 +38,7 @@ public class PhotoEval : MonoBehaviour {
 
 		// Heuristic Setup
 		spacingHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
-		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.testHeuristic, 2f);
+		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.avoidsEmptyCenters, 1f);
 	}
 
 	// Update is called once per frame
