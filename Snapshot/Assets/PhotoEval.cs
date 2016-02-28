@@ -24,6 +24,7 @@ public class PhotoEval : MonoBehaviour {
 
 	// Key: heuristic function Value: weight
 	Dictionary<System.Func<List<GameObject>, Camera, float>, float> spacingHeuristicMap;
+	Dictionary<System.Func<List<GameObject>, Camera, float>, float> balanceHeuristicMap;
 
 	// Use this for initialization
 	void Start () {
@@ -39,6 +40,9 @@ public class PhotoEval : MonoBehaviour {
 		// Heuristic Setup
 		spacingHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
 		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.avoidsEmptyCenters, 1f);
+
+		balanceHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
+		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 1f);
 	}
 
 	// Update is called once per frame
@@ -110,26 +114,6 @@ public class PhotoEval : MonoBehaviour {
 			IsFramed (i);
 			Debug.Log ("Centered: " + percentCentered);
 		}
-	}
-
-	public void CheckBalance() {
-/*		List<float> screenPercents = new List<float> ();
-		float mean = 0f;
-		for(int i = 0; i < subjectList.Count; i++){
-			float x = CalcScreenPercentage (subjectList [i]);
-			screenPercents.Add (x);
-			mean += x;
-		}
-		mean = mean / subjectList.Count;
-		List<float> deviation = new List<float>();
-		float variance = 0; 
-		for(int i = 0; i < subjectList.Count; i++){
-			float x = screenPercents[i] - mean;
-			variance += x * x;
-		}
-		variance = variance / subjectList.Count;
-		balance = Mathf.Sqrt(variance);
-*/
 	}
 
 	int framePosition() {
@@ -453,7 +437,7 @@ public class PhotoEval : MonoBehaviour {
 
 	// Calculates how much of the screen the object is taking up
 	// Currently only used to calculated bounding box corners
-	float CalcScreenPercentage(GameObject go) {
+	public float CalcScreenPercentage(GameObject go) {
 
 		float minX = float.PositiveInfinity;
 		float minY = float.PositiveInfinity;
