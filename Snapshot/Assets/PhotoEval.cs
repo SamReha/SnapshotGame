@@ -45,6 +45,7 @@ public class PhotoEval : MonoBehaviour {
 	void Update () {
 		if (Input.GetButtonUp ("Take Photo")) {
 			SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
+			visibleObjs = unobstructedList.Values.ToList();
 			/*
 			foreach(GameObject obj in unobstructedList.Values){
 				Debug.Log (obj.name);
