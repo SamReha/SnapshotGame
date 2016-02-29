@@ -25,6 +25,7 @@ public class PhotoEval : MonoBehaviour {
 	// Key: heuristic function Value: weight
 	Dictionary<System.Func<List<GameObject>, Camera, float>, float> spacingHeuristicMap;
 	Dictionary<System.Func<List<GameObject>, Camera, float>, float> balanceHeuristicMap;
+	Dictionary<System.Func<List<GameObject>, Camera, float>, float> interestHeuristicMap;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +44,9 @@ public class PhotoEval : MonoBehaviour {
 
 		balanceHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
 		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 1f);
+
+		interestHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
+		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
 	}
 
 	// Update is called once per frame
@@ -74,6 +78,7 @@ public class PhotoEval : MonoBehaviour {
 
 			// Evaluate spacing
 			spacing = evaluateHeuristics(visibleObjs, spacingHeuristicMap);
+			interest = evaluateHeuristics(visibleObjs, interestHeuristicMap);
 		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);
