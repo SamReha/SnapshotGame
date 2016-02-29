@@ -73,7 +73,7 @@ public class PhotoEval : MonoBehaviour {
 				//IsFramed (i);
 				Debug.Log ("Centered: " + percentCentered);
 			}
-
+			//  Subject might return null if visibleObj's is empty
 			GameObject subject = getSubject (visibleObjs);
 
 			// Evaluate spacing
@@ -499,6 +499,9 @@ public class PhotoEval : MonoBehaviour {
 	 * of visibleObjs, but we can use OrderBy() in place of Sort() to avoid that side-effect.
 	 */
 	GameObject getSubject(List<GameObject> visibleObjs) {
+		if (visibleObjs.Count <= 0) {
+			return null;
+		}
 		visibleObjs.Sort (delegate(GameObject left, GameObject right) {
 			// Exapand this to consider other photo object metrics
 			Photographable leftPhotoObject = left.GetComponent<Photographable>();

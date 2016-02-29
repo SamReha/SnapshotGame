@@ -10,7 +10,7 @@ public class DayNightCycle : MonoBehaviour {
     public float minIntensity = 0f;
 
     //  Sun disappears slightly after the horizon
-    public float minPoint = -0.2f;
+    public float minPoint = 0.2f;
 
     public float maxAmbient = 1f;
     public float minAmbient = .15f;

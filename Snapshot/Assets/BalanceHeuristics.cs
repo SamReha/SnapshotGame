@@ -9,7 +9,7 @@ public class BalanceHeuristics {
 		return 1f;
 	}
 
-	public static float StandardDeviation(GameObject subject, List<GameObject> visibleObjects){
+	public static float StandardDeviation(GameObject subject, List<GameObject> visibleObjects, Camera cam){
 		List<float> screenPercents = new List<float> ();
 		float mean = 0f;
 		for(int i = 0; i < visibleObjects.Count; i++){
