@@ -23,9 +23,9 @@ public class PhotoEval : MonoBehaviour {
 	public float interest = -1f;
 
 	// Key: heuristic function Value: weight
-	Dictionary<System.Func<List<GameObject>, Camera, float>, float> spacingHeuristicMap;
-	Dictionary<System.Func<List<GameObject>, Camera, float>, float> balanceHeuristicMap;
-	Dictionary<System.Func<List<GameObject>, Camera, float>, float> interestHeuristicMap;
+	Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float> spacingHeuristicMap;
+	Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float> balanceHeuristicMap;
+	Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float> interestHeuristicMap;
 
 	// Use this for initialization
 	void Start () {
@@ -39,13 +39,13 @@ public class PhotoEval : MonoBehaviour {
 		cam = GameObject.Find ("PlayerCam").GetComponent<Camera> ();
 
 		// Heuristic Setup
-		spacingHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
+		spacingHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.avoidsEmptyCenters, 1f);
 
-		balanceHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
+		balanceHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 1f);
 
-		interestHeuristicMap = new Dictionary<System.Func<List<GameObject>, Camera, float>, float>();
+		interestHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
 	}
 
@@ -77,8 +77,9 @@ public class PhotoEval : MonoBehaviour {
 			GameObject subject = getSubject (visibleObjs);
 
 			// Evaluate spacing
-			spacing = evaluateHeuristics(visibleObjs, spacingHeuristicMap);
-			interest = evaluateHeuristics(visibleObjs, interestHeuristicMap);
+			spacing = evaluateHeuristics(subject, visibleObjs, spacingHeuristicMap);
+			balance = evaluateHeuristics(subject, visibleObjs, balanceHeuristicMap);
+			interest = evaluateHeuristics(subject, visibleObjs, interestHeuristicMap);
 		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);
@@ -524,11 +525,13 @@ public class PhotoEval : MonoBehaviour {
 	 * All you have to do is write your heuristic functions and store them in a heuristic / weight mapping dictionary
 	 * and this will do the rest.
 	 */
-	float evaluateHeuristics(List<GameObject> visibleObjs, Dictionary<System.Func<List<GameObject>, Camera, float>, float> heuristcs) {
+	float evaluateHeuristics(GameObject subject,
+							 List<GameObject> visibleObjs,
+							 Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float> heuristcs) {
 		float metric = 0f;
 
 		foreach (var func in heuristcs) {
-			metric += func.Key (visibleObjs, cam) * func.Value;
+			metric += func.Key (subject, visibleObjs, cam) * func.Value;
 		}
 
 		return metric;

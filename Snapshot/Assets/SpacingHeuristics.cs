@@ -9,7 +9,7 @@ namespace AssemblyCSharp {
 		/*
 		 * One two, one two this is just a test
 		 */
-		public static float testHeuristic(List<GameObject> visibleObjects, Camera cam) {
+		public static float testHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam) {
 			return 1f;
 		}
 
@@ -23,7 +23,7 @@ namespace AssemblyCSharp {
 		 * 
 		 *  Higher scoring images have average or better densities of objects in sector 4.
 		 */ 
-		public static float avoidsEmptyCenters(List<GameObject> visibleObjects, Camera cam) {
+		public static float avoidsEmptyCenters(GameObject subject, List<GameObject> visibleObjects, Camera cam) {
 			// First, get average object density for each sector
 			List<float> sectorDensity = new List<float>(new float[9]);
 

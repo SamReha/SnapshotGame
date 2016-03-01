@@ -14,7 +14,7 @@ namespace AssemblyCSharp {
 		}
 
 		//  Main Interest Heuristic
-		public static float interestAndBoredomHeuristic(List<GameObject> visibleObjects, Camera cam){
+		public static float interestAndBoredomHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam){
         //  Actively adjusts the high score. Returns a float between 0-1 representing 
 	    //  how interesting the objects in the photo are compared to the objects in the memory bank.
 		//  "New" objects gain +b/(n*0.75)*(x/m) advantage, where  b = baseScore 

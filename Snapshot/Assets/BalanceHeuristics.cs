@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class BalanceHeuristics {
 	public BalanceHeuristics () {}
 
-	public static float TestHeuristic(List<GameObject> visibleObjects, Camera cam) {
+	public static float TestHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam) {
 		return 1f;
 	}
 
