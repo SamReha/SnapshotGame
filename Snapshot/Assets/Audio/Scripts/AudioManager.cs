@@ -149,7 +149,7 @@ public class AudioManager : MonoBehaviour
 
 		deerDistance = Vector3.Distance (player.transform.position, deer.transform.position);
 		foxDistance = Vector3.Distance (player.transform.position, fox.transform.position);
-		owlDistance = Vector3.Distance (player.transform.position, owl.transform.position);
+		//owlDistance = Vector3.Distance (player.transform.position, owl.transform.position);
 
 		if (deerDistance > minThreshold) {
 			setDeerVolume (0f);
