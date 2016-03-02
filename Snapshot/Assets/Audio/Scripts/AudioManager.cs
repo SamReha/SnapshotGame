@@ -39,6 +39,7 @@ public class AudioManager : MonoBehaviour
 
 	void Update () {
 		updateAnimalVolume();
+		updateTimeOfDayTrack ();
 	}
 
 	public void setDeerVolume(float value)
@@ -184,5 +185,21 @@ public class AudioManager : MonoBehaviour
 			setOwlVolume (volume);
 		}
 		*/
+	}
+
+	/*
+	 * Simply checks the DayNightCycle component to see what time of day it is, and
+	 * sets the Time of Day track as appropriate.
+	 */
+	private void updateTimeOfDayTrack () {
+		GameObject sun = GameObject.Find ("/sun");
+		DayNightCycle dayNightCycle = sun.GetComponent<DayNightCycle> ();
+
+		float time = dayNightCycle.getTimeOfDay ();
+
+		if (time >= 0.0 && time < 0.25) {
+			setDawn ();
+		} else
+			setNoon ();
 	}
 }
