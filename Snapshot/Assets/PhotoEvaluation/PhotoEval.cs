@@ -481,7 +481,8 @@ public class PhotoEval : MonoBehaviour {
 	}
 
 	void Corners(GameObject go){
-		Bounds bounds = go.GetComponent<MeshFilter> ().mesh.bounds;
+		Debug.Log ("Game Object name: " + go.name);
+		Bounds bounds = go.GetComponent<MeshFilter>().mesh.bounds;
 		Vector3 v3Center = bounds.center;
 		Vector3 v3Extents = bounds.extents;
 
