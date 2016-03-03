@@ -6,6 +6,13 @@ using UnityStandardAssets.ImageEffects;
 namespace UnityStandardAssets.ImageEffects {
 	public class SnapshotCam : MonoBehaviour {
 
+		public Object PortraitLens;
+		public Object WideAngleLens;
+		public Object TelephotoLens;
+
+		public GameObject currentLens;
+		public GameObject lens;
+
 		// List that will contain all of the photos that the player takes
 		List<Photo> pics = new List<Photo>();
 
@@ -13,11 +20,13 @@ namespace UnityStandardAssets.ImageEffects {
 		public int width = 1024;
 		public int height = 1024;
 
-		// These are the presets for the size of the aperture and the amount of light the aperture takes in
+		// These are the presets for the size of the aperture and the amount of light the aperture takes in and the shutter speed
 		float[] apertureSize = {0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
 		float[] apertureLight = {0.0f, 0.3f, 0.6f, 0.9f, 1.2f , 1.5f};
-		// Aperture initialized at index 3
+		float[] shutterSpeed = { 0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
+		// Aperture and Shutter initialized at index 3
 		int apertureInt = 3;
+		int shutterInt = 3;
 
 		// Color for the white balance
 		Color whiteBalanceColor = new Color(1.0f, 1.0f, 1.0f, 0.5f);
@@ -33,6 +42,10 @@ namespace UnityStandardAssets.ImageEffects {
 
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
+			GameObject parent = GameObject.Find ("PlayerCam");
+			currentLens = (GameObject)PortraitLens;
+			lens = (GameObject)Instantiate (PortraitLens, parent.transform.position, Quaternion.identity);
+			lens.transform.parent = parent.transform;
 		}
 
 		void Update () {
@@ -141,6 +154,64 @@ namespace UnityStandardAssets.ImageEffects {
 				// Applies changes
 				t2d.SetPixels(newColor);
 				t2d.Apply ();
+			}
+			// Change between camera lenses
+			//Portrait
+			if (Input.GetButtonDown ("Portrait") && currentLens.name != PortraitLens.name) {
+				Destroy (GameObject.Find(currentLens.name+"(Clone)"));
+				GameObject parent = GameObject.Find ("PlayerCam");
+				Debug.Log (parent.transform.position);
+				currentLens = (GameObject)PortraitLens;
+				lens = (GameObject)Instantiate (PortraitLens, parent.transform.position, Quaternion.identity);
+				lens.transform.parent = parent.transform;
+				Debug.Log (lens.transform.position);
+				parent.GetComponentInParent<DepthOfField> ().focalSize = lens.GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = lens.GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = lens.GetComponent<Lens> ().fieldOfView;
+
+			}
+			// Wide Angle
+			if (Input.GetButtonDown ("Wide Angle") && currentLens.name != WideAngleLens.name) {
+				Destroy (GameObject.Find(currentLens.name+"(Clone)"));
+				GameObject parent = GameObject.Find ("PlayerCam");
+				Debug.Log (parent.transform.position);
+				currentLens = (GameObject)WideAngleLens;
+				lens = (GameObject)Instantiate (WideAngleLens, parent.transform.position, Quaternion.identity);
+				lens.transform.parent = parent.transform;
+				Debug.Log (lens.transform.position);
+				parent.GetComponentInParent<DepthOfField> ().focalSize = lens.GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = lens.GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = lens.GetComponent<Lens> ().fieldOfView;
+			}
+			// Telephoto
+			if (Input.GetButtonDown ("Telephoto") && currentLens.name != TelephotoLens.name) {
+				Destroy (GameObject.Find(currentLens.name+"(Clone)"));
+				GameObject parent = GameObject.Find ("PlayerCam");
+				Debug.Log (parent.transform.position);
+				currentLens = (GameObject)TelephotoLens;
+				lens = (GameObject)Instantiate (TelephotoLens, parent.transform.position, Quaternion.identity);
+				lens.transform.parent = parent.transform;
+				Debug.Log (lens.transform.position);
+				parent.GetComponentInParent<DepthOfField> ().focalSize = lens.GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = lens.GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = lens.GetComponent<Lens> ().fieldOfView;
+			}
+
+			if (Input.GetButtonDown("Shutter Speed Up") && shutterInt < 5) {
+				// Access component Camera Motion Blur
+				CameraMotionBlur cmb = GameObject.Find ("PlayerCam").GetComponent<CameraMotionBlur> ();
+				shutterInt += 1;
+				// Set shutter speed based on presets
+				cmb.velocityScale = shutterSpeed[shutterInt];
+
+			}
+			// Decreasses Aperture Size
+			if (Input.GetButtonDown("Shutter Speed Down") && shutterInt > 0) {
+				// Access component Camera Motion Blur
+				CameraMotionBlur cmb = GameObject.Find ("PlayerCam").GetComponent<CameraMotionBlur> ();
+				shutterInt -= 1;
+				// Set shutter speed based on presets
+				cmb.velocityScale = shutterSpeed[shutterInt];
 			}
 		}
 	}

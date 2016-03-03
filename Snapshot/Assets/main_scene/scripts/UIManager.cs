@@ -5,9 +5,11 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class UIManager : MonoBehaviour {
 	public GameObject PanelPause;
 	public GameObject PanelBag;
+	public GameObject PanelControls;
 	public FirstPersonController player;
 	public bool isPaused;
 	public bool isOpen;
+	public bool cameraUP;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +24,11 @@ public class UIManager : MonoBehaviour {
 		}
 		if (Input.GetKeyDown (KeyCode.K)) {
 			isOpen = !isOpen;
+		}
+		if (Input.GetButton ("Camera Switch")) {
+			PanelControls.active = false;
+		} else {
+			PanelControls.active = true;
 		}
 		OpenBag (isOpen);
 		setPause(isPaused);
