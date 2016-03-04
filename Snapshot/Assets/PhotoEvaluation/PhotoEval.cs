@@ -17,6 +17,7 @@ public class PhotoEval : MonoBehaviour {
 	public List<float> percentInFrame;
 	public List<float> percentCentered;
 	private Camera cam;
+	private UIManager uimanager;
 
 	public float balance = -1f;
 	public float spacing = -1f;
@@ -37,6 +38,7 @@ public class PhotoEval : MonoBehaviour {
 		percentInFrame = new List<float> ();
 		percentCentered = new List<float> ();
 		cam = GameObject.Find ("PlayerCam").GetComponent<Camera> ();
+		uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
 
 		// Heuristic Setup
 		spacingHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
@@ -51,35 +53,37 @@ public class PhotoEval : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonUp ("Take Photo")) {
-			SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
-			visibleObjs = unobstructedList.Values.ToList();
-			/*
-			foreach(GameObject obj in unobstructedList.Values){
-				Debug.Log (obj.name);
-			}
-			*/
-			if (unobstructedList.Count == 0) {
-				print ("Empty");
-			}
-			for (int i = 0; i < visibleObjs.Count; i++) {
-				GameObject go = visibleObjs [i];
-				Debug.Log ("Object: " + go.name);
-				Corners (go);
-				viewPos = cam.WorldToViewportPoint (go.transform.position);
-				Debug.Log ("Position: " + viewPos.ToString("F4"));
-				CalcObjPercentage (corners, go);
-				Debug.Log ("Percent in Frame: " + percentInFrame);
-				//IsFramed (i);
-				Debug.Log ("Centered: " + percentCentered);
-			}
-			//  Subject might return null if visibleObj's is empty
-			GameObject subject = getSubject (visibleObjs);
+		if (!uimanager.isPaused) {
+			if (Input.GetButtonUp ("Take Photo")) {
+				SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
+				visibleObjs = unobstructedList.Values.ToList ();
+				/*
+				foreach(GameObject obj in unobstructedList.Values){
+					Debug.Log (obj.name);
+				}
+				*/
+				if (unobstructedList.Count == 0) {
+					print ("Empty");
+				}
+				for (int i = 0; i < visibleObjs.Count; i++) {
+					GameObject go = visibleObjs [i];
+					Debug.Log ("Object: " + go.name);
+					Corners (go);
+					viewPos = cam.WorldToViewportPoint (go.transform.position);
+					Debug.Log ("Position: " + viewPos.ToString ("F4"));
+					CalcObjPercentage (corners, go);
+					Debug.Log ("Percent in Frame: " + percentInFrame);
+					//IsFramed (i);
+					Debug.Log ("Centered: " + percentCentered);
+				}
+				//  Subject might return null if visibleObj's is empty
+				GameObject subject = getSubject (visibleObjs);
 
-			// Evaluate spacing
-			spacing = evaluateHeuristics(subject, visibleObjs, spacingHeuristicMap);
-			balance = evaluateHeuristics(subject, visibleObjs, balanceHeuristicMap);
-			interest = evaluateHeuristics(subject, visibleObjs, interestHeuristicMap);
+				// Evaluate spacing
+				spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);
+				balance = evaluateHeuristics (subject, visibleObjs, balanceHeuristicMap);
+				interest = evaluateHeuristics (subject, visibleObjs, interestHeuristicMap);
+			}
 		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);

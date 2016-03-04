@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 
 public class PlayerProfile : MonoBehaviour {
-	[Serializable]
 	public class Profile {
 		public float money;
 	}

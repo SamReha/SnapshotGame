@@ -108,11 +108,11 @@ public class DayNightCycle : MonoBehaviour {
  	 *     It's probably impossible for 0.00 or 1.00 precisely to be returned, so always
  	 *     check what time it is by a range.
  	 */
-		public float getTimeOfDay() {
-			float sunXCoord = mainLight.transform.up.z; // THIS IS NOT A TYPO
-			float sunYCoord = mainLight.transform.up.y;
-			double radianTime = Math.Atan2(sunXCoord, sunYCoord);
-			double realTime = -(radianTime / (2 * Math.PI)) + 0.5;
-			return (float)realTime;
-		}
+	public float getTimeOfDay() {
+		float sunXCoord = mainLight.transform.up.z; // THIS IS NOT A TYPO
+		float sunYCoord = mainLight.transform.up.y;
+		double radianTime = Math.Atan2(sunXCoord, sunYCoord);
+		double realTime = -(radianTime / (2 * Math.PI)) + 0.5;
+		return (float)realTime;
+	}
 }

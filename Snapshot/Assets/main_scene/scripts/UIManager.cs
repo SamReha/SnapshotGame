@@ -62,4 +62,8 @@ public class UIManager : MonoBehaviour {
 	public void unPause() {
 		isPaused = false;
 	}
+
+	public void exitPark() {
+		Application.LoadLevel("main_menu");
+	}
 }

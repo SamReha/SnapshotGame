@@ -20,6 +20,8 @@ namespace UnityStandardAssets.ImageEffects {
 		public int width = 1024;
 		public int height = 1024;
 
+		private UIManager uimanager;
+
 		// These are the presets for the size of the aperture and the amount of light the aperture takes in and the shutter speed
 		float[] apertureSize = {0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
 		float[] apertureLight = {0.0f, 0.3f, 0.6f, 0.9f, 1.2f , 1.5f};
@@ -46,6 +48,8 @@ namespace UnityStandardAssets.ImageEffects {
 			currentLens = (GameObject)PortraitLens;
 			lens = (GameObject)Instantiate (PortraitLens, parent.transform.position, Quaternion.identity);
 			lens.transform.parent = parent.transform;
+
+			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
 		}
 
 		void Update () {
@@ -73,34 +77,36 @@ namespace UnityStandardAssets.ImageEffects {
 			//}
 
 			// When player presses down, a beep is heard
-			if (Input.GetButtonDown("Take Photo")){
-				cameraAudio.PlayOneShot (cam_click, 0.7f);  //  beep beep
-			//  Then upon release the photo is taken
-			} else if (Input.GetButtonUp("Take Photo")) {
-				cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
-				//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
-				RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
-				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();	// Gets the camera to output to the render tuexture
-				c.targetTexture = rt; 
-				Texture2D t2d = new Texture2D (width, height, TextureFormat.RGB24, false); // Texture2D that wil be stored in the Photo object
-				c.Render (); // Forces the camera to render
-				RenderTexture.active = rt;
-				t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
-				Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
-				p.photo = t2d;
-				p.visible = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().visibleObjs;
-				p.balanceValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().balance;
-				p.spacingValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().spacing;
-				p.InterestingnessValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().interest;
-				c.targetTexture = null;
-				RenderTexture.active = null;
-				Destroy(rt); 
-				pics.Add (p);
-				byte[] bytes = t2d.EncodeToPNG(); 
-				string filename = Application.dataPath + "/screen" 
-					+ System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png"; 
-				System.IO.File.WriteAllBytes(filename, bytes);
-				Debug.Log(string.Format("Took screenshot to: {0}", filename)); 
+			if (!uimanager.isPaused) {
+				if (Input.GetButtonDown ("Take Photo")) {
+					cameraAudio.PlayOneShot (cam_click, 0.7f);  //  beep beep
+					//  Then upon release the photo is taken
+				} else if (Input.GetButtonUp ("Take Photo")) {
+					cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
+					//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
+					RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
+					Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera> ();	// Gets the camera to output to the render tuexture
+					c.targetTexture = rt; 
+					Texture2D t2d = new Texture2D (width, height, TextureFormat.RGB24, false); // Texture2D that wil be stored in the Photo object
+					c.Render (); // Forces the camera to render
+					RenderTexture.active = rt;
+					t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
+					Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
+					p.photo = t2d;
+					p.visible = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().visibleObjs;
+					p.balanceValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().balance;
+					p.spacingValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().spacing;
+					p.InterestingnessValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().interest;
+					c.targetTexture = null;
+					RenderTexture.active = null;
+					Destroy (rt); 
+					pics.Add (p);
+					byte[] bytes = t2d.EncodeToPNG (); 
+					string filename = Application.dataPath + "/screen"
+					                 + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss") + ".png"; 
+					System.IO.File.WriteAllBytes (filename, bytes);
+					Debug.Log (string.Format ("Took screenshot to: {0}", filename)); 
+				}
 			}
 			// Aperture Size
 			// Increases Aperture Size
