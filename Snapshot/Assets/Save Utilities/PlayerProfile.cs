@@ -14,7 +14,7 @@ public class PlayerProfile : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		saveFileName = "playerprofile.txt";
+		saveFileName = "/playerprofile.txt";
 		profile = new Profile ();
 	}
 
