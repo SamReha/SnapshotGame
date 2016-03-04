@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 	public GameObject PanelPause;
@@ -26,9 +27,9 @@ public class UIManager : MonoBehaviour {
 			isOpen = !isOpen;
 		}
 		if (Input.GetButton ("Camera Switch")) {
-			PanelControls.active = false;
+			PanelControls.SetActive(false);
 		} else {
-			PanelControls.active = true;
+			PanelControls.SetActive(true);
 		}
 		OpenBag (isOpen);
 		setPause(isPaused);
@@ -64,6 +65,6 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void exitPark() {
-		Application.LoadLevel("main_menu");
+		SceneManager.LoadScene("main_menu");
 	}
 }

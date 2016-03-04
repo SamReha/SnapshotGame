@@ -37,6 +37,11 @@ public class AudioManager : MonoBehaviour
 		
 	}
 
+	void update() {
+		updateAnimalVolume ();
+		updateTimeOfDayTrack ();
+	}
+
 	public void setDeerVolume(float value)
 	{
 		deerVolume = value;

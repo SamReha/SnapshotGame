@@ -74,10 +74,9 @@ namespace UnityStandardAssets.ImageEffects {
 				c.targetTexture = null;
 				cam = !cam;
 			}
-			//}
 
 			// When player presses down, a beep is heard
-			if (!uimanager.isPaused) {
+			if (uimanager.isPaused) {
 				if (Input.GetButtonDown ("Take Photo")) {
 					cameraAudio.PlayOneShot (cam_click, 0.7f);  //  beep beep
 					//  Then upon release the photo is taken
