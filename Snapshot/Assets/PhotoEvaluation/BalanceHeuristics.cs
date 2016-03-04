@@ -18,9 +18,12 @@ public class BalanceHeuristics {
 		}
       	mean = mean / visibleObjects.Count;
 		List<float> deviation = new List<float>();
-		float subjectDeviation = Mathf.Abs(GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().CalcScreenPercentage (subject) - mean);
+		float subjectDeviation = 0;
+		if (subject != null){
+		    subjectDeviation = Mathf.Abs(GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().CalcScreenPercentage (subject) - mean);
+		}
 		float variance = 0; 
-		for(int i = 0; i < visibleObjects.Count; i++){
+		for(int i = 0; i < screenPercents.Count; i++){
 			float x = screenPercents[i] - mean;
 			variance += x * x;
 		}
