@@ -20,6 +20,8 @@ namespace UnityStandardAssets.ImageEffects {
 		public int width = 1024;
 		public int height = 1024;
 
+		public bool buttonDownWhilePaused = true;
+
 		private UIManager uimanager;
 
 		// These are the presets for the size of the aperture and the amount of light the aperture takes in and the shutter speed
@@ -79,8 +81,9 @@ namespace UnityStandardAssets.ImageEffects {
 			if (!uimanager.isPaused) {
 				if (Input.GetButtonDown ("Take Photo")) {
 					cameraAudio.PlayOneShot (cam_click, 0.7f);  //  beep beep
+					buttonDownWhilePaused = false;
 					//  Then upon release the photo is taken
-				} else if (Input.GetButtonUp ("Take Photo")) {
+				} else if (Input.GetButtonUp ("Take Photo") && !buttonDownWhilePaused) {
 					cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
 					//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
 					RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
@@ -104,7 +107,9 @@ namespace UnityStandardAssets.ImageEffects {
 					string filename = Application.dataPath + "/screen"
 					                 + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss") + ".png"; 
 					System.IO.File.WriteAllBytes (filename, bytes);
-					Debug.Log (string.Format ("Took screenshot to: {0}", filename)); 
+					Debug.Log (string.Format ("Took screenshot to: {0}", filename));
+
+					buttonDownWhilePaused = true;
 				}
 			}
 			// Aperture Size

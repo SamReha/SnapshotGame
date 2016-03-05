@@ -4,6 +4,9 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
+	private AudioSource pauseSource;
+	private AudioClip pauseClip;
+
 	public GameObject PanelPause;
 	public GameObject PanelBag;
 	public GameObject PanelControls;
@@ -16,6 +19,12 @@ public class UIManager : MonoBehaviour {
 	void Start () {
 		isPaused = false;
 		isOpen = false;
+
+		pauseSource = GetComponent<AudioSource> ();
+
+		pauseSource.ignoreListenerPause = true;
+		pauseSource.Play ();
+		pauseSource.Pause ();
 	}
 	
 	// Update is called once per frame
@@ -54,8 +63,14 @@ public class UIManager : MonoBehaviour {
 		PanelPause.SetActive(pauseState);
 		if (pauseState) {
 			Time.timeScale = 0.0f;
+			AudioListener.pause = true;
+
+			pauseSource.UnPause ();
 		} else {
 			Time.timeScale = 1.0f;
+			AudioListener.pause = false;
+
+			pauseSource.Pause ();
 		}
 	}
 
