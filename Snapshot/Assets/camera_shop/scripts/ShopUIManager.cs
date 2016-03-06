@@ -1,15 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ShopUIManager : MonoBehaviour {
+	public Text moneyText;
+	private PlayerProfile playerProfile;
 
 	// Use this for initialization
-	void Start () {}
+	void Start () {
+		playerProfile = GetComponentInParent<PlayerProfile> ();
+		playerProfile.loadProfile ();
+		moneyText.text = "$" + playerProfile.profile.money;
+	}
 	
 	// Update is called once per frame
 	void Update () {}
 
-	void OnGUI() {
-		//GUI.Label(Rect(0,0,100,100), "TEST");
+	public void giveTenDollars() {
+		playerProfile.profile.money += 10;
+		playerProfile.saveProfile ();
+
+		moneyText.text = "$" + playerProfile.profile.money;
 	}
 }

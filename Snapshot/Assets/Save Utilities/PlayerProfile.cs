@@ -5,9 +5,9 @@ using System.IO;
 
 public class PlayerProfile : MonoBehaviour {
 	public class Profile {
-		public float money;
+		public float money = 0;
 	}
-	public static Profile profile;
+	public Profile profile;
 
 	private static string saveFileName;
 
