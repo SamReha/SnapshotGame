@@ -6,12 +6,11 @@ using UnityStandardAssets.ImageEffects;
 namespace UnityStandardAssets.ImageEffects {
 	public class SnapshotCam : MonoBehaviour {
 
-		public Object PortraitLens;
-		public Object WideAngleLens;
-		public Object TelephotoLens;
+		public GameObject PortraitLens;
+		public GameObject WideAngleLens;
+		public GameObject TelephotoLens;
 
-		public GameObject currentLens;
-		public GameObject lens;
+		public string currentLens;
 
 		// List that will contain all of the photos that the player takes
 		List<Photo> pics = new List<Photo>();
@@ -46,10 +45,7 @@ namespace UnityStandardAssets.ImageEffects {
 
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
-			GameObject parent = GameObject.Find ("PlayerCam");
-			currentLens = (GameObject)PortraitLens;
-			lens = (GameObject)Instantiate (PortraitLens, parent.transform.position, Quaternion.identity);
-			lens.transform.parent = parent.transform;
+			currentLens = "Portrait";
 
 			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
 		}
@@ -167,44 +163,35 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Change between camera lenses
 			//Portrait
-			if (Input.GetButtonDown ("Portrait") && currentLens.name != PortraitLens.name) {
-				Destroy (GameObject.Find(currentLens.name+"(Clone)"));
+			if (Input.GetButtonDown ("Portrait") && currentLens != "Portrait") {
 				GameObject parent = GameObject.Find ("PlayerCam");
-				Debug.Log (parent.transform.position);
-				currentLens = (GameObject)PortraitLens;
-				lens = (GameObject)Instantiate (PortraitLens, parent.transform.position, Quaternion.identity);
-				lens.transform.parent = parent.transform;
-				Debug.Log (lens.transform.position);
-				parent.GetComponentInParent<DepthOfField> ().focalSize = lens.GetComponent<Lens> ().focalSize;
-				parent.GetComponentInParent<DepthOfField> ().focalLength = lens.GetComponent<Lens> ().focalDistance;
-				parent.GetComponentInParent<Camera> ().fieldOfView = lens.GetComponent<Lens> ().fieldOfView;
+				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
+				currentLens = "Portrait";
+				GameObject.Find ("Portrait").GetComponent<MeshRenderer> ().enabled = true;
+				parent.GetComponentInParent<DepthOfField> ().focalSize = PortraitLens.GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = PortraitLens.GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = PortraitLens.GetComponent<Lens> ().fieldOfView;
 
 			}
 			// Wide Angle
-			if (Input.GetButtonDown ("Wide Angle") && currentLens.name != WideAngleLens.name) {
-				Destroy (GameObject.Find(currentLens.name+"(Clone)"));
+			if (Input.GetButtonDown ("Wide Angle") && currentLens != "WideAngle") {
 				GameObject parent = GameObject.Find ("PlayerCam");
-				Debug.Log (parent.transform.position);
-				currentLens = (GameObject)WideAngleLens;
-				lens = (GameObject)Instantiate (WideAngleLens, parent.transform.position, Quaternion.identity);
-				lens.transform.parent = parent.transform;
-				Debug.Log (lens.transform.position);
-				parent.GetComponentInParent<DepthOfField> ().focalSize = lens.GetComponent<Lens> ().focalSize;
-				parent.GetComponentInParent<DepthOfField> ().focalLength = lens.GetComponent<Lens> ().focalDistance;
-				parent.GetComponentInParent<Camera> ().fieldOfView = lens.GetComponent<Lens> ().fieldOfView;
+				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
+				currentLens = "WideAngle";
+				GameObject.Find ("WideAngle").GetComponent<MeshRenderer> ().enabled = true;
+				parent.GetComponentInParent<DepthOfField> ().focalSize = WideAngleLens.GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = WideAngleLens.GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = WideAngleLens.GetComponent<Lens> ().fieldOfView;
 			}
 			// Telephoto
-			if (Input.GetButtonDown ("Telephoto") && currentLens.name != TelephotoLens.name) {
-				Destroy (GameObject.Find(currentLens.name+"(Clone)"));
+			if (Input.GetButtonDown ("Telephoto") && currentLens != "Telephoto") {
 				GameObject parent = GameObject.Find ("PlayerCam");
-				Debug.Log (parent.transform.position);
-				currentLens = (GameObject)TelephotoLens;
-				lens = (GameObject)Instantiate (TelephotoLens, parent.transform.position, Quaternion.identity);
-				lens.transform.parent = parent.transform;
-				Debug.Log (lens.transform.position);
-				parent.GetComponentInParent<DepthOfField> ().focalSize = lens.GetComponent<Lens> ().focalSize;
-				parent.GetComponentInParent<DepthOfField> ().focalLength = lens.GetComponent<Lens> ().focalDistance;
-				parent.GetComponentInParent<Camera> ().fieldOfView = lens.GetComponent<Lens> ().fieldOfView;
+				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
+				currentLens = "Telephoto";
+				GameObject.Find ("Telephoto").GetComponent<MeshRenderer> ().enabled = true;
+				parent.GetComponentInParent<DepthOfField> ().focalSize = TelephotoLens.GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = TelephotoLens.GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = TelephotoLens.GetComponent<Lens> ().fieldOfView;
 			}
 
 			if (Input.GetButtonDown("Shutter Speed Up") && shutterInt < 5) {
