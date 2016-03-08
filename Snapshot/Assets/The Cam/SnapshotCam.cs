@@ -13,7 +13,7 @@ namespace UnityStandardAssets.ImageEffects {
 		public string currentLens;
 
 		// List that will contain all of the photos that the player takes
-		List<Photo> pics = new List<Photo>();
+		public List<Photo> pics;
 
 		// These two ints determine the resolution of the photos taken  
 		public int width = 1024;
@@ -46,7 +46,7 @@ namespace UnityStandardAssets.ImageEffects {
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
 			currentLens = "Portrait";
-
+			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
 			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
 		}
 

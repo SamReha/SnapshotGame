@@ -80,6 +80,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void exitPark() {
+		//  Upload pictures from the camera to the photo buffer. 
 		SceneManager.LoadScene("main_menu");
 	}
 }

@@ -1,18 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PhotoManager : MonoBehaviour {
 
-	public string photoSavePath;
-	string[] filenames;
+	List<Photo> uploadPending;
+	List<Photo> uploaded;
 
 	public void Start () {
-		//textures = Resources.LoadAll("Textures", typeof(Texture2D));
+		uploadPending = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals>().pics;
+		//uploaded = GameObject.Find ("Camera Prefab").GetComponent<SnapshotCam> ().pics;
 	}
 
 	public void Update () {
-		//PNGAnimation ();
+		if (uploadPending.Count > 0) {
+			//  UPLOAD MODE
+		} else {
+			//  Regular mode.
+		}
 	}
+
 	/*
 	public void PNGAnimation () {
 		

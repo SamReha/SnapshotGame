@@ -210,9 +210,12 @@ public class AudioManager : MonoBehaviour
  	 */
 	private void updateTimeOfDayTrack () {
 		GameObject sun = GameObject.Find ("/sun");
-		DayNightCycle dayNightCycle = sun.GetComponent<DayNightCycle> ();
 
-		float time = dayNightCycle.getTimeOfDay ();
+		float time = 0;
+		if (null != sun) {
+			DayNightCycle dayNightCycle = sun.GetComponent<DayNightCycle> ();
+		    time = dayNightCycle.getTimeOfDay ();
+		}
 
 		if (time >= 0.0 && time < 0.25) {
 			setDawn ();
