@@ -152,12 +152,17 @@ public class AudioManager : MonoBehaviour
 
 		if (deer == null) {
 			Debug.Log ("AudioManager: updateAnimalVolume(): Can't find deer. Perhaps the name changed?");
+			//RK: Adding return statements if something goes wrong prevents 
+			//    a nullreferenceexception when deer distance is calculated
+			return;  
 		}
 		if (fox == null) {
 			Debug.Log ("AudioManager: updateAnimalVolume(): Can't find fox. Perhaps the name changed?");
-			}
+			return;
+		}
 		if (owl == null) {
 			Debug.Log ("AudioManager: updateAnimalVolume(): Can't find owl. Perhaps the name changed?");
+			return;
 		}
 
 		deerDistance = Vector3.Distance (player.transform.position, deer.transform.position);
