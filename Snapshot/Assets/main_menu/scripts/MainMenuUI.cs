@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MainMenuUI : MonoBehaviour {
@@ -10,14 +11,14 @@ public class MainMenuUI : MonoBehaviour {
 	void Update () {}
 
 	public void goToPark() {
-		Application.LoadLevel ("SSV0.0");
+		SceneManager.LoadScene ("SSV0.0");
 	}
 
 	public void goToShop() {
-		Application.LoadLevel ("camera_shop");
+		SceneManager.LoadScene ("camera_shop");
 	}
 
 	public void goToBlog() {
-		Application.LoadLevel ("blog");
+		SceneManager.LoadScene ("blog");
 	}
 }

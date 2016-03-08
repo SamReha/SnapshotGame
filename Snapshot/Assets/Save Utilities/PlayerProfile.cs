@@ -1,35 +1,54 @@
 ﻿using UnityEngine;
+using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class PlayerProfile : MonoBehaviour {
-	public class Profile {
-		public float money = 0;
-	}
-	public Profile profile;
+	private string savePath;
 
-	private static string saveFileName;
+	public static PlayerProfile profile;
+	public float money;
+	public List<string> lenses;
 
 	// Use this for initialization
-	void Start () {
-		saveFileName = "/playerprofile.txt";
-		profile = new Profile ();
+	void Start () {}
+
+	/*
+	 * Turn this shit into a singleton
+	 */
+	void Awake() {
+		if (profile == null) {
+			DontDestroyOnLoad (gameObject);
+			profile = this;
+			profile.savePath = Application.persistentDataPath + "/playerprofile.save";
+		} else if (profile != this) {
+			Destroy (gameObject);
+		}
 	}
 
 	/*
 	 * Tries to open a save file for the current player.
+	 * If it can't, it creates a new save file.
 	 * In the future, this may need to consider an player
 	 * name so we can have multiple save files.
 	 */
-	public void loadProfile() {
-		if (File.Exists(saveFileName)){
-			string stringifiedProfile = File.ReadAllText (saveFileName);
-			profile = JsonUtility.FromJson<Profile>(stringifiedProfile);
+	public void load() {
+		if (File.Exists(savePath)) {
+			Debug.Log("Loading file at " + savePath);
+
+			BinaryFormatter binForm = new BinaryFormatter ();
+			FileStream saveFile = File.Open (savePath, FileMode.Open);
+
+			InternalProfile saveData = (InternalProfile)binForm.Deserialize (saveFile);
+			saveFile.Close ();
+
+			money = saveData.money;
+			lenses = saveData.lenses;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
-			saveProfile ();
 		}
 	}
 
@@ -38,15 +57,43 @@ public class PlayerProfile : MonoBehaviour {
 	 * In the future, this may need to consider a player
 	 * name so we can have multiple save files.
 	 */
-	public void saveProfile() {
-		string stringifiedProfile = JsonUtility.ToJson(profile);
-		File.WriteAllText (saveFileName, stringifiedProfile);
+	public void save() {
+		Debug.Log("Saving file to " + savePath);
+
+		BinaryFormatter binForm = new BinaryFormatter ();
+
+		FileStream saveFile;
+		if (File.Exists (savePath)) {
+			saveFile = File.Open (savePath, FileMode.Open);
+		} else saveFile = File.Create (savePath);
+
+		InternalProfile saveData = new InternalProfile ();
+		saveData.money = money;
+		saveData.lenses = lenses;
+
+		binForm.Serialize (saveFile, saveData);
+		saveFile.Close ();
 	}
 
 	/*
 	 * Creates an empty profile
 	 */
 	private void createProfile() {
-		profile.money = 0;
+		money = 0;
+		lenses = new List<string> ();
+		save ();
 	}
+}
+
+/*
+ * InternalProfile is a serializeable copy of the player's data.
+ * 
+ * Why not just have this be a public member? Well, it's easier to type
+ * profile.money than profile.internalprofile.money. It also allows us
+ * to preform binary serialization (that way save files aren't ever user-editable)
+ */
+[Serializable]
+class InternalProfile {
+	public float money;
+	public List<string> lenses;
 }
