@@ -40,19 +40,19 @@ public class AnimalPoser : MonoBehaviour {
             print("State is Idle");
 			// Call the animation from the base layer of the attached Animator Controller
 			// and start at the first frame of the animation.
-            anim.Play("WAIT01", -1, 0f); 
+            anim.Play("Idle", -1, 0f); 
             behaviourTime = Random.Range(10, 15); // Pick a new amount of time to wait until next behaviour
         }
         else if(stateValue > .5f && stateValue <= .75f)
         {
             print("State is Move to Destination");
-            anim.Play("WAIT02", -1, 0f);
+            anim.Play("Run", -1, 0f);
             behaviourTime = Random.Range(10, 15);
         }
         else
         {
             print("State is Meandering");
-            anim.Play("WAIT03", -1, 0f);
+            anim.Play("Fox_Curious", -1, 0f);
             behaviourTime = Random.Range(10, 15);
         }
         stateChange = false;

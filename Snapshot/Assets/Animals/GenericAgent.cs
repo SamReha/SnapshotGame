@@ -15,9 +15,11 @@ public class GenericAgent : MonoBehaviour {
 	double oneSecond = 62.5;
 	bool meandering = false;  //  Start the creature's wandering behavior to get to the first path
     Vector3 direct_waypoint;  //  This is the position that the animal always tries to follow
+    public Animator anim;
 
 	// Use this for initialization
 	void Start () {
+        anim = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent> ();
 		animalPosition = this.gameObject.transform;
 		//  Load in the path of the creature here
@@ -39,6 +41,7 @@ public class GenericAgent : MonoBehaviour {
 		}
 		if (meandering){ //  If the animal has reached their destination waypoint,
 			float distanceToDirect = Vector3.Distance(animalPosition.position,  direct_waypoint);
+            anim.Play("Walk", -1, 0f);
 			if (distanceToDirect < waypoint_detection_range){
 				//  If the animal reaches their direct waypoint while meandering, don't stop moving.
 				//  instead, give the animal another position to go to.
@@ -49,6 +52,7 @@ public class GenericAgent : MonoBehaviour {
 				currentPathIndex++; //  Tell the animal to go to the next waypoint in the path
 				if (currentPathIndex > path_waypoints.Length - 1) currentPathIndex = 0; //  Loop the animal's trail
 				meandering = false;
+                anim.Play("Run", -1, 0f);
 			}
 		} else { //  wandering behavior. 
 			direct_waypoint = path_waypoints[currentPathIndex];
