@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PhotoManager : MonoBehaviour {
+public class PhotoBlog : MonoBehaviour {
 
+	public float lowerScrollBound = 1;
+	public float upperScrollBound = 23;
 	List<Photo> uploadPending;
 	List<Photo> uploaded;
 
@@ -13,6 +15,13 @@ public class PhotoManager : MonoBehaviour {
 	}
 
 	public void Update () {
+		//  Scrolling function
+		float scrollValue = -Input.GetAxis ("Mouse ScrollWheel");
+		Debug.Log ("Transform is " + transform.position.y + " scroll " + scrollValue);
+		if ((transform.position.y >= lowerScrollBound && scrollValue > 0) ||
+			(transform.position.y < upperScrollBound && scrollValue < 0) ) {
+			transform.Translate (Vector3.up * scrollValue * 5);
+		}
 		if (uploadPending.Count > 0) {
 			//  UPLOAD MODE
 		} else {
