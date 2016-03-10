@@ -21,6 +21,14 @@ public class WeatherControl : MonoBehaviour {
 	public Texture overcast_right;
 	public Texture overcast_back;
 
+	WeatherProfile sunny;
+	public Texture sunny_top;
+	public Texture sunny_front;
+	public Texture sunny_bottom;
+	public Texture sunny_left;
+	public Texture sunny_right;
+	public Texture sunny_back;
+
 	WeatherProfile sunset;
 	public Texture sunset_top;
 	public Texture sunset_front;
@@ -47,6 +55,11 @@ public class WeatherControl : MonoBehaviour {
 			overcast_front, overcast_bottom,
 			overcast_left, overcast_right,
 			overcast_back
+		);
+		sunny = new WeatherProfile (sunny_top,
+			sunny_front, sunny_bottom,
+			sunny_left, sunny_right,
+			sunny_back
 		);
 		sunset = new WeatherProfile (sunset_top,
 			sunset_front, sunset_bottom,
@@ -106,7 +119,7 @@ public class WeatherControl : MonoBehaviour {
 				timeZone = 1;
 			} else if (timeOfDay > 0.58f && timeZone != 2) {
 				//  Day
-				SetCurrentWeather (overcast, 800);
+				SetCurrentWeather (sunny, 800);
 				timeZone = 2;
 			}
 		}
