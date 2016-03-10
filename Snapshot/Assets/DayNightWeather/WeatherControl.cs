@@ -37,10 +37,20 @@ public class WeatherControl : MonoBehaviour {
 	public Texture sunset_right;
 	public Texture sunset_back;
 
+	WeatherProfile sunrise;
+	public Texture sunrise_top;
+	public Texture sunrise_front;
+	public Texture sunrise_bottom;
+	public Texture sunrise_left;
+	public Texture sunrise_right;
+	public Texture sunrise_back;
+
 	//  Minor variables
 	int transitionTimer;
 	float originalTimeSet; 
 	Material skyMat;
+
+	private bool pm = true;
 
 	// Use this for initialization
 	void Start () {
@@ -66,12 +76,21 @@ public class WeatherControl : MonoBehaviour {
 			sunset_left, sunset_right,
 			sunset_back
 		);
+		sunrise = new WeatherProfile (sunrise_top,
+			sunrise_front, sunrise_bottom,
+			sunrise_left, sunrise_right,
+			sunrise_back
+		);
 
-		currentWeather = sunset;
-		SetCurrentWeather (sunset, 1);
+		currentWeather = sunny;
+		SetCurrentWeather (sunny, 1);
 	}
 
 	void SetCurrentWeather( WeatherProfile nextProfile , int stepsToTransition){
+		
+		//  Don't waste time if the current profile is requested
+		//if (nextProfile.Equals (currentWeather)) { return; }
+
 		WeatherProfile oldProf = currentWeather;
 		skyMat.SetTexture("_FrontTex", oldProf.front);
 		skyMat.SetTexture("_BackTex", oldProf.back);
@@ -94,7 +113,7 @@ public class WeatherControl : MonoBehaviour {
 	void Update () {
 		float timeOfDay;
 		int timeZone;
-		timeOfDay = GetComponent<DayNightCycle>().timeOfDay;
+		timeOfDay = GetComponent<DayNightCycle>().constantTime;
 		timeZone = -1;  //  Prevents weather switcher from calling twice
         //  Decrement the steps timer
 		transitionTimer--;
@@ -106,22 +125,36 @@ public class WeatherControl : MonoBehaviour {
 			skyMat.SetFloat ("_Blend", 0);
 		}
 
+		float sunriseTrigger = -0.2f;
+		float dayTrigger = 0.58f;
+		float sunsetTrigger = -.75f;
+		float nightTrigger = 0.35f;
+
+		//  If the weathercontroller is not already busy mreging weathers
 		if (transitionTimer < 0) {
+			if (Mathf.Abs (timeOfDay) > 0.9f) {
+				if (timeOfDay > 0) {
+					pm = true;
+				} else {
+					pm = false;
+				}
+			}
+
 			//  Change the skybox depending on the time of the day
 			//  Debug.Log("Time of day: " + timeOfDay);
-			if (timeOfDay <= 0.05f && timeZone != 0) {
+			if (timeOfDay <= nightTrigger && pm) {
 				//  Night
 				SetCurrentWeather (cloudynight, 800);
-				timeZone = 0;
-			} else if (timeOfDay > 0.05f && timeOfDay <= .58f && timeZone != 1) {
-				//  Sunrise/ sunset
-				SetCurrentWeather (sunset, 800);
-				timeZone = 1;
-			} else if (timeOfDay > 0.58f && timeZone != 2) {
+			} else if (timeOfDay > sunriseTrigger && !pm) {
+				//  Sunrise
+				SetCurrentWeather (sunrise, 800);
+			} else if (timeOfDay > dayTrigger && !pm) {
 				//  Day
 				SetCurrentWeather (sunny, 800);
-				timeZone = 2;
-			}
+			} else if (timeOfDay > 0.05f && timeOfDay <= .75f && pm) {
+				//  sunset
+				SetCurrentWeather (sunset, 800);
+			} 
 		}
 
 	}

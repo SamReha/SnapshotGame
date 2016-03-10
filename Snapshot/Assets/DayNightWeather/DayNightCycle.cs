@@ -35,7 +35,7 @@ public class DayNightCycle : MonoBehaviour {
     public ParticleSystem stars;
     public Transform moon;
 	public Material moonMaterial;
-	public float timeOfDay;
+	public float constantTime;
 
 	// Use this for initialization
 	void Start () {
@@ -50,16 +50,18 @@ public class DayNightCycle : MonoBehaviour {
         float tRange = 1 - minPoint;
         //  timeOfDay returns a value between 1 and -1
         //  where 1 is when the sun is at the highest point
-        timeOfDay = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
+	    constantTime = Vector3.Dot(mainLight.transform.forward, Vector3.down);
+		Debug.Log("ConstantTime is: " + constantTime);
+		float clampedTime = Mathf.Clamp01((constantTime - minPoint) / tRange);
 
 		//Debug.Log ("Time of day is: " + timeOfDay);
 
         //  Linearly change the sun's brightness depending on the time
-        float i = ((maxIntensity - minIntensity) * timeOfDay) * minAmbient;
+		float i = ((maxIntensity - minIntensity) * clampedTime) * minAmbient;
         RenderSettings.ambientIntensity = i;
 
         //  Set the sunlight to wherever the normalized sun position falls on the gradient.
-        mainLight.color = nightDayColor.Evaluate(timeOfDay);
+		mainLight.color = nightDayColor.Evaluate(clampedTime);
 
         //  Set the ambient light to the same color as the sunlight
         RenderSettings.ambientLight = mainLight.color;
@@ -67,16 +69,16 @@ public class DayNightCycle : MonoBehaviour {
 		skyMat.color = mainLight.color;
 
         //  Determine fog color/density depending on the time of the day
-        RenderSettings.fogColor = nightDayFogColor.Evaluate(timeOfDay);
-        RenderSettings.fogDensity = fogDensityCurve.Evaluate(timeOfDay) * fogScale;
+		RenderSettings.fogColor = nightDayFogColor.Evaluate(clampedTime);
+		RenderSettings.fogDensity = fogDensityCurve.Evaluate(clampedTime) * fogScale;
 
         //  Linearly change the atmosphere thickness
-        i = ((dayAtmosphereThickness - nightAtmosphereThickness) * timeOfDay) + nightAtmosphereThickness;
+		i = ((dayAtmosphereThickness - nightAtmosphereThickness) * clampedTime) + nightAtmosphereThickness;
         skyMat.SetFloat("_AtmosphereThickness", i);
 		//  Blend the skyboxes
 
         //  Seperates the speed of night and day
-        if (timeOfDay > 0) {
+        if (constantTime > 0) {
             transform.RotateAround(Vector3.zero, Vector3.right, dayRotateSpeed * Time.deltaTime * skySpeed);
             moon.transform.RotateAround(Vector3.zero, Vector3.right, dayRotateSpeed * Time.deltaTime * skySpeed);
 			stars.startLifetime = 0;
