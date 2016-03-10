@@ -7,7 +7,7 @@ public class CommentGenerator : MonoBehaviour {
 
 	string json;
 	public Comments comment = new Comments();
-	char[] delimiters = { "[[", "]]", '[', ']' };
+	char[] delimiters = { '[', ']' };
 
 
 	// Use this for initialization

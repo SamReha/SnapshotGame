@@ -100,7 +100,7 @@ namespace UnityStandardAssets.ImageEffects {
 					Destroy (rt); 
 					pics.Add (p);
 					byte[] bytes = t2d.EncodeToPNG (); 
-					string filename = Application.dataPath + "/screen"
+					string filename = Application.dataPath + "/Resources/screen"
 					                 + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss") + ".png"; 
 					System.IO.File.WriteAllBytes (filename, bytes);
 					Debug.Log (string.Format ("Took screenshot to: {0}", filename));
