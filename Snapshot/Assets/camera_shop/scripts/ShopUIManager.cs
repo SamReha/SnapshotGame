@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 public class ShopUIManager : MonoBehaviour {
+	private AudioSource shopMusic;
+
 	public Text moneyText;
-	public Text lensText;
 
 	//private Dictionary<string,PurchaseButton> purchaseButtons; // Ugh I am not clever enough for this.
 	public Button wideButton;
@@ -24,7 +26,11 @@ public class ShopUIManager : MonoBehaviour {
 	void Start () {
 		PlayerProfile.profile.load ();
 
-		/*GameObject panel = GameObject.Find ("/CanvasShop/PanelShop");
+		shopMusic = GetComponent<AudioSource> ();
+		//shopMusic.Play ();
+
+		//Panel panel = GameObject.Find ("/CanvasShop/PanelShop");
+		/*
 		purchaseButtons = new Dictionary<string,PurchaseButton> ();
 		purchaseButtons ["tele1"] = new PurchaseButton ();
 		purchaseButtons ["tele1"].price = 399.99f;
@@ -62,27 +68,34 @@ public class ShopUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (PlayerProfile.profile.lenses.Contains (wideName)
-		    || PlayerProfile.profile.money < widePrice) {
+		if (PlayerProfile.profile.lenses.Contains (wideName)) {
+			wideButton.GetComponentInChildren<Text> ().text = "Already Owned";
 			wideButton.interactable = false;
-		} else wideButton.interactable = true;
+		} else if (PlayerProfile.profile.money < widePrice) {
+			wideButton.interactable = false;
+		} else {
+			wideButton.interactable = true;
+		}
 
-		if (PlayerProfile.profile.lenses.Contains (portName)
-			|| PlayerProfile.profile.money < portPrice) {
-			portButton.interactable = false;
-		} else portButton.interactable = true;
-
-		if (PlayerProfile.profile.lenses.Contains (teleName)
-			|| PlayerProfile.profile.money < telePrice) {
+		if (PlayerProfile.profile.lenses.Contains (teleName)) {
+			teleButton.GetComponentInChildren<Text> ().text = "Already Owned";
 			teleButton.interactable = false;
-		} else teleButton.interactable = true;
+		} else if (PlayerProfile.profile.money < telePrice) {
+			teleButton.interactable = false;
+		} else {
+			teleButton.interactable = true;
+		}
+
+		if (PlayerProfile.profile.lenses.Contains (portName)) {
+			portButton.GetComponentInChildren<Text> ().text = "Already Owned";
+			portButton.interactable = false;
+		} else if (PlayerProfile.profile.money < portPrice) {
+			portButton.interactable = false;
+		} else {
+			portButton.interactable = true;
+		}
 
 		moneyText.text = "$" + PlayerProfile.profile.money;
-		lensText.text = "Owned Lenses: ";
-
-		foreach (string lens in PlayerProfile.profile.lenses) {
-			lensText.text += lens + ", ";
-		}
 
 		/*foreach (KeyValuePair<string, PurchaseButton> entry in purchaseButtons) {
 			if (PlayerProfile.profile.lenses.Contains (entry.Key)
@@ -90,8 +103,9 @@ public class ShopUIManager : MonoBehaviour {
 				purchaseButtons [entry.Key].btn.interactable = false;
 			}
 		}*/
-
 	}
+
+	void Awake() {}
 
 	public void giveTenDollars() {
 		PlayerProfile.profile.money += 10;
@@ -99,8 +113,6 @@ public class ShopUIManager : MonoBehaviour {
 	}
 
 	public void buyLens(float price, string name) {
-		// Assume lens is not owned and player has enough money
-
 		PlayerProfile.profile.lenses.Add (name);
 		PlayerProfile.profile.money -= price;
 		PlayerProfile.profile.save ();
@@ -119,6 +131,10 @@ public class ShopUIManager : MonoBehaviour {
 	public void buyTeleLens() {
 		// Assume lens is not owned and player has enough money
 		buyLens(telePrice, teleName);
+	}
+
+	public void loadMainMenu() {
+		SceneManager.LoadScene ("main_menu");
 	}
 }
 
