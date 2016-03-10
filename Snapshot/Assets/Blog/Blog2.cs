@@ -14,6 +14,7 @@ public class Blog2 : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 #if UNITY_EDITOR
+		//  Make sure pictures are loaded into resources
         AssetDatabase.Refresh();
 #endif
         int counter = 0;

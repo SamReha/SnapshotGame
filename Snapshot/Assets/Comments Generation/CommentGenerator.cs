@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -7,7 +8,7 @@ public class CommentGenerator : MonoBehaviour {
 
 	string json;
 	public Comments comment = new Comments();
-	char[] delimiters = { "[[", "]]", '[', ']' };
+	string[] delimiters = { "[[", "]]", "[", "]" };
 
 
 	// Use this for initialization
@@ -51,7 +52,7 @@ public class CommentGenerator : MonoBehaviour {
 	}
 
 	void parseExpansion(string word){
-		string[] words = word.Split (delimiters);
+		string[] words = word.Split (delimiters, StringSplitOptions.RemoveEmptyEntries);
 			if (words.Length != 1) {
 				if (words.Length != 3) {
 
