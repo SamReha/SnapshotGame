@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class Blog2 : MonoBehaviour {
-
-    public GameObject newPicture;
+public class ScrollViewManager : MonoBehaviour {
+	public GameObject newPicture;
+	public List<string> imagesToPost;
 
 #if UNITY_EDITOR
     [MenuItem ("AssetDatabase/Snapshot")]
@@ -25,17 +26,35 @@ public class Blog2 : MonoBehaviour {
 #endif
         int counter = 0;
         DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
-        Debug.Log(dir);
+        //Debug.Log(dir);
         FileInfo[] info = dir.GetFiles("*.png");
         foreach (FileInfo f in info)
         {
-            Debug.Log(f);
+            //Debug.Log(f);
             string filename = info[counter].Name;
-            Debug.Log(filename);
+            //Debug.Log(filename);
             GameObject curPicture = (GameObject) Instantiate(newPicture);
             curPicture.GetComponent<RawImage>().texture = Resources.Load(filename.Replace(".png", "")) as Texture;
+			curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
             curPicture.transform.SetParent(this.transform, false);
             counter++;
         }
+
+		imagesToPost = new List<string> ();
+	}
+
+	void Update() {
+		List<string> imageBuffer = new List<string>();
+		var images = GetComponentsInChildren<RawImage> ();
+
+		foreach (RawImage image in images) {
+			Toggle tog = image.GetComponentInChildren<Toggle> ();
+
+			if (tog.isOn) {
+				imageBuffer.Add (image.name);
+			}
+		}
+
+		imagesToPost = imageBuffer;
 	}
 }
