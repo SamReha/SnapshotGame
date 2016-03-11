@@ -94,14 +94,15 @@ namespace UnityStandardAssets.ImageEffects {
 					p.visible = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().visibleObjs;
 					p.balanceValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().balance;
 					p.spacingValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().spacing;
-					p.InterestingnessValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().interest;
+					p.interestingnessValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().interest;
 					c.targetTexture = null;
 					RenderTexture.active = null;
 					Destroy (rt); 
 					pics.Add (p);
 					byte[] bytes = t2d.EncodeToPNG (); 
-					string filename = Application.dataPath + "/Resources/screen"
-					                 + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss") + ".png"; 
+					p.pathname = Application.dataPath + "/Resources/screen"
+					           + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
+					string filename = p.pathname + ".png"; 
 					System.IO.File.WriteAllBytes (filename, bytes);
 					Debug.Log (string.Format ("Took screenshot to: {0}", filename));
 

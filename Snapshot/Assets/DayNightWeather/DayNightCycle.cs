@@ -51,7 +51,6 @@ public class DayNightCycle : MonoBehaviour {
         //  timeOfDay returns a value between 1 and -1
         //  where 1 is when the sun is at the highest point
 	    constantTime = Vector3.Dot(mainLight.transform.forward, Vector3.down);
-		Debug.Log("ConstantTime is: " + constantTime);
 		float clampedTime = Mathf.Clamp01((constantTime - minPoint) / tRange);
 
 		//Debug.Log ("Time of day is: " + timeOfDay);
