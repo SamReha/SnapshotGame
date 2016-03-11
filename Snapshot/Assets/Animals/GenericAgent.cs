@@ -19,16 +19,18 @@ public class GenericAgent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Debug.Log ("Nav Mesh Angent Start");
         anim = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent> ();
 		animalPosition = this.gameObject.transform;
 		//  Load in the path of the creature here
 		path_waypoints = new Vector3[3];// <--- Don't forget to update this number as the waypoint list grows
-		path_waypoints[0] =  (new Vector3(-125.5f, 0.0f, 214.4f));
-		path_waypoints[1] =  (new Vector3(187.2f, 0.0f, 214.4f));
-		path_waypoints[2] =  (new Vector3(187.2f, 0.0f, -76.7f));
+		path_waypoints[0] =  (new Vector3(-208.5f, -10.0f, 194.4f));
+		path_waypoints[1] =  (new Vector3(187.2f, -10.0f, 214.4f));
+		path_waypoints[2] =  (new Vector3(187.2f, -10.0f, -76.7f));
 		//  After loading in the path of the creature, set the direct Waypoint to the first in the array
 		direct_waypoint = path_waypoints[currentPathIndex];
+		agent.SetDestination (direct_waypoint);
 	}
 
 	// Update is called once per frame
@@ -66,7 +68,7 @@ public class GenericAgent : MonoBehaviour {
 			}
 		}
 		//  Finally, after deciding where to go tell the NavMeshAgent where to go
-		agent.SetDestination (direct_waypoint);
+		//agent.SetDestination (direct_waypoint);
 	}
 
 	Vector3 GetNearbyWaypoint(Vector3 center){
