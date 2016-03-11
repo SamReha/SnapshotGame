@@ -16,6 +16,7 @@ public class Photographable : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		baseScore = 1;
 		r = GetComponent<Renderer> ();
 		r.enabled = true;
 		anObject = gameObject;
