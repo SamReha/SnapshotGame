@@ -18,7 +18,7 @@ public class Photo {
 
 	// Use this for initialization
 	void Start () {
-		
+		createProfile ();
 	}
 	
 	// Update is called once per frame
