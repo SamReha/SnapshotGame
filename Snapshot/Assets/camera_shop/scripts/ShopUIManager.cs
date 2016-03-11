@@ -5,8 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ShopUIManager : MonoBehaviour {
-	private AudioSource shopMusic;
-
 	public Text moneyText;
 
 	//private Dictionary<string,PurchaseButton> purchaseButtons; // Ugh I am not clever enough for this.
@@ -25,9 +23,6 @@ public class ShopUIManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
-
-		shopMusic = GetComponent<AudioSource> ();
-		//shopMusic.Play ();
 
 		//Panel panel = GameObject.Find ("/CanvasShop/PanelShop");
 		/*
