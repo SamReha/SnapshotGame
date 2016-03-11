@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.IO;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,26 +10,28 @@ using UnityEditor;
 public class Blog2 : MonoBehaviour {
 
     public GameObject newPicture;
-    [MenuItem ("AssetDatabase/Snapshot")]
 
-	// Use this for initialization
-	void Start () {
+#if UNITY_EDITOR
+    [MenuItem ("AssetDatabase/Snapshot")]
+#endif
+
+    // Use this for initialization
+    void Start () {
+
+
 #if UNITY_EDITOR
 		//  Make sure pictures are loaded into resources
         AssetDatabase.Refresh();
 #endif
         int counter = 0;
-        DirectoryInfo dir = new DirectoryInfo("Assets");
+        DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
+        Debug.Log(dir);
         FileInfo[] info = dir.GetFiles("*.png");
         foreach (FileInfo f in info)
         {
-            print(f);
-            string path = dir.ToString();
+            Debug.Log(f);
             string filename = info[counter].Name;
-            print(filename);
-#if UNITY_EDITOR
-            AssetDatabase.MoveAsset(Path.Combine(path, filename), Path.Combine(Path.Combine(path, "Resources"), filename)); // move from [E....\Assets\png] name to [E....\Assets\Resources\png name]
-#endif
+            Debug.Log(filename);
             GameObject curPicture = (GameObject) Instantiate(newPicture);
             curPicture.GetComponent<RawImage>().texture = Resources.Load(filename.Replace(".png", "")) as Texture;
             curPicture.transform.SetParent(this.transform, false);
