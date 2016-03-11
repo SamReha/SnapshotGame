@@ -35,7 +35,7 @@ public class Photo {
 	public void load() {
 		if (File.Exists(pathname)) {
 			Debug.Log("Loading file at " + pathname);
-			string fullPath = pathname + ".metaphoto";
+			string fullPath = pathname;
 
 			BinaryFormatter binForm = new BinaryFormatter ();
 			FileStream saveFile = File.Open (fullPath, FileMode.Open);

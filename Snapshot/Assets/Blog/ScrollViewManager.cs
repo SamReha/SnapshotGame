@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 
 #if UNITY_EDITOR
@@ -11,6 +10,7 @@ using UnityEditor;
 
 public class ScrollViewManager : MonoBehaviour {
 	public GameObject newPicture;
+
 	public List<string> imagesToPost;
 
     public Toggle toggle;
@@ -22,8 +22,6 @@ public class ScrollViewManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
-
 #if UNITY_EDITOR
 		//  Make sure pictures are loaded into resources
         AssetDatabase.Refresh();
@@ -37,11 +35,14 @@ public class ScrollViewManager : MonoBehaviour {
             //Debug.Log(f);
             string filename = info[counter].Name;
             //Debug.Log(filename);
-            GameObject curPicture = (GameObject) Instantiate(newPicture);
-            curPicture.GetComponent<RawImage>().texture = Resources.Load(filename.Replace(".png", "")) as Texture;
-			curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
-            curPicture.transform.SetParent(this.transform, false);
-            curNames.Add(curPicture);
+
+			if (!PlayerProfile.profile.postedPhotos.Contains (filename.Replace (".png", ""))) {
+				GameObject curPicture = (GameObject)Instantiate (newPicture);
+				curPicture.GetComponent<RawImage> ().texture = Resources.Load (filename.Replace (".png", "")) as Texture;
+				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
+				curPicture.transform.SetParent (this.transform, false);
+				curNames.Add (curPicture);
+			}
             counter++;
         }
 
@@ -61,6 +62,36 @@ public class ScrollViewManager : MonoBehaviour {
 		}
 
 		imagesToPost = imageBuffer;
+	}
+
+	public void updatePostableImages() {
+		foreach (Transform child in transform) {
+			Destroy (child.gameObject);
+		}
+
+		#if UNITY_EDITOR
+		//  Make sure pictures are loaded into resources
+		AssetDatabase.Refresh();
+		#endif
+		int counter = 0;
+		DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
+		//Debug.Log(dir);
+		FileInfo[] info = dir.GetFiles("*.png");
+		foreach (FileInfo f in info)
+		{
+			//Debug.Log(f);
+			string filename = info[counter].Name;
+			//Debug.Log(filename);
+
+			if (!PlayerProfile.profile.postedPhotos.Contains (filename.Replace (".png", ""))) {
+				GameObject curPicture = (GameObject)Instantiate (newPicture);
+				curPicture.GetComponent<RawImage> ().texture = Resources.Load (filename.Replace (".png", "")) as Texture;
+				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
+				curPicture.transform.SetParent (this.transform, false);
+				curNames.Add (curPicture);
+			}
+			counter++;
+		}
 	}
 
     public void eventValueChanged ()
