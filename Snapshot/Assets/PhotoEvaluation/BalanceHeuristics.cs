@@ -30,7 +30,11 @@ public class BalanceHeuristics {
       		variance = variance / visibleObjects.Count;
 		float standardDeviation = Mathf.Sqrt(variance);
 		if (standardDeviation != 0.0f) {
-			return subjectDeviation / standardDeviation;
+			float score = subjectDeviation / standardDeviation;
+
+			// NaN protection!
+			if (score == float.NaN) return 0f;
+			return score;
 		} else {
 			return 0.0f;
 		}

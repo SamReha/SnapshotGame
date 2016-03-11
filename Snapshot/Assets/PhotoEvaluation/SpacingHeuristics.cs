@@ -67,7 +67,9 @@ namespace AssemblyCSharp {
 			if (averageSectorDensity < 0.125f) {
 				averageSectorDensity = 0.06f;
 			}
-			return sectorDensity[4] / averageSectorDensity;
+
+			float score = sectorDensity [4] / averageSectorDensity;
+			return score;
 		}
 	}
 }
