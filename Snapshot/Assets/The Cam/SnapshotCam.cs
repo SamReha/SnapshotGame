@@ -45,9 +45,10 @@ namespace UnityStandardAssets.ImageEffects {
 
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
-			currentLens = "Portrait";
+			currentLens = "Portrait Lens";
 			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
 			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
+			PlayerProfile.profile.load ();
 		}
 
 		void Update () {
@@ -170,7 +171,7 @@ namespace UnityStandardAssets.ImageEffects {
 			if (Input.GetButtonDown ("Portrait") && currentLens != "Portrait" && PlayerProfile.profile.lenses.Contains ("port1")) {
 				GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
-				currentLens = "Portrait";
+				currentLens = "Portrait Lens";
 				GameObject.Find ("Portrait Lens").GetComponent<MeshRenderer> ().enabled = true;
 				parent.GetComponentInParent<DepthOfField> ().focalSize = PortraitLens.GetComponent<Lens> ().focalSize;
 				parent.GetComponentInParent<DepthOfField> ().focalLength = PortraitLens.GetComponent<Lens> ().focalDistance;
@@ -181,7 +182,7 @@ namespace UnityStandardAssets.ImageEffects {
 			if (Input.GetButtonDown ("Wide Angle") && currentLens != "WideAngle" && PlayerProfile.profile.lenses.Contains ("wide1")) {
 				GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
-				currentLens = "WideAngle";
+				currentLens = "Wide Angle Lens";
 				GameObject.Find ("Wide Angle Lens").GetComponent<MeshRenderer> ().enabled = true;
 				parent.GetComponentInParent<DepthOfField> ().focalSize = WideAngleLens.GetComponent<Lens> ().focalSize;
 				parent.GetComponentInParent<DepthOfField> ().focalLength = WideAngleLens.GetComponent<Lens> ().focalDistance;
@@ -191,7 +192,7 @@ namespace UnityStandardAssets.ImageEffects {
 			if (Input.GetButtonDown ("Telephoto") && currentLens != "Telephoto" && PlayerProfile.profile.lenses.Contains ("tele1")) {
 				GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
-				currentLens = "Telephoto";
+				currentLens = "telephoto_lens";
 				GameObject.Find ("telephoto_lens").GetComponent<MeshRenderer> ().enabled = true;
 				parent.GetComponentInParent<DepthOfField> ().focalSize = TelephotoLens.GetComponent<Lens> ().focalSize;
 				parent.GetComponentInParent<DepthOfField> ().focalLength = TelephotoLens.GetComponent<Lens> ().focalDistance;
