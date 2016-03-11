@@ -35,9 +35,10 @@ public class Photo {
 	public void load() {
 		if (File.Exists(pathname)) {
 			Debug.Log("Loading file at " + pathname);
+			string fullPath = pathname + ".metaphoto";
 
 			BinaryFormatter binForm = new BinaryFormatter ();
-			FileStream saveFile = File.Open (pathname, FileMode.Open);
+			FileStream saveFile = File.Open (fullPath, FileMode.Open);
 
 			MetaPhoto saveData = (MetaPhoto)binForm.Deserialize (saveFile);
 			saveFile.Close ();
@@ -58,13 +59,14 @@ public class Photo {
 	 */
 	public void save() {
 		Debug.Log("Saving file to " + pathname);
+		string fullPath = pathname + ".metaphoto";
 
 		BinaryFormatter binForm = new BinaryFormatter ();
 
 		FileStream saveFile;
-		if (File.Exists (pathname)) {
-			saveFile = File.Open (pathname, FileMode.Open);
-		} else saveFile = File.Create (pathname);
+		if (File.Exists (fullPath)) {
+			saveFile = File.Open (fullPath, FileMode.Open);
+		} else saveFile = File.Create (fullPath);
 
 		MetaPhoto saveData = new MetaPhoto ();
 		saveData.balan = balanceValue;
