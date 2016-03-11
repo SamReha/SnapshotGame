@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,10 @@ using UnityEditor;
 public class ScrollViewManager : MonoBehaviour {
 	public GameObject newPicture;
 	public List<string> imagesToPost;
+
+    public GameObject newPicture;
+    public Toggle toggle;
+    public List<GameObject> curNames = new List<GameObject>();
 
 #if UNITY_EDITOR
     [MenuItem ("AssetDatabase/Snapshot")]
@@ -37,6 +42,7 @@ public class ScrollViewManager : MonoBehaviour {
             curPicture.GetComponent<RawImage>().texture = Resources.Load(filename.Replace(".png", "")) as Texture;
 			curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
             curPicture.transform.SetParent(this.transform, false);
+            curNames.Add(curPicture);
             counter++;
         }
 
@@ -57,4 +63,12 @@ public class ScrollViewManager : MonoBehaviour {
 
 		imagesToPost = imageBuffer;
 	}
+
+    public void eventValueChanged ()
+    {
+        if (toggle.isOn)
+        {
+            Debug.Log("It's on.");
+        }
+    }
 }
