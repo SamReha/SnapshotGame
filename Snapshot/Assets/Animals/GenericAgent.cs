@@ -43,7 +43,7 @@ public class GenericAgent : MonoBehaviour {
 		}
 		if (meandering){ //  If the animal has reached their destination waypoint,
 			float distanceToDirect = Vector3.Distance(animalPosition.position,  direct_waypoint);
-            anim.Play("Walk", -1, 0f);
+            anim.Play("Run", -1, 0f);
 			if (distanceToDirect < waypoint_detection_range){
 				//  If the animal reaches their direct waypoint while meandering, don't stop moving.
 				//  instead, give the animal another position to go to.
