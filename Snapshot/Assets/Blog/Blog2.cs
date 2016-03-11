@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using System.Collections;
 using System.IO;
 
@@ -10,6 +11,8 @@ using UnityEditor;
 public class Blog2 : MonoBehaviour {
 
     public GameObject newPicture;
+    public Toggle toggle;
+    public List<GameObject> curNames = new List<GameObject>();
 
 #if UNITY_EDITOR
     [MenuItem ("AssetDatabase/Snapshot")]
@@ -35,7 +38,16 @@ public class Blog2 : MonoBehaviour {
             GameObject curPicture = (GameObject) Instantiate(newPicture);
             curPicture.GetComponent<RawImage>().texture = Resources.Load(filename.Replace(".png", "")) as Texture;
             curPicture.transform.SetParent(this.transform, false);
+            curNames.Add(curPicture);
             counter++;
         }
 	}
+
+    public void eventValueChanged ()
+    {
+        if (toggle.isOn)
+        {
+            Debug.Log("It's on.");
+        }
+    }
 }
