@@ -90,7 +90,7 @@ public class GenericAgent : MonoBehaviour {
 		}
 		if (meandering){ //  If the animal has reached their destination waypoint,
 			float distanceToDirect = Vector3.Distance(animalPosition.position,  direct_waypoint);
-            anim.Play("Run", -1, 0f);
+            anim.Play("Idle", -1, 0f);
 			if (distanceToDirect < waypoint_detection_range){
 				//  If the animal reaches their direct waypoint while meandering, don't stop moving.
 				//  instead, give the animal another position to go to.
@@ -101,7 +101,7 @@ public class GenericAgent : MonoBehaviour {
 				currentPathIndex++; //  Tell the animal to go to the next waypoint in the path
 				if (currentPathIndex > path_waypoints.Length - 1) currentPathIndex = 0; //  Loop the animal's trail
 				meandering = false;
-                anim.Play("Run", -1, 0f);
+                anim.Play("Walk", -1, 0f);
 			}
 		} else { //  wandering behavior. 
 			direct_waypoint = path_waypoints[currentPathIndex];
