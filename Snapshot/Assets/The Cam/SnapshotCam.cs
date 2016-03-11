@@ -178,7 +178,7 @@ namespace UnityStandardAssets.ImageEffects {
 				GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "WideAngle";
-				GameObject.Find ("WideAngle").GetComponent<MeshRenderer> ().enabled = true;
+				GameObject.Find ("Wide Angle Lens").GetComponent<MeshRenderer> ().enabled = true;
 				parent.GetComponentInParent<DepthOfField> ().focalSize = WideAngleLens.GetComponent<Lens> ().focalSize;
 				parent.GetComponentInParent<DepthOfField> ().focalLength = WideAngleLens.GetComponent<Lens> ().focalDistance;
 				parent.GetComponentInParent<Camera> ().fieldOfView = WideAngleLens.GetComponent<Lens> ().fieldOfView;
