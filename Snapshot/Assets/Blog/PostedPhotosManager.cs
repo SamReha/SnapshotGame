@@ -90,7 +90,7 @@ public class PostedPhotosManager : MonoBehaviour {
 				Text textData = metaData.AddComponent<Text> ();
 				textData.text = "Balance: " + photo.balanceValue + ", " + "Spacing: " + photo.spacingValue + ", " + "Interesting: " + photo.interestingnessValue;
 
-				Debug.Log ("CHILD: " + child);
+				//Debug.Log ("CHILD: " + child);
 
 				metaData.transform.SetParent (child, false);
 			}

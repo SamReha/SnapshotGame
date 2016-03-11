@@ -147,8 +147,8 @@ public class AudioManager : MonoBehaviour
 
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
 		GameObject deer = GameObject.Find ("/Deer");
-		GameObject fox = GameObject.Find ("/fox");
-		GameObject owl = GameObject.Find ("/NewOwl");
+		GameObject fox = GameObject.Find ("/Fox");
+		GameObject owl = GameObject.Find ("/Owl");
 
 		if (deer == null) {
 			Debug.Log ("AudioManager: updateAnimalVolume(): Can't find deer. Perhaps the name changed?");
