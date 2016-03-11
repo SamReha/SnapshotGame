@@ -102,9 +102,12 @@ namespace UnityStandardAssets.ImageEffects {
 					byte[] bytes = t2d.EncodeToPNG (); 
 					p.pathname = Application.dataPath + "/Resources/screen"
 					           + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
+					//  Save image
 					string filename = p.pathname + ".png"; 
 					System.IO.File.WriteAllBytes (filename, bytes);
 					Debug.Log (string.Format ("Took screenshot to: {0}", filename));
+					//  Save meta
+					p.save();
 
 					buttonDownWhilePaused = true;
 				}
