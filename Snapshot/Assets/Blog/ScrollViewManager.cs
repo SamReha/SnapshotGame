@@ -13,7 +13,6 @@ public class ScrollViewManager : MonoBehaviour {
 	public GameObject newPicture;
 	public List<string> imagesToPost;
 
-    public GameObject newPicture;
     public Toggle toggle;
     public List<GameObject> curNames = new List<GameObject>();
 
