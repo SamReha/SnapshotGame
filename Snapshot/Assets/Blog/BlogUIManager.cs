@@ -37,7 +37,7 @@ public class BlogUIManager : MonoBehaviour {
 			photo.pathname = Application.dataPath + "/Resources/" +  imageName + ".metaphoto";
 			photo.load ();
 			PlayerProfile.profile.money += getMoneyFromScore(photo.balanceValue, photo.interestingnessValue, photo.spacingValue);
-			Debug.Log (photo.balanceValue + ", " + photo.interestingnessValue + ", " + photo.spacingValue);
+			//Debug.Log (photo.balanceValue + ", " + photo.interestingnessValue + ", " + photo.spacingValue);
 		}
 		PlayerProfile.profile.save ();
 
