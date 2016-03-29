@@ -1,19 +1,26 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class GenericAgent : MonoBehaviour {
 
+	public Transform playerPosition;
 	Transform animalPosition;
 	NavMeshAgent agent;
 	public Vector3[] path_waypoints;// A list of waypoints that form the path of the creature
 	public float meandering_radius = 15f; //  controls the size of the area around a path waypoint that an animal meanders within
 	public float waypoint_detection_range = 5f; //  controls the size of the area around a path waypoint that an animal meanders within
+	public float too_close = 10;
+	public float safe_distance = 15;
+	public float fear_speed;
+	public float calm_speed;
 	public int meanderingExpirationTime = 100;
 	int meanderingExpirationCountdown = -1;  //  Set to negative to indicate inactive countdown
 	int currentPathIndex = 0; //  Keeps track of which wandering waypoint in the list is active
 	double oneSecond = 62.5;
 	bool meandering = false;  //  Start the creature's wandering behavior to get to the first path
+	bool afraid = false;
+	bool surprised = false; //  The first frame the animal is afraid, surprised is true
     Vector3 direct_waypoint;  //  This is the position that the animal always tries to follow
     public Animator anim;
 
@@ -23,6 +30,8 @@ public class GenericAgent : MonoBehaviour {
         anim = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent> ();
 		animalPosition = this.gameObject.transform;
+		calm_speed = agent.speed;
+		fear_speed = agent.speed * 2;
 		string animal = gameObject.name;
 		if (animal == "Fox") {
 			path_waypoints = new Vector3[8];
@@ -88,6 +97,30 @@ public class GenericAgent : MonoBehaviour {
 			meanderingExpirationCountdown--;//  Decrement the timer continuously
 			oneSecond = 62.5;
 		}
+
+		float distFromPlayer = Vector3.Distance (transform.position, playerPosition.position);
+
+		if (distFromPlayer <= too_close){
+			if (!afraid && !surprised) {
+				surprised = true;
+			} else {
+				surprised = false;
+			}
+			afraid = true;
+			agent.speed = fear_speed;
+		} else if (distFromPlayer >= safe_distance) {
+			afraid = false;
+			agent.speed = calm_speed;
+		}
+
+		if (surprised) {
+			//Debug.Log ("MOMMY!!!");
+			currentPathIndex++; //  Tell the animal to go to the next waypoint in the path
+			if (currentPathIndex > path_waypoints.Length - 1)
+				currentPathIndex = 0; //  Loop the animal's trail
+			meandering = false;
+			anim.Play ("Walk", -1, 0f);
+		} 
 		if (meandering){ //  If the animal has reached their destination waypoint,
 			float distanceToDirect = Vector3.Distance(animalPosition.position,  direct_waypoint);
             anim.Play("Idle", -1, 0f);
