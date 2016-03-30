@@ -27,18 +27,22 @@ public class ScrollViewManager : MonoBehaviour {
         AssetDatabase.Refresh();
 #endif
         int counter = 0;
-        DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
+		DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/Resources/");
         //Debug.Log(dir);
         FileInfo[] info = dir.GetFiles("*.png");
         foreach (FileInfo f in info)
         {
             //Debug.Log(f);
-            string filename = info[counter].Name;
+            string filename = f.Name;
             //Debug.Log(filename);
 
 			if (!PlayerProfile.profile.postedPhotos.Contains (filename.Replace (".png", ""))) {
 				GameObject curPicture = (GameObject)Instantiate (newPicture);
-				curPicture.GetComponent<RawImage> ().texture = Resources.Load (filename.Replace (".png", "")) as Texture;
+				Texture2D pic = new Texture2D (2, 2);
+				byte[] bytes = File.ReadAllBytes (Application.dataPath + "/Resources/" + filename);
+				pic.LoadImage (bytes);
+				RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
+				r.texture = pic;
 				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
 				curPicture.transform.SetParent (this.transform, false);
 				curNames.Add (curPicture);
@@ -74,18 +78,22 @@ public class ScrollViewManager : MonoBehaviour {
 		AssetDatabase.Refresh();
 		#endif
 		int counter = 0;
-		DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
+		DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/Resources/");
 		//Debug.Log(dir);
 		FileInfo[] info = dir.GetFiles("*.png");
 		foreach (FileInfo f in info)
 		{
 			//Debug.Log(f);
-			string filename = info[counter].Name;
+			string filename = f.Name;
 			//Debug.Log(filename);
 
 			if (!PlayerProfile.profile.postedPhotos.Contains (filename.Replace (".png", ""))) {
 				GameObject curPicture = (GameObject)Instantiate (newPicture);
-				curPicture.GetComponent<RawImage> ().texture = Resources.Load (filename.Replace (".png", "")) as Texture;
+				Texture2D pic = new Texture2D (2, 2);
+				byte[] bytes = File.ReadAllBytes (Application.dataPath + "/Resources/" + filename);
+				pic.LoadImage (bytes);
+				RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
+				r.texture = pic;
 				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
 				curPicture.transform.SetParent (this.transform, false);
 				curNames.Add (curPicture);

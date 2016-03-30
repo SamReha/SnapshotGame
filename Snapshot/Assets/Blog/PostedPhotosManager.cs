@@ -21,15 +21,21 @@ public class PostedPhotosManager : MonoBehaviour {
 		//  Make sure pictures are loaded into resources
 		AssetDatabase.Refresh();
 		#endif
-		DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
+		DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/Resources/");
 		FileInfo[] info = dir.GetFiles("*.png");
 		foreach (FileInfo file in info)
 		{
+			
 			string filename = file.Name;
+
 
 			if (PlayerProfile.profile.postedPhotos.Contains(filename.Replace(".png", ""))) {
 				GameObject curPicture = (GameObject) Instantiate(newPicture);
-				curPicture.GetComponent<RawImage>().texture = Resources.Load(filename.Replace(".png", "")) as Texture;
+				Texture2D pic = new Texture2D (2, 2);
+				byte[] bytes = File.ReadAllBytes (Application.dataPath + "/Resources/" + filename);
+				pic.LoadImage (bytes);
+				RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
+				r.texture = pic;
 				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
 				curPicture.transform.SetParent(this.transform, false);
 			}
@@ -52,7 +58,7 @@ public class PostedPhotosManager : MonoBehaviour {
 		//  Make sure pictures are loaded into resources
 		AssetDatabase.Refresh();
 		#endif
-		DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
+		DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/Resources/");
 		FileInfo[] info = dir.GetFiles("*.png");
 		foreach (FileInfo file in info)
 		{
@@ -60,7 +66,11 @@ public class PostedPhotosManager : MonoBehaviour {
 
 			if (PlayerProfile.profile.postedPhotos.Contains(filename.Replace(".png", ""))) {
 				GameObject curPicture = (GameObject) Instantiate(newPicture);
-				curPicture.GetComponent<RawImage>().texture = Resources.Load(filename.Replace(".png", "")) as Texture;
+				Texture2D pic = new Texture2D (2, 2);
+				byte[] bytes = File.ReadAllBytes (Application.dataPath + "/Resources/" + filename);
+				pic.LoadImage (bytes);
+				RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
+				r.texture = pic;
 				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
 				curPicture.transform.SetParent(this.transform, false);
 			}
@@ -72,7 +82,7 @@ public class PostedPhotosManager : MonoBehaviour {
 		//  Make sure pictures are loaded into resources
 		AssetDatabase.Refresh();
 		#endif
-		DirectoryInfo dir = new DirectoryInfo(Path.Combine("Assets", "Resources"));
+		DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/Resources/");
 		FileInfo[] info = dir.GetFiles("*.metaphoto");
 		Photo photo = new Photo ();
 		foreach (FileInfo file in info)
