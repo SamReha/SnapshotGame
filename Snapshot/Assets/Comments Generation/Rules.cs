@@ -8,4 +8,15 @@ public class Rules{
 	public int appRate;
 	[JsonProperty(PropertyName="expansion")]
 	public List<string> expansion;
+	public List<NonTerminals> ruleReferences = new List<NonTerminals> ();
+
+	public string fires(){
+		string d = "";
+		foreach(NonTerminals nt in ruleReferences){
+			foreach(Rules r in nt.rules){
+				d = d + nt.expand ();
+			}
+		}
+		return d;
+	}
 }

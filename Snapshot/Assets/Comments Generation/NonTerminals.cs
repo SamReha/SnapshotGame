@@ -12,4 +12,15 @@ public class NonTerminals{
 	public Dictionary<string, string[]> markups;
 	[JsonProperty(PropertyName="rules")]
 	public List<Rules> rules;
+
+	public string expand(){
+		foreach (Rules rule in rules) {
+			if (rule.fires () != "") {
+				return rule.fires ();
+			} else {
+
+			}
+		}
+		return null;
+	}
 }

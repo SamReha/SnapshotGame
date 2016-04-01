@@ -32,12 +32,18 @@ public class CommentGenerator : MonoBehaviour {
 					//Debug.Log ("Expansion: " + s);
 				}
 			} else {
-				Debug.Log ("Empty Expansion");
+				//Debug.Log ("Empty Expansion");
 			}
 		}
 		foreach (NonTerminals nt in comment.nonTerms.Values) {
 			parseNonTerminals (nt);
+			foreach (Rules r in nt.rules) {
+				foreach (NonTerminals n in r.ruleReferences) {
+					//Debug.Log (n);
+				}
+			}
 		}
+		GenerateComment ("bad");
 	}
 
 	// Update is called once per frame
@@ -53,26 +59,36 @@ public class CommentGenerator : MonoBehaviour {
 
 	void parseRules(Rules rule){
 		foreach (string word in rule.expansion) {
-			parseExpansion (word);
+			rule.ruleReferences = parseExpansion (word);
 		}
 	}
 
-	void parseExpansion(string word){
-		Debug.Log ("Word: " + word);
+	List<NonTerminals> parseExpansion(string word){
+		List<NonTerminals> rules = new List<NonTerminals>();
+		//Debug.Log ("Word: " + word);
 		IEnumerable<string> words = SplitAndKeep (word, delimiters);
-		Debug.Log ("Words: ");
+		//Debug.Log ("Words: ");
 		int length = 0;
 		foreach (String w in words) {
-			Debug.Log (w);
+			//Debug.Log (w);
 			length++;
 		}
-		if (length == 3) {
-			Debug.Log ("Sysvar");
-		} else if (length == 5) {
-			Debug.Log ("Rule");
-		} else {
-			Debug.Log ("Word");
+		foreach (String w in words) {
+			if (w != "[" && w != "]") {
+				if (length == 3) {
+					//Debug.Log ("Sysvar");
+					//words [1];
+				} else if (length == 5) {
+					NonTerminals test = new NonTerminals ();
+					comment.nonTerms.TryGetValue (w, out test);
+					rules.Add (test);
+					//Debug.Log ("Rule");
+				} else {
+					//Debug.Log ("Word");
+				}
+			}
 		}
+		return rules;
 	}
    
    public static IEnumerable<string> SplitAndKeep( string s, char[] delims)
@@ -92,5 +108,22 @@ public class CommentGenerator : MonoBehaviour {
             yield return s.Substring(start);
         }
     }
+
+	void GenerateComment( string markup ){
+		foreach (NonTerminals nt in comment.nonTerms.Values) {
+			string[] stuff = new string[1];
+			nt.markups.TryGetValue ("Score", out stuff); 
+			Debug.Log ("Test");
+			if (stuff [0].Equals (markup)) {
+				string d = nt.expand ();
+				Debug.Log (d);
+			}
+		}
+
+	}
+
+
+
+
 }
 
