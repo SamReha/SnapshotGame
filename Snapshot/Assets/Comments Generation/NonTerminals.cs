@@ -14,6 +14,7 @@ public class NonTerminals{
 	public List<Rules> rules;
 
 	public string expand(){
+		Debug.Log ("expand");
 		foreach (Rules rule in rules) {
 			if (rule.fires () != "") {
 				return rule.fires ();

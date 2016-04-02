@@ -8,13 +8,18 @@ public class Rules{
 	public int appRate;
 	[JsonProperty(PropertyName="expansion")]
 	public List<string> expansion;
-	public List<NonTerminals> ruleReferences = new List<NonTerminals> ();
+	public ArrayList newExpansion;
 
 	public string fires(){
+		Debug.Log("fires");
 		string d = "";
-		foreach(NonTerminals nt in ruleReferences){
-			foreach(Rules r in nt.rules){
-				d = d + nt.expand ();
+		for(int i = 0; i < newExpansion.Count; i++){
+			if (typeof(  ).Equals (NonTerminals)) {
+				foreach (Rules r in nt.rules) {
+					d = d + nt.expand ();
+				}
+			} else {
+				d = d + nt;
 			}
 		}
 		return d;

@@ -21,28 +21,28 @@ public class CommentGenerator : MonoBehaviour {
 			//Debug.Log (test.Key);
 			//Debug.Log (test.Value.complete);
 			//Debug.Log (test.Value.deep);
-			foreach (KeyValuePair<string, string[]> x in test.Value.markups) {
+			//foreach (KeyValuePair<string, string[]> x in test.Value.markups) {
 				//Debug.Log (x.Key);
 				//Debug.Log (x.Value [0]);
-			}
+			//}
 			List<Rules> r = test.Value.rules;
 			if ( r.Count > 0) {
 				//Debug.Log (test.Value.rules [0].appRate);
-				foreach (string s in test.Value.rules[0].expansion) {
+				//foreach (string s in test.Value.rules[0].expansion) {
 					//Debug.Log ("Expansion: " + s);
-				}
+				//}
 			} else {
 				//Debug.Log ("Empty Expansion");
 			}
 		}
-		foreach (NonTerminals nt in comment.nonTerms.Values) {
+		/*foreach (NonTerminals nt in comment.nonTerms.Values) {
 			parseNonTerminals (nt);
 			foreach (Rules r in nt.rules) {
 				foreach (NonTerminals n in r.ruleReferences) {
 					//Debug.Log (n);
 				}
 			}
-		}
+		}*/
 		GenerateComment ("bad");
 	}
 
@@ -59,18 +59,19 @@ public class CommentGenerator : MonoBehaviour {
 
 	void parseRules(Rules rule){
 		foreach (string word in rule.expansion) {
-			rule.ruleReferences = parseExpansion (word);
+			parseExpansion (word, rule);
 		}
 	}
 
-	List<NonTerminals> parseExpansion(string word){
-		List<NonTerminals> rules = new List<NonTerminals>();
+	void parseExpansion(string word, Rules rule){
 		//Debug.Log ("Word: " + word);
 		IEnumerable<string> words = SplitAndKeep (word, delimiters);
 		//Debug.Log ("Words: ");
 		int length = 0;
 		foreach (String w in words) {
 			//Debug.Log (w);
+			string x = w;
+			x = x+x;
 			length++;
 		}
 		foreach (String w in words) {
@@ -78,17 +79,18 @@ public class CommentGenerator : MonoBehaviour {
 				if (length == 3) {
 					//Debug.Log ("Sysvar");
 					//words [1];
+					rule.newExpansion.Add(w);
 				} else if (length == 5) {
 					NonTerminals test = new NonTerminals ();
 					comment.nonTerms.TryGetValue (w, out test);
-					rules.Add (test);
+					rule.newExpansion.Add(test);
 					//Debug.Log ("Rule");
 				} else {
 					//Debug.Log ("Word");
+					rule.newExpansion.Add(w);
 				}
 			}
 		}
-		return rules;
 	}
    
    public static IEnumerable<string> SplitAndKeep( string s, char[] delims)
@@ -114,9 +116,13 @@ public class CommentGenerator : MonoBehaviour {
 			string[] stuff = new string[1];
 			nt.markups.TryGetValue ("Score", out stuff); 
 			Debug.Log ("Test");
-			if (stuff [0].Equals (markup)) {
-				string d = nt.expand ();
-				Debug.Log (d);
+			if (!stuff [0].Equals (null)) {
+				Debug.Log (stuff [0]);
+				if (stuff [0].Equals (markup)) {
+					string d = nt.expand ();
+					Debug.Log (d);
+					break;
+				}
 			}
 		}
 
