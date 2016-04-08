@@ -8,18 +8,15 @@ public class Rules{
 	public int appRate;
 	[JsonProperty(PropertyName="expansion")]
 	public List<string> expansion;
-	public ArrayList newExpansion;
+	public ArrayList newExpansion = new ArrayList();
 
 	public string fires(){
-		Debug.Log("fires");
 		string d = "";
 		for(int i = 0; i < newExpansion.Count; i++){
-			if (typeof(  ).Equals (NonTerminals)) {
-				foreach (Rules r in nt.rules) {
-					d = d + nt.expand ();
-				}
+			if (expansion[i].Contains("[[")) {
+				d = d + (newExpansion[i] as NonTerminals).expand ();
 			} else {
-				d = d + nt;
+				d = d + (newExpansion[i] as string);
 			}
 		}
 		return d;

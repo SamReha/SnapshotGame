@@ -14,13 +14,14 @@ public class NonTerminals{
 	public List<Rules> rules;
 
 	public string expand(){
-		Debug.Log ("expand");
-		foreach (Rules rule in rules) {
-			if (rule.fires () != "") {
-				return rule.fires ();
-			} else {
-
-			}
+		Random rand = new Random ();
+		int rn = Random.Range (0, rules.Count-1);
+		Rules rule = rules [rn];
+		string s = rule.fires ();
+		if (!s.Equals("")) {
+				return s;
+		} else {
+			Debug.Log ("Empty");
 		}
 		return null;
 	}
