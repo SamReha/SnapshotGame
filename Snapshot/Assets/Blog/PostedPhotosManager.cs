@@ -99,6 +99,8 @@ public class PostedPhotosManager : MonoBehaviour {
 				metaData.transform.position.Set(20f, 0f, 0f);
 				Text textData = metaData.AddComponent<Text> ();
 				textData.text = "Balance: " + photo.balanceValue + ", " + "Spacing: " + photo.spacingValue + ", " + "Interesting: " + photo.interestingnessValue;
+				textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+				metaData.GetComponent<RectTransform> ().position = new Vector3 (-45f, -90f, 0f);
 
 				//Debug.Log ("CHILD: " + child);
 
