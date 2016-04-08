@@ -29,6 +29,7 @@ public class GenericAgent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		playerPosition = GameObject.FindGameObjectWithTag ("Player").transform;
         anim = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent> ();
 		animalPosition = this.gameObject.transform;
@@ -169,7 +170,7 @@ public class GenericAgent : MonoBehaviour {
 	Vector3 GetNearbyWaypoint(Vector3 center){
     //  returns a new Transform that is near the given position
 		return new Vector3(center.x + Random.Range(-meandering_radius, meandering_radius), 
-			                 center.y, center.z + Random.Range(-meandering_radius, meandering_radius));
+                           center.y, center.z + Random.Range(-meandering_radius, meandering_radius));
 	}
 
 	void WanderToNextWaypoint() {

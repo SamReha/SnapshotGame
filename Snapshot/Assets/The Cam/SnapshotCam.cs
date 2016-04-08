@@ -46,6 +46,16 @@ namespace UnityStandardAssets.ImageEffects {
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
 			currentLens = "Portrait Lens";
+
+			// Set portrait lens
+			GameObject parent = GameObject.Find ("PlayerCam");
+			GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
+			currentLens = "Portrait Lens";
+			GameObject.Find ("Portrait Lens").GetComponent<MeshRenderer> ().enabled = true;
+			parent.GetComponentInParent<DepthOfField> ().focalSize = PortraitLens.GetComponent<Lens> ().focalSize;
+			parent.GetComponentInParent<DepthOfField> ().focalLength = PortraitLens.GetComponent<Lens> ().focalDistance;
+			parent.GetComponentInParent<Camera> ().fieldOfView = PortraitLens.GetComponent<Lens> ().fieldOfView;
+
 			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
 			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
 			PlayerProfile.profile.load ();
@@ -168,7 +178,7 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Change between camera lenses
 			//Portrait
-			if (Input.GetButtonDown ("Portrait") && currentLens != "Portrait" && PlayerProfile.profile.lenses.Contains ("port1")) {
+			if (Input.GetButtonDown ("Portrait") && currentLens != "Portrait Lens" && PlayerProfile.profile.lenses.Contains ("port1")) {
 				GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Portrait Lens";
@@ -179,7 +189,7 @@ namespace UnityStandardAssets.ImageEffects {
 
 			}
 			// Wide Angle
-			if (Input.GetButtonDown ("Wide Angle") && currentLens != "WideAngle" && PlayerProfile.profile.lenses.Contains ("wide1")) {
+			if (Input.GetButtonDown ("Wide Angle") && currentLens != "Wide Angle Lens" && PlayerProfile.profile.lenses.Contains ("wide1")) {
 				GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Wide Angle Lens";
@@ -189,7 +199,7 @@ namespace UnityStandardAssets.ImageEffects {
 				parent.GetComponentInParent<Camera> ().fieldOfView = WideAngleLens.GetComponent<Lens> ().fieldOfView;
 			}
 			// Telephoto
-			if (Input.GetButtonDown ("Telephoto") && currentLens != "Telephoto" && PlayerProfile.profile.lenses.Contains ("tele1")) {
+			if (Input.GetButtonDown ("Telephoto") && currentLens != "telephoto_lens" && PlayerProfile.profile.lenses.Contains ("tele1")) {
 				GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "telephoto_lens";
