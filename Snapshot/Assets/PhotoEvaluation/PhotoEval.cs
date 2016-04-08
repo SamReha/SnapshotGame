@@ -67,14 +67,14 @@ public class PhotoEval : MonoBehaviour {
 				}
 				for (int i = 0; i < visibleObjs.Count; i++) {
 					GameObject go = visibleObjs [i];
-					Debug.Log ("Object: " + go.name);
+					//Debug.Log ("Object: " + go.name);
 					Corners (go);
 					viewPos = cam.WorldToViewportPoint (go.transform.position);
-					Debug.Log ("Position: " + viewPos.ToString ("F4"));
+					//Debug.Log ("Position: " + viewPos.ToString ("F4"));
 					CalcObjPercentage (corners, go);
-					Debug.Log ("Percent in Frame: " + percentInFrame);
+					//Debug.Log ("Percent in Frame: " + percentInFrame);
 					//IsFramed (i);
-					Debug.Log ("Centered: " + percentCentered);
+					//Debug.Log ("Centered: " + percentCentered);
 				}
 				//  Subject might return null if visibleObj's is empty
 				GameObject subject = getSubject (visibleObjs);
