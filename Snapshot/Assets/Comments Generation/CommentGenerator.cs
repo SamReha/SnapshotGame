@@ -19,7 +19,6 @@ public class CommentGenerator : MonoBehaviour {
 		foreach (NonTerminals nt in comment.nonTerms.Values) {
 			parseNonTerminals (nt);
 		}
-		GenerateComment ("bad");
 	}
 
 	// Update is called once per frame
@@ -94,19 +93,17 @@ public class CommentGenerator : MonoBehaviour {
         }
     }
 
-	void GenerateComment( string markup ){
+	public string GenerateComment( string markup ){
 		foreach (NonTerminals nt in comment.nonTerms.Values) {
 			string[] stuff = new string[1];
 			nt.markups.TryGetValue ("Score", out stuff); 
 			if (!stuff [0].Equals (null)) {
 				if (stuff [0].Equals (markup)) {
-					string d = nt.expand ();
-					Debug.Log (d);
-					break;
+					return nt.expand ();
 				}
 			}
 		}
-
+		return null;
 	}
 }
 

@@ -10,6 +10,8 @@ using UnityEditor;
 
 public class PostedPhotosManager : MonoBehaviour {
 	public GameObject newPicture;
+	CommentGenerator cg = new CommentGenerator ();
+
 
 	#if UNITY_EDITOR
 	[MenuItem ("AssetDatabase/Snapshot")]
@@ -40,7 +42,6 @@ public class PostedPhotosManager : MonoBehaviour {
 				curPicture.transform.SetParent(this.transform, false);
 			}
 		}
-
 		getMetaData ();
 	}
 
@@ -98,8 +99,22 @@ public class PostedPhotosManager : MonoBehaviour {
 				GameObject metaData = new GameObject ();
 				metaData.transform.position.Set(20f, 0f, 0f);
 				Text textData = metaData.AddComponent<Text> ();
-				textData.text = "Balance: " + photo.balanceValue + ", " + "Spacing: " + photo.spacingValue + ", " + "Interesting: " + photo.interestingnessValue;
+				string markup;
+				float score = photo.balanceValue + photo.spacingValue + photo.interestingnessValue;
+				if (score <= 3f) {
+					markup = "bad";
+				} else if (score <= 6f) {
+					markup = "good";
+				} else if (score <= 9f) {
+					markup = "great";
+				} else {
+					markup = "perfect";
+				}
 
+				textData.text = cg.GenerateComment (markup);
+				Debug.Log (textData.text);
+				textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+				metaData.GetComponent<RectTransform> ().position = new Vector3 (-45f, -90f, 0f);
 				//Debug.Log ("CHILD: " + child);
 
 				metaData.transform.SetParent (child, false);
