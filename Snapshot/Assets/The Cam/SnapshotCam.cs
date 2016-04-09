@@ -65,32 +65,7 @@ namespace UnityStandardAssets.ImageEffects {
 		}
 
 		void Update () {
-			// Switches camera view from Player to Cam
-			//if (Input.GetButtonDown("Camera Switch")) {
-			// cam  = !Input.GetButton("Camera Switch");
-			// Player view
-			//if (cam) {
-			/*
-				// Gets the two cameras one to set the view the other to set the render texture
-			Camera c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-			Camera c2 = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
-			c2.targetTexture = camView;	// Sets the render texture
-			c.Render ();	// Renders the Player view
-			c.targetTexture = null;
-			cam = !cam;
-			*/
-			//}
-			// Cam view
-			//else {
-			/*
-				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera> ();	// Gets the Cam camera to set the view
-				c.Render ();	// Renders the Cam view
-				c.targetTexture = null;
-				cam = !cam;
-				*/
-			//}
-
-			if (Input.GetButton("Camera Switch")) {
+			if (Input.GetButtonDown("Camera Switch")) {
 				parent.transform.localPosition = cameraHeldUp;
 			} else {
 				parent.transform.localPosition = cameraHeldDown;

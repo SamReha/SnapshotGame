@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.K)) {
 			isOpen = !isOpen;
 		}
-		if (Input.GetButton ("View Controls")) {
+		if (Input.GetButtonUp ("View Controls")) {
 			PanelControls.SetActive(!PanelControls.activeSelf);
 		}
 		OpenBag (isOpen);
