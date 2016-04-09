@@ -65,7 +65,7 @@ namespace UnityStandardAssets.ImageEffects {
 		}
 
 		void Update () {
-			if (Input.GetButtonDown("Camera Switch")) {
+			if (Input.GetButton("Camera Switch")) {
 				parent.transform.localPosition = cameraHeldUp;
 			} else {
 				parent.transform.localPosition = cameraHeldDown;
