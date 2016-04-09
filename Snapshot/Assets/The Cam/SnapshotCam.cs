@@ -34,24 +34,27 @@ namespace UnityStandardAssets.ImageEffects {
 		// Color for the white balance
 		Color whiteBalanceColor = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
-		// Indicates which camera is active as main. False = Player View. True = Camera view
-		bool cam = false;
 		// This is the render texture for the cams digital screen. Used during camera switches
-		public RenderTexture camView;
-
-		private AudioSource cameraAudio;
+		public RenderTexture camView;		
 		public AudioClip cam_click;
 		public AudioClip cam_shutter;
+
+		private AudioSource cameraAudio;
+		private GameObject parent;
+		private Vector3 cameraHeldUp;
+		private Vector3 cameraHeldDown;
 
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
 			currentLens = "Portrait Lens";
+			parent = GameObject.Find("PlayerCam");
+			cameraHeldUp = new Vector3(0.0f, 0.0f, -0.15f);
+			cameraHeldDown = new Vector3(0.293f, -0.499f, 0.16f);
 
 			// Set portrait lens
-			GameObject parent = GameObject.Find ("PlayerCam");
 			GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 			currentLens = "Portrait Lens";
-			GameObject.Find ("Portrait Lens").GetComponent<MeshRenderer> ().enabled = true;
+			GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = true;
 			parent.GetComponentInParent<DepthOfField> ().focalSize = PortraitLens.GetComponent<Lens> ().focalSize;
 			parent.GetComponentInParent<DepthOfField> ().focalLength = PortraitLens.GetComponent<Lens> ().focalDistance;
 			parent.GetComponentInParent<Camera> ().fieldOfView = PortraitLens.GetComponent<Lens> ().fieldOfView;
@@ -62,26 +65,35 @@ namespace UnityStandardAssets.ImageEffects {
 		}
 
 		void Update () {
-
 			// Switches camera view from Player to Cam
 			//if (Input.GetButtonDown("Camera Switch")) {
-			cam  = !Input.GetButton("Camera Switch");
+			// cam  = !Input.GetButton("Camera Switch");
 			// Player view
-			if (cam) {
+			//if (cam) {
+			/*
 				// Gets the two cameras one to set the view the other to set the render texture
-				Camera c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-				Camera c2 = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
-				c2.targetTexture = camView;	// Sets the render texture
-				c.Render ();	// Renders the Player view
-				c.targetTexture = null;
-				cam = !cam;
-			}
+			Camera c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+			Camera c2 = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera>();
+			c2.targetTexture = camView;	// Sets the render texture
+			c.Render ();	// Renders the Player view
+			c.targetTexture = null;
+			cam = !cam;
+			*/
+			//}
 			// Cam view
-			else {
+			//else {
+			/*
 				Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera> ();	// Gets the Cam camera to set the view
 				c.Render ();	// Renders the Cam view
 				c.targetTexture = null;
 				cam = !cam;
+				*/
+			//}
+
+			if (Input.GetButton("Camera Switch")) {
+				parent.transform.localPosition = cameraHeldUp;
+			} else {
+				parent.transform.localPosition = cameraHeldDown;
 			}
 
 			// When player presses down, a beep is heard
@@ -94,32 +106,38 @@ namespace UnityStandardAssets.ImageEffects {
 					cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
 					//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
 					RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
-					Camera c = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<Camera> ();	// Gets the camera to output to the render tuexture
-					c.targetTexture = rt; 
+					Camera c = parent.GetComponent<Camera> ();	// Gets the camera to output to the render tuexture
+					c.targetTexture = rt;
 					Texture2D t2d = new Texture2D (width, height, TextureFormat.RGB24, false); // Texture2D that wil be stored in the Photo object
 					c.Render (); // Forces the camera to render
 					RenderTexture.active = rt;
 					t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
 					Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
 					p.photo = t2d;
-					p.visible = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().visibleObjs;
-					p.balanceValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().balance;
-					p.spacingValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().spacing;
-					p.interestingnessValue = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().interest;
+
+					GameObject cameraPrefab = GameObject.Find("Camera Prefab");
+					p.visible = cameraPrefab.GetComponent<PhotoEval> ().visibleObjs;
+					p.balanceValue = cameraPrefab.GetComponent<PhotoEval> ().balance;
+					p.spacingValue = cameraPrefab.GetComponent<PhotoEval> ().spacing;
+					p.interestingnessValue = cameraPrefab.GetComponent<PhotoEval> ().interest;
+
 					c.targetTexture = null;
 					RenderTexture.active = null;
 					Destroy (rt); 
 					pics.Add (p);
 					byte[] bytes = t2d.EncodeToPNG (); 
 					p.pathname = Application.dataPath + "/Resources/screen"
-					           + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
+						+ System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
 					//  Save image
 					string filename = p.pathname + ".png"; 
 					System.IO.File.WriteAllBytes (filename, bytes);
 					Debug.Log (string.Format ("Took screenshot to: {0}", filename));
 					//  Save meta
 					p.save();
-
+					Camera c2 = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+					c.targetTexture = camView;	// Sets the render texture
+					c2.Render ();	// Renders the Player view
+					c2.targetTexture = null;
 					buttonDownWhilePaused = true;
 				}
 			}
@@ -179,7 +197,7 @@ namespace UnityStandardAssets.ImageEffects {
 			// Change between camera lenses
 			//Portrait
 			if (Input.GetButtonDown ("Portrait") && currentLens != "Portrait Lens" && PlayerProfile.profile.lenses.Contains ("port1")) {
-				GameObject parent = GameObject.Find ("PlayerCam");
+				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Portrait Lens";
 				GameObject.Find ("Portrait Lens").GetComponent<MeshRenderer> ().enabled = true;
@@ -190,7 +208,7 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Wide Angle
 			if (Input.GetButtonDown ("Wide Angle") && currentLens != "Wide Angle Lens" && PlayerProfile.profile.lenses.Contains ("wide1")) {
-				GameObject parent = GameObject.Find ("PlayerCam");
+				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Wide Angle Lens";
 				GameObject.Find ("Wide Angle Lens").GetComponent<MeshRenderer> ().enabled = true;
@@ -200,7 +218,7 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Telephoto
 			if (Input.GetButtonDown ("Telephoto") && currentLens != "telephoto_lens" && PlayerProfile.profile.lenses.Contains ("tele1")) {
-				GameObject parent = GameObject.Find ("PlayerCam");
+				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "telephoto_lens";
 				GameObject.Find ("telephoto_lens").GetComponent<MeshRenderer> ().enabled = true;
