@@ -97,9 +97,12 @@ public class CommentGenerator : MonoBehaviour {
 		foreach (NonTerminals nt in comment.nonTerms.Values) {
 			string[] stuff = new string[1];
 			nt.markups.TryGetValue ("Score", out stuff); 
-			if (!stuff [0].Equals (null)) {
-				if (stuff [0].Equals (markup)) {
-					return nt.expand ();
+			if (stuff != null) {
+				Debug.Log (markup);
+				foreach (string s in stuff) {
+					if (s.Equals (markup)) {
+						return nt.expand ();
+					}
 				}
 			}
 		}

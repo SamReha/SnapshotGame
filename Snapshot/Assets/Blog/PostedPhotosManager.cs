@@ -10,7 +10,6 @@ using UnityEditor;
 
 public class PostedPhotosManager : MonoBehaviour {
 	public GameObject newPicture;
-	CommentGenerator cg = new CommentGenerator ();
 
 
 	#if UNITY_EDITOR
@@ -99,20 +98,22 @@ public class PostedPhotosManager : MonoBehaviour {
 				GameObject metaData = new GameObject ();
 				metaData.transform.position.Set(20f, 0f, 0f);
 				Text textData = metaData.AddComponent<Text> ();
-				string markup;
+				string markup = "";
 				float score = photo.balanceValue + photo.spacingValue + photo.interestingnessValue;
+				Debug.Log (score);
 				if (score <= 3f) {
-					markup = "bad";
+					markup = "Bad";
 				} else if (score <= 6f) {
-					markup = "good";
+					markup = "Good";
 				} else if (score <= 9f) {
-					markup = "great";
+					markup = "Great";
 				} else {
 					markup = "perfect";
 				}
-
-				textData.text = cg.GenerateComment (markup);
-				Debug.Log (textData.text);
+				Debug.Log (markup);
+				textData.text = "ewgnkjvegjkvejkvrkhvsf kvwe kvwnkvfn ";
+				textData.text = gameObject.GetComponent<CommentGenerator>().GenerateComment (markup);
+				//Debug.Log (textData.text);
 				textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 				metaData.GetComponent<RectTransform> ().position = new Vector3 (-45f, -90f, 0f);
 				//Debug.Log ("CHILD: " + child);
