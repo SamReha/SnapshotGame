@@ -35,10 +35,8 @@ public class UIManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.K)) {
 			isOpen = !isOpen;
 		}
-		if (Input.GetButton ("Camera Switch")) {
-			PanelControls.SetActive(false);
-		} else {
-			PanelControls.SetActive(true);
+		if (Input.GetButtonUp ("View Controls")) {
+			PanelControls.SetActive(!PanelControls.activeSelf);
 		}
 		OpenBag (isOpen);
 		setPause(isPaused);
