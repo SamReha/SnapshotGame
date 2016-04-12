@@ -13,6 +13,11 @@ public class PlayerProfile : MonoBehaviour {
 	public List<string> lenses;
 	public List<string> postedPhotos;
 
+	//  Tutorial flags
+	public bool tutFlagMovement;
+	public bool tutFlagAim;
+	public bool tutFlagSnap;
+
 	// Use this for initialization
 	void Start () {}
 
@@ -44,10 +49,14 @@ public class PlayerProfile : MonoBehaviour {
 
 			InternalProfile saveData = (InternalProfile)binForm.Deserialize (saveFile);
 			saveFile.Close ();
-
+			//  Load in values
 			money = saveData.money;
 			lenses = saveData.lenses;
 			postedPhotos = saveData.postedPhotos;
+
+			tutFlagMovement = saveData.tutFlagMovement;
+			tutFlagMovement = saveData.tutFlagAim;
+			tutFlagMovement = saveData.tutFlagSnap;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
@@ -73,6 +82,9 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.money = money;
 		saveData.lenses = lenses;
 		saveData.postedPhotos = postedPhotos;
+		saveData.tutFlagMovement = tutFlagMovement;
+		saveData.tutFlagAim = tutFlagAim;
+		saveData.tutFlagSnap = tutFlagSnap;
 
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
@@ -88,6 +100,11 @@ public class PlayerProfile : MonoBehaviour {
 
 		lenses.Add ("port1");
 
+		//  Tutorial flags
+		tutFlagMovement = false;
+		tutFlagAim = false;
+		tutFlagSnap = false;
+
 		save ();
 	}
 }
@@ -99,9 +116,14 @@ public class PlayerProfile : MonoBehaviour {
  * profile.money than profile.internalprofile.money. It also allows us
  * to preform binary serialization (that way save files aren't ever user-editable)
  */
+
 [Serializable]
 class InternalProfile {
 	public float money;
 	public List<string> lenses;
 	public List<string> postedPhotos;
+	//  Tutorial flags
+	public bool tutFlagMovement;
+	public bool tutFlagAim;
+	public bool tutFlagSnap;
 }
