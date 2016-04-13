@@ -10,7 +10,11 @@ public class UIManager : MonoBehaviour {
 	public GameObject PanelPause;
 	public GameObject PanelBag;
 	public GameObject PanelControls;
+	public GameObject MovementTip;
+	public GameObject BasicCameraTip;
+	public GameObject SeeControlsTip;
 	public FirstPersonController player;
+	private PlayerProfile playerData;
 	public bool isPaused;
 	public bool isOpen;
 	public bool cameraUP;
@@ -21,10 +25,12 @@ public class UIManager : MonoBehaviour {
 		isOpen = false;
 
 		pauseSource = GetComponent<AudioSource> ();
+		playerData = player.GetComponentInChildren<PlayerProfile> ();
 
 		pauseSource.ignoreListenerPause = true;
 		pauseSource.Play ();
 		pauseSource.Pause ();
+		PanelControls.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -35,9 +41,25 @@ public class UIManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.K)) {
 			isOpen = !isOpen;
 		}
+		//  Tutorial logic ---------------------
 		if (Input.GetButtonUp ("View Controls")) {
+			playerData.tutFlagViewControls = true;
 			PanelControls.SetActive(!PanelControls.activeSelf);
 		}
+		if (Input.GetButtonDown ("Horizontal") ||
+			Input.GetButtonDown ("Vertical") ) {
+			playerData.tutFlagMovement = true;
+		}
+		if (Input.GetButtonDown ("Take Photo")) {
+			playerData.tutFlagSnap = true;
+		}
+
+		//  If the player has not moved yet, show a message
+		MovementTip.SetActive(!playerData.tutFlagMovement);
+		BasicCameraTip.SetActive(!playerData.tutFlagSnap);
+		SeeControlsTip.SetActive(!playerData.tutFlagViewControls);
+		//  End tutorial logic ------------------
+
 		OpenBag (isOpen);
 		setPause(isPaused);
 	}

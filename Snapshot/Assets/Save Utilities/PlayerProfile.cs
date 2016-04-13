@@ -13,10 +13,19 @@ public class PlayerProfile : MonoBehaviour {
 	public List<string> lenses;
 	public List<string> postedPhotos;
 
+
 	//  Tutorial flags
 	public bool tutFlagMovement;
 	public bool tutFlagAim;
 	public bool tutFlagSnap;
+	public bool tutFlagLook;
+	public bool tutFlagJump;
+	public bool tutFlagRun;
+	public bool tutFlagAperture;
+	public bool tutFlagWhiteBalance;
+	public bool tutFlagChangeLens;
+	public bool tutFlagShutterSpeed;
+	public bool tutFlagViewControls;
 
 	// Use this for initialization
 	void Start () {}
@@ -55,8 +64,17 @@ public class PlayerProfile : MonoBehaviour {
 			postedPhotos = saveData.postedPhotos;
 
 			tutFlagMovement = saveData.tutFlagMovement;
-			tutFlagMovement = saveData.tutFlagAim;
-			tutFlagMovement = saveData.tutFlagSnap;
+			tutFlagAim = saveData.tutFlagAim;
+			tutFlagSnap = saveData.tutFlagSnap;
+			tutFlagLook = saveData.tutFlagLook;
+			tutFlagJump = saveData.tutFlagJump;
+			tutFlagRun = saveData.tutFlagRun;
+			tutFlagAperture = saveData.tutFlagAperture;
+			tutFlagWhiteBalance = saveData.tutFlagWhiteBalance;
+			tutFlagChangeLens = saveData.tutFlagChangeLens;
+			tutFlagShutterSpeed = saveData.tutFlagShutterSpeed;
+			tutFlagViewControls = saveData.tutFlagViewControls;
+
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
@@ -85,6 +103,14 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.tutFlagMovement = tutFlagMovement;
 		saveData.tutFlagAim = tutFlagAim;
 		saveData.tutFlagSnap = tutFlagSnap;
+		saveData.tutFlagLook = tutFlagLook;
+		saveData.tutFlagJump = tutFlagJump;
+		saveData.tutFlagRun = tutFlagRun;
+		saveData.tutFlagAperture = tutFlagAperture;
+		saveData.tutFlagWhiteBalance = tutFlagWhiteBalance;
+		saveData.tutFlagChangeLens = tutFlagChangeLens;
+		saveData.tutFlagShutterSpeed = tutFlagShutterSpeed;
+		saveData.tutFlagViewControls = tutFlagViewControls;
 
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
@@ -104,6 +130,14 @@ public class PlayerProfile : MonoBehaviour {
 		tutFlagMovement = false;
 		tutFlagAim = false;
 		tutFlagSnap = false;
+		tutFlagLook = false;
+		tutFlagJump = false;
+		tutFlagRun = false;
+		tutFlagAperture = false;
+		tutFlagWhiteBalance = false;
+		tutFlagChangeLens = false;
+		tutFlagShutterSpeed = false;
+		tutFlagViewControls = false;
 
 		save ();
 	}
@@ -126,4 +160,12 @@ class InternalProfile {
 	public bool tutFlagMovement;
 	public bool tutFlagAim;
 	public bool tutFlagSnap;
+	public bool tutFlagLook;
+	public bool tutFlagJump;
+	public bool tutFlagRun;
+	public bool tutFlagAperture;
+	public bool tutFlagWhiteBalance;
+	public bool tutFlagChangeLens;
+	public bool tutFlagShutterSpeed;
+	public bool tutFlagViewControls;
 }
