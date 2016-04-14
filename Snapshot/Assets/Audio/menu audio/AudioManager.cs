@@ -27,8 +27,8 @@ public class AudioManager : MonoBehaviour
 
 
 		Fabric.EventManager.Instance.PostEvent("PlayWeather");
-		Fabric.EventManager.Instance.SetParameter("PlayWeather", "Clear", 0.5f, null);
-		Fabric.EventManager.Instance.SetParameter("PlayWeather", "Rain", 0.0f, null);
+		setWeatherVolume ("Clear", 0.5f);
+		setWeatherVolume ("Rain", 0.0f);
 	}
 
 	// Use this for initialization
@@ -88,6 +88,10 @@ public class AudioManager : MonoBehaviour
 	public void setRainVolume(float value)
 	{
 		Fabric.EventManager.Instance.SetParameter("PlayWeather", "Rain", value, null);
+	}
+
+	public void setWeatherVolume(string weather, float value) {
+		Fabric.EventManager.Instance.SetParameter("PlayWeather", weather, value, null);
 	}
 
 	public void setNoon()

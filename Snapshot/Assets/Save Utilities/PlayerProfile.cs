@@ -79,12 +79,15 @@ public class PlayerProfile : MonoBehaviour {
 	}
 
 	/*
-	 * Creates an empty profile
+	 * Creates a default profile
 	 */
 	private void createProfile() {
 		money = 0;
 		lenses = new List<string> ();
 		postedPhotos = new List<string> ();
+
+		lenses.Add ("port1");
+
 		save ();
 	}
 }
