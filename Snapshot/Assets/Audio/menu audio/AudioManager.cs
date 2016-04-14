@@ -32,7 +32,7 @@ public class AudioManager : MonoBehaviour
 
 			Fabric.EventManager.Instance.PostEvent ("PlayWeather");
 			setWeatherVolume ("Clear", 0.5f);
-			setWeatherVolume ("Rain", 0.0f);
+			setWeatherVolume ("Rain", 0.0f); 
 		}
 	}
 
