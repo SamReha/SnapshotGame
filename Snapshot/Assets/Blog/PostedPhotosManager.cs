@@ -102,11 +102,9 @@ public class PostedPhotosManager : MonoBehaviour {
 				float score = photo.balanceValue + photo.spacingValue + photo.interestingnessValue;
 				Debug.Log (score);
 				if (score <= 3f) {
-					markup = "Bad";
+					markup = "bad";
 				} else if (score <= 6f) {
-					markup = "Good";
-				} else if (score <= 9f) {
-					markup = "Great";
+					markup = "good";
 				} else {
 					markup = "perfect";
 				}
