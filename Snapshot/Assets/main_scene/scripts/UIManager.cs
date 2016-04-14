@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.SceneManagement;
@@ -79,6 +79,8 @@ public class UIManager : MonoBehaviour {
 
 	public void exitPark() {
 		//  Upload pictures from the camera to the photo buffer. 
+		pauseSource.Stop();
 		SceneManager.LoadScene("main_menu");
+		AudioManager.getInstance().setExitToMenu (true);
 	}
 }
