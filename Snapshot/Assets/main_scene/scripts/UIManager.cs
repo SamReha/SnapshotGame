@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour {
 		pauseSource = GetComponent<AudioSource> ();
 
 		pauseSource.ignoreListenerPause = true;
-		pauseSource.Play ();
+		pauseSource.Play (); 
 		pauseSource.Pause ();
 	}
 	
