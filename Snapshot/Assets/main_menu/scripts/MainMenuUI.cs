@@ -21,4 +21,9 @@ public class MainMenuUI : MonoBehaviour {
 	public void goToBlog() {
 		SceneManager.LoadScene ("blog");
 	}
+
+    public void goToCredits()
+    {
+        SceneManager.LoadScene("credits");
+    }
 }
