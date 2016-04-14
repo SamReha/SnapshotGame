@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
 	private bool isNoon = true;
 	private float deerVolume = 0.0f;
 	private float foxVolume = 0.0f;
+	public  static bool exitToMenu = false;
 
 	void Awake()
 	{
@@ -18,23 +19,27 @@ public class AudioManager : MonoBehaviour
 		}
 		instance = this;
 
-		Fabric.EventManager.Instance.PostEvent("PlayMusic");
-		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Noon", 1.0f, null);
-		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Fox", 0.0f, null);
-		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Deer", 0.0f, null);
-		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Fox2", 0.0f, null);
-		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Deer2", 0.0f, null);
+		if (!exitToMenu) {
+
+			Fabric.EventManager.Instance.PostEvent ("PlayMusic");
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Noon", 1.0f, null);
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox", 0.0f, null);
+
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer", 0.0f, null);
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox2", 0.0f, null);
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer2", 0.0f, null);
 
 
-		Fabric.EventManager.Instance.PostEvent("PlayWeather");
-		setWeatherVolume ("Clear", 0.5f);
-		setWeatherVolume ("Rain", 0.0f);
+			Fabric.EventManager.Instance.PostEvent ("PlayWeather");
+			setWeatherVolume ("Clear", 0.5f);
+			setWeatherVolume ("Rain", 0.0f);
+		}
 	}
 
 	// Use this for initialization
 	void Start ()
 	{
-		
+		exitToMenu = exitToMenu; //NOT A REDUNDANT STATEMENT needed for the value to remain persistant - Jamie
 	}
 		
 
@@ -56,16 +61,19 @@ public class AudioManager : MonoBehaviour
 		Debug.Log ("I am trying to silence all!");
 	}
 
-	public void setDeerVolume(float value)
+	public void setDeerVolume(float value = 0.0f)
 	{
 		deerVolume = value;
+
+
+		setFoxVolume ();
 		if(isNoon)
 		{
-			Fabric.EventManager.Instance.SetParameter("PlayMusic", "Deer", deerVolume, null);
+				Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer", deerVolume, null);
 		}
 		else
 		{
-			Fabric.EventManager.Instance.SetParameter("PlayMusic", "Deer2", deerVolume, null);
+				Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer2", deerVolume, null);
 		}
 	}
 
@@ -78,6 +86,10 @@ public class AudioManager : MonoBehaviour
 		} else {
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox2", foxVolume, null);
 		}
+	}
+
+	public void setExitToMenu(bool toggle) {
+		exitToMenu = toggle;
 	}
 
 	public void setClearVolume(float value)
@@ -136,6 +148,7 @@ public class AudioManager : MonoBehaviour
   	 *     to get a value between 0.0 and 1.0 for distance between minThreshold and maxThreshold
   	 */
 	private void updateAnimalVolume() {
+		Debug.Log (exitToMenu);
 		/*
   		 * We can abstract this by placing all animals in a separate render layer and then
   		 * using a Physics.OverlapSphere to get all animals within a maximum distance. Then
@@ -179,9 +192,9 @@ public class AudioManager : MonoBehaviour
 			setDeerVolume (1f);
 		} else {
 			// Animal is between thresholds
-			float normalizedThreshold = minThreshold-maxThreshold;
-			float volume = ((-(1/normalizedThreshold))*(deerDistance-maxThreshold)) + 1;
-			setDeerVolume (volume);
+				float normalizedThreshold = minThreshold - maxThreshold;
+				float volume = ((-(1 / normalizedThreshold)) * (deerDistance - maxThreshold)) + 1;
+				setDeerVolume(volume);
 		}
 
 		if (foxDistance > minThreshold) {
