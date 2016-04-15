@@ -235,11 +235,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Balance:
-
-    Spacing:
-
-    Interest:'
+  m_Text: 
 --- !u!114 &11457100
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BlogUIManager : MonoBehaviour {
+	private AudioSource blogSource;
 	public GameObject scrollManager;
 	public GameObject postedPhotosManager;
 	public Text moneyText;
@@ -13,6 +14,10 @@ public class BlogUIManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
+		blogSource = GetComponent<AudioSource> ();
+
+		blogSource.ignoreListenerPause = true;
+		blogSource.Play ();
 	}
 	
 	// Update is called once per frame
@@ -22,6 +27,7 @@ public class BlogUIManager : MonoBehaviour {
 	}
 
 	public void loadMainMenu() {
+		blogSource.Stop ();
 		SceneManager.LoadScene ("main_menu");
 	}
 
