@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
 public class ShopUIManager : MonoBehaviour {
+	private AudioSource shopSource;
 	public Text moneyText;
 
 	//private Dictionary<string,PurchaseButton> purchaseButtons; // Ugh I am not clever enough for this.
@@ -23,7 +24,10 @@ public class ShopUIManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
+		shopSource = GetComponent<AudioSource> ();
 
+		shopSource.ignoreListenerPause = true;
+		shopSource.Play ();
 		//Panel panel = GameObject.Find ("/CanvasShop/PanelShop");
 		/*
 		purchaseButtons = new Dictionary<string,PurchaseButton> ();
@@ -129,6 +133,7 @@ public class ShopUIManager : MonoBehaviour {
 	}
 
 	public void loadMainMenu() {
+		shopSource.Stop ();
 		SceneManager.LoadScene ("main_menu");
 	}
 }
