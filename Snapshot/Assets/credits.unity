@@ -158,6 +158,38 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 65208908}
+--- !u!1 &138151022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 138151023}
+  m_Layer: 5
+  m_Name: GameObjectRump
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &138151023
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 138151022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 298719797}
+  m_RootOrder: 12
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -1623}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &155926464
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,6 +460,7 @@ RectTransform:
   - {fileID: 316899112}
   - {fileID: 963384869}
   - {fileID: 955981955}
+  - {fileID: 138151023}
   m_Father: {fileID: 276694359}
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1584,6 +1617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goBack: {fileID: 879571546}
   muzak: {fileID: 1672776712}
+  rump: {fileID: 138151022}
 --- !u!82 &1672776712
 AudioSource:
   m_ObjectHideFlags: 0
