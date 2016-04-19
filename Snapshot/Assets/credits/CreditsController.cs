@@ -15,6 +15,8 @@ public class CreditsController : MonoBehaviour {
 	void Start () {
 		credits = GameObject.Find ("HolderOfTheText");
         goBack.gameObject.SetActive(false);
+
+        muzak.ignoreListenerPause = true;
         muzak.PlayDelayed(0.5f);
     }
 	
@@ -32,6 +34,7 @@ public class CreditsController : MonoBehaviour {
     }
 
     public void goBackOnClick() {
+        muzak.Stop();
         SceneManager.LoadScene("main_menu");
     }
 }
