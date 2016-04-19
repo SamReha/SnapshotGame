@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
     Code borrowed from https://github.com/spgar/Progress under the MIT license.
@@ -19,6 +20,7 @@ public class Achievement {
     public int RewardPoints;
     public float TargetProgress;
     public bool Secret;
+    public List<string> deSecrefies;
 
     [HideInInspector]
     public bool Earned = false;
