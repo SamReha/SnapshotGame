@@ -112,201 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 909687c551838cd478c432201b9ef37d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Achievements:
-  - Name: Day Tripper
-    Description: Walk a totoal of 1 kilometer
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1000
-    Secret: 0
-    deSecrefies:
-    - Marathoner
-    - Mountaineer
-    Earned: 0
-  - Name: Marathoner
-    Description: Walk an entire marathon... 42.19 kilometers!
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 42190
-    Secret: 1
-    deSecrefies:
-    - Seasoned Hiker
-    Earned: 0
-  - Name: Seasoned Hiker
-    Description: Walk a total of 100 kilometers. That's the distance from Washington,
-      DC to Chicago!
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 100000
-    Secret: 1
-    deSecrefies:
-    - Master Backpacker
-    Earned: 0
-  - Name: Master Backpacker
-    Description: Walk a total of 500 kilometers. That's the same as the distance between
-      San Francisco and LA!
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 500000
-    Secret: 1
-    deSecrefies: []
-    Earned: 0
-  - Name: Journeyman Photographer
-    Description: Post a photo to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies:
-    - Experienced Photographer
-    Earned: 0
-  - Name: Experienced Photographer
-    Description: Post 50 photos to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 50
-    Secret: 1
-    deSecrefies:
-    - Expert Photographer
-    Earned: 0
-  - Name: Expert Photographer
-    Description: Post 200 photos to your blog
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 200
-    Secret: 1
-    deSecrefies: []
-    Earned: 0
-  - Name: Balanced Breakfast
-    Description: Post a perfectly balanced photo to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies:
-    - Perfection Incarnate
-    Earned: 0
-  - Name: The Most Interesting Photo in The World
-    Description: Post a perfectly interesting photo to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies:
-    - Perfection Incarnate
-    Earned: 0
-  - Name: The Final Frontier
-    Description: Post a perfectly well-spaced photo to your blog
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies:
-    - Perfection Incarnate
-    Earned: 0
-  - Name: Perfection Incarnate
-    Description: Post an absolutely perfect photo to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 1
-    deSecrefies: []
-    Earned: 0
-  - Name: Telemachus
-    Description: Post a good photo taken with a telephoto lens to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies: []
-    Earned: 0
-  - Name: Wide Awake
-    Description: Post a good photo taken using a wide-angle lens to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies: []
-    Earned: 0
-  - Name: Hipstergram
-    Description: Post a good photo taking using a lens filter to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies: []
-    Earned: 0
-  - Name: Owl Have What She's Having
-    Description: Post a good photo containing an owl to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies:
-    - Say Cheese
-    Earned: 0
-  - Name: Doe, a Deer, a Female Deer
-    Description: Post a good photo containing a deed tp your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies:
-    - Say Cheese
-    Earned: 0
-  - Name: What the Fox
-    Description: Post a good photo containing a fox to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies:
-    - Say Cheese
-    Earned: 0
-  - Name: Mountaineer
-    Description: Reach the highest point in the park
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 1
-    deSecrefies: []
-    Earned: 0
-  - Name: Memento
-    Description: Unlock the largest memory card
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 0
-    deSecrefies: []
-    Earned: 0
-  - Name: Say Cheese
-    Description: Post a photo of an animal striking an unusual pose to your blog.
-    IconIncomplete: {fileID: 0}
-    IconComplete: {fileID: 0}
-    RewardPoints: 0
-    TargetProgress: 1
-    Secret: 1
-    deSecrefies: []
-    Earned: 0
+  Achievements: []
   EarnedSound: {fileID: 0}
   GUIStyleAchievementEarned:
     m_Name: 
@@ -719,6 +525,46 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!1 &1528592648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1528592649}
+  - 114: {fileID: 1528592650}
+  m_Layer: 0
+  m_Name: Hero
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1528592649
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1528592648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 567.43604, y: 320.5549, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+--- !u!114 &1528592650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1528592648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a817e2c841b20f4987631dea956b6e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AchievementManager: {fileID: 135430954}
 --- !u!1 &1623684356
 GameObject:
   m_ObjectHideFlags: 0
