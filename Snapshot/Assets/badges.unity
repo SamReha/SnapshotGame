@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b05f0f1151bd2449c590b01ba39624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cheevoMgr: {fileID: 135430954}
 --- !u!1 &135430953
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +272,8 @@ MonoBehaviour:
     m_FixedHeight: 0
     m_StretchWidth: 1
     m_StretchHeight: 0
+  complete: {fileID: 0}
+  incomplete: {fileID: 0}
 --- !u!4 &135430955
 Transform:
   m_ObjectHideFlags: 0
