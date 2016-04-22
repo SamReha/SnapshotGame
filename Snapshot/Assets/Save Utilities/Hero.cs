@@ -83,7 +83,6 @@ public class Hero : MonoBehaviour
         if (GUI.Button(new Rect(xPosition, 85.0f, 150.0f, 25.0f), "Kill the Red Dragon"))
         {
             AchievementManager.SetProgressToAchievement("Balanced Breakfast", 1.0f);
-            AchievementManager.saveAchievements();
         }
 
         inStealthMode = GUI.Toggle(new Rect(xPosition, 115.0f, 150.0f, 25.0f), inStealthMode, "Stealth Mode");

@@ -26,7 +26,7 @@ public class BadgeUIManager : MonoBehaviour {
         float yValue = 5.0f;
         float achievementGUIWidth = 500.0f;
 
-        GUI.Label(new Rect(200.0f, 5.0f, 200.0f, 25.0f), "-- Achievements --");
+        GUI.Label(new Rect(200.0f, 5.0f, 200.0f, 25.0f), "-- Badges --");
 
         achievementScrollviewLocation = GUI.BeginScrollView(new Rect(0.0f, 25.0f, achievementGUIWidth + 25.0f, 400.0f), achievementScrollviewLocation,
                                                             new Rect(0.0f, 0.0f, achievementGUIWidth, cheevoMgr.Achievements.Count * 80.0f));
@@ -34,7 +34,7 @@ public class BadgeUIManager : MonoBehaviour {
         foreach (Achievement achievement in cheevoMgr.Achievements) {
             Rect position = new Rect(5.0f, yValue, achievementGUIWidth, 75.0f);
             achievement.OnGUI(position, cheevoMgr.GUIStyleAchievementEarned, cheevoMgr.GUIStyleAchievementNotEarned,
-                              cheevoMgr.complete, cheevoMgr.incomplete);
+                              achievement.iconComplete, achievement.iconIncomplete);
             yValue += 80.0f;
         }
 

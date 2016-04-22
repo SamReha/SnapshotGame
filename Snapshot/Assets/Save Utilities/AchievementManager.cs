@@ -15,7 +15,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 // towards reward and whether or not it is secret.
 
 [Serializable]
-public class SerializeableCheevoData {
+public class SerializeableBadgeData {
     public string Name;
     public string Description;
     public string IconIncomplete;
@@ -23,13 +23,39 @@ public class SerializeableCheevoData {
     public int RewardPoints;
     public float TargetProgress;
     public bool Secret;
-    public string[] deSecrefies = new string[10];
-    public bool Earned = false;
-    public float currentProgress = 0.0f;
+    public List<string> Desecrefies;
+    public bool Earned;
+    public float currentProgress;
 }
 
 public class Achievement {
-    public SerializeableCheevoData data;
+    public SerializeableBadgeData data;
+    public Texture2D iconIncomplete;
+    public Texture2D iconComplete;
+
+    public Achievement(string name, string desc, string iconIncompletePath, string iconCompletePath, int rewardPoints, float targetProgress, bool secret, List<string> desecrefies) {
+        data = new SerializeableBadgeData();
+        data.Name = name;
+        data.Description = desc;
+        data.IconIncomplete = iconIncompletePath;
+        data.IconComplete = iconCompletePath;
+        data.RewardPoints = rewardPoints;
+        data.TargetProgress = targetProgress;
+        data.Secret = secret;
+        data.Desecrefies = desecrefies;
+        data.Earned = false;
+        data.currentProgress = 0.0f;
+
+        iconIncomplete = Resources.Load(iconIncompletePath) as Texture2D;
+        iconComplete = Resources.Load(iconCompletePath) as Texture2D;
+    }
+
+    public Achievement(SerializeableBadgeData badgeData) {
+        data = badgeData;
+
+        iconIncomplete = Resources.Load(data.IconIncomplete) as Texture2D;
+        iconComplete = Resources.Load(data.IconComplete) as Texture2D;
+    }
 
     // Returns true if this progress added results in the Achievement being earned.
     public bool AddProgress(float progress) {
@@ -99,8 +125,6 @@ public class AchievementManager : MonoBehaviour {
     public AudioClip EarnedSound;
     public GUIStyle GUIStyleAchievementEarned;
     public GUIStyle GUIStyleAchievementNotEarned;
-    public Texture2D complete;
-    public Texture2D incomplete;
 
     private int currentRewardPoints = 0;
     private int potentialRewardPoints = 0;
@@ -108,11 +132,9 @@ public class AchievementManager : MonoBehaviour {
 
     void Start() {
         savePath = Application.persistentDataPath + "/cheevos/";
-
         //Debug.Log(savePath);
 
-        complete = Resources.Load("badge_icons/AchievementCompleteIcon") as Texture2D;
-        incomplete = Resources.Load("badge_icons/AchievementIncompleteIcon") as Texture2D;
+        Achievements = new List<Achievement>();
 
         loadAchievements();
         ValidateAchievements();
@@ -151,9 +173,17 @@ public class AchievementManager : MonoBehaviour {
         }
     }
 
-    private void AchievementEarned() {
-        UpdateRewardPointTotals();
-        //AudioSource.PlayClipAtPoint(EarnedSound, Camera.main.transform.position);
+    private void AchievementEarned(Achievement achievement) {
+        // Handle removing secret property as needed
+        foreach (string name in achievement.data.Desecrefies) {
+            Achievement desecrefied = GetAchievementByName(name);
+            desecrefied.data.Secret = false;
+
+            saveAchievement(desecrefied);
+        }
+
+        UpdateRewardPointTotals(); // Gamer Score analog - we don't really use it.
+        //AudioSource.PlayClipAtPoint(EarnedSound, Camera.main.transform.position); // Need to add sound effect, maybe add popup, too?
     }
 
     public void AddProgressToAchievement(string achievementName, float progressAmount) {
@@ -164,8 +194,9 @@ public class AchievementManager : MonoBehaviour {
         }
 
         if (achievement.AddProgress(progressAmount)) {
-            AchievementEarned();
+            AchievementEarned(achievement);
         }
+        saveAchievement(achievement);
     }
 
     public void SetProgressToAchievement(string achievementName, float newProgress) {
@@ -176,227 +207,253 @@ public class AchievementManager : MonoBehaviour {
         }
 
         if (achievement.SetProgress(newProgress)) {
-            AchievementEarned();
+            AchievementEarned(achievement);
         }
+        saveAchievement(achievement);
     }
 
     /*
         New Utilities
     */
     public void initializeAchievements() {
-        Achievement dayTripper = new Achievement();
-        dayTripper.data = new SerializeableCheevoData();
-        dayTripper.data.Name = "Day Tripper";
-        dayTripper.data.Description = "Walk a total of 1 kilometer.";
-        dayTripper.data.IconComplete = null;
-        dayTripper.data.IconIncomplete = null;
-        dayTripper.data.RewardPoints = 0;
-        dayTripper.data.TargetProgress = 1000f;
-        dayTripper.data.Secret = false;
-        dayTripper.data.deSecrefies[0] = "Marathoner";
-        dayTripper.data.deSecrefies[1] = "Mountaineer";
-        Achievements.Add(dayTripper);
+        List<string> dayTripDesecrefies = new List<string>();
+        dayTripDesecrefies.Add("Marathoner");
+        dayTripDesecrefies.Add("Mountaineer");
+        Achievements.Add(new Achievement(
+            "Day Tripper",
+            "Walk a total of 1 kilometer.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1000f,
+            false,
+            dayTripDesecrefies
+        ));
 
-        Achievement marathoner = new Achievement();
-        marathoner.data = new SerializeableCheevoData();
-        marathoner.data.Name = "Marathoner";
-        marathoner.data.Description = "Walk an entire marathon... 42.19 kilometers!";
-        marathoner.data.IconComplete = null;
-        marathoner.data.IconIncomplete = null;
-        marathoner.data.RewardPoints = 0;
-        marathoner.data.TargetProgress = 42190f;
-        marathoner.data.Secret = true;
-        marathoner.data.deSecrefies[0] = "Seasoned Hiker";
-        Achievements.Add(marathoner);
+        List<string> marathonerDesecrefies = new List<string>();
+        marathonerDesecrefies.Add("Seasoned Hiker");
+        Achievements.Add(new Achievement(
+            "Marathoner",
+            "Walk an entire marathon... 42.19 kilometers!",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            42190f,
+            true,
+            marathonerDesecrefies
+        ));
 
-        Achievement seasonedHiker = new Achievement();
-        seasonedHiker.data.Name = "Seasoned Hiker";
-        seasonedHiker.data.Description = "Walk a total of 100 kilometers. That's the distance from Washington, DC to Chicago!";
-        seasonedHiker.data.IconComplete = null;
-        seasonedHiker.data.IconIncomplete = null;
-        seasonedHiker.data.RewardPoints = 0;
-        seasonedHiker.data.TargetProgress = 100000f;
-        seasonedHiker.data.Secret = true;
-        seasonedHiker.data.deSecrefies[0] = "Master Backpacker";
-        Achievements.Add(seasonedHiker);
+        List<string> seasonedHikerDesecrefies = new List<string>();
+        seasonedHikerDesecrefies.Add("Master Backpacker");
+        Achievements.Add(new Achievement(
+            "Seasoned Hiker",
+            "Walk a total of 100 kilometers. That's the distance from Washington, DC to Chicago!",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            100000f,
+            true,
+            seasonedHikerDesecrefies
+        ));
 
-        Achievement masterBackpacker = new Achievement();
-        masterBackpacker.data.Name = "Master Backpacker";
-        masterBackpacker.data.Description = "Walk a total of 500 kilometers. That's the same as the distance between San Francisco and LA!";
-        masterBackpacker.data.IconComplete = null;
-        masterBackpacker.data.IconIncomplete = null;
-        masterBackpacker.data.RewardPoints = 0;
-        masterBackpacker.data.TargetProgress = 500000f;
-        masterBackpacker.data.Secret = true;
-        Achievements.Add(masterBackpacker);
+        List<string> masterBackpackerDesecrefies = new List<string>();
+        Achievements.Add(new Achievement(
+            "Master Backpacker",
+            "Walk a total of 500 kilometers. That's the same as the distance between San Francisco and LA!",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            500000f,
+            true,
+            masterBackpackerDesecrefies
+        ));
 
-        Achievement journeymanPhotographer = new Achievement();
-        journeymanPhotographer.data.Name = "Journeyman Photographer";
-        journeymanPhotographer.data.Description = "Post a photo to your blog.";
-        journeymanPhotographer.data.IconComplete = null;
-        journeymanPhotographer.data.IconIncomplete = null;
-        journeymanPhotographer.data.RewardPoints = 0;
-        journeymanPhotographer.data.TargetProgress = 1f;
-        journeymanPhotographer.data.Secret = false;
-        journeymanPhotographer.data.deSecrefies[0] = "Experienced Photographer";
-        Achievements.Add(journeymanPhotographer);
+        List<string> journeymanPhotographerDesecrefies = new List<string>();
+        journeymanPhotographerDesecrefies.Add("Experienced Photographer");
+        Achievements.Add(new Achievement(
+            "Journeyman Photographer",
+            "Post a photo to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            journeymanPhotographerDesecrefies
+        ));
 
-        Achievement experiencedPhotographer = new Achievement();
-        experiencedPhotographer.data.Name = "Experienced Photographer";
-        experiencedPhotographer.data.Description = "Post 50 photos to your blog.";
-        experiencedPhotographer.data.IconComplete = null;
-        experiencedPhotographer.data.IconIncomplete = null;
-        experiencedPhotographer.data.RewardPoints = 0;
-        experiencedPhotographer.data.TargetProgress = 50f;
-        experiencedPhotographer.data.Secret = true;
-        experiencedPhotographer.data.deSecrefies[0] = "Expert Photographer";
-        Achievements.Add(experiencedPhotographer);
+        List<string> experiencedPhotographerDesecrefies = new List<string>();
+        journeymanPhotographerDesecrefies.Add("Experienced Photographer");
+        Achievements.Add(new Achievement(
+            "Experienced Photographer",
+            "Post 50 photos to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            50f,
+            true,
+            experiencedPhotographerDesecrefies
+        ));
 
-        Achievement expertPhotographer = new Achievement();
-        expertPhotographer.data.Name = "Expert Photographer";
-        expertPhotographer.data.Description = "Post 200 photos to your blog";
-        expertPhotographer.data.IconComplete = null;
-        expertPhotographer.data.IconIncomplete = null;
-        expertPhotographer.data.RewardPoints = 0;
-        expertPhotographer.data.TargetProgress = 200f;
-        expertPhotographer.data.Secret = true;
-        Achievements.Add(expertPhotographer);
+        List<string> expertPhotographerDesecrefies = new List<string>();
+        Achievements.Add(new Achievement(
+            "Expert Photographer",
+            "Post 200 photos to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            200f,
+            true,
+            expertPhotographerDesecrefies
+        ));
 
-        Achievement balancedBreakfast = new Achievement();
-        balancedBreakfast.data.Name = "Balanced Breakfast";
-        balancedBreakfast.data.Description = "Post a perfectly balanced photo to your blog.";
-        balancedBreakfast.data.IconComplete = null;
-        balancedBreakfast.data.IconIncomplete = null;
-        balancedBreakfast.data.RewardPoints = 0;
-        balancedBreakfast.data.TargetProgress = 1f;
-        balancedBreakfast.data.Secret = false;
-        balancedBreakfast.data.deSecrefies[0] = "Perfection Incarnate";
-        Achievements.Add(balancedBreakfast);
+        List<string> balancedBreakfastDesecrefies = new List<string>();
+        balancedBreakfastDesecrefies.Add("Perfection Incarnate");
+        Achievements.Add(new Achievement(
+            "Balanced Breakfast",
+            "Post a perfectly balanced photo to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            balancedBreakfastDesecrefies
+        ));
 
-        Achievement theMostInterestingPhoto = new Achievement();
-        theMostInterestingPhoto.data.Name = "The Most Interesting Photo in The World";
-        theMostInterestingPhoto.data.Description = "Post a perfectly interesting photo to your blog.";
-        theMostInterestingPhoto.data.IconComplete = null;
-        theMostInterestingPhoto.data.IconIncomplete = null;
-        theMostInterestingPhoto.data.RewardPoints = 0;
-        theMostInterestingPhoto.data.TargetProgress = 1f;
-        theMostInterestingPhoto.data.Secret = false;
-        theMostInterestingPhoto.data.deSecrefies[0] = "Perfection Incarnate";
-        Achievements.Add(theMostInterestingPhoto);
+        List<string> theMostInterestingPhotoDesecrefies = new List<string>();
+        theMostInterestingPhotoDesecrefies.Add("Perfection Incarnate");
+        Achievements.Add(new Achievement(
+            "The Most Interesting Photo in The World",
+            "Post a perfectly interesting photo to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            theMostInterestingPhotoDesecrefies
+        ));
 
-        Achievement theFinalFrontier = new Achievement();
-        theFinalFrontier.data.Name = "The Final Frontier";
-        theFinalFrontier.data.Description = "Post a perfectly well-spaced photo to your blog.";
-        theFinalFrontier.data.IconComplete = null;
-        theFinalFrontier.data.IconIncomplete = null;
-        theFinalFrontier.data.RewardPoints = 0;
-        theFinalFrontier.data.TargetProgress = 1f;
-        theFinalFrontier.data.Secret = false;
-        theFinalFrontier.data.deSecrefies[0] = "Perfection Incarnate";
-        Achievements.Add(theFinalFrontier);
+        List<string> theFinalFrontierDesecrefies = new List<string>();
+        theFinalFrontierDesecrefies.Add("Perfection Incarnate");
+        Achievements.Add(new Achievement(
+            "The Final Frontier",
+            "Post a perfectly well-spaced photo to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            theMostInterestingPhotoDesecrefies
+        ));
 
-        Achievement perfectionIncarnate = new Achievement();
-        perfectionIncarnate.data.Name = "Perfection Incarnate";
-        perfectionIncarnate.data.Description = "Post an absolutely perfect photo to your blog.";
-        perfectionIncarnate.data.IconComplete = null;
-        perfectionIncarnate.data.IconIncomplete = null;
-        perfectionIncarnate.data.RewardPoints = 0;
-        perfectionIncarnate.data.TargetProgress = 1f;
-        perfectionIncarnate.data.Secret = true;
-        Achievements.Add(perfectionIncarnate);
+        List<string> perfectionIncarnateDesecrefies = new List<string>();
+        Achievements.Add(new Achievement(
+            "Perfection Incarnate",
+            "Post an absolutely perfect photo to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            true,
+            perfectionIncarnateDesecrefies
+        ));
 
-        Achievement Telemachus = new Achievement();
-        Telemachus.data.Name = "Telemachus";
-        Telemachus.data.Description = "Post a good photo taken with a telephoto lens to your blog.";
-        Telemachus.data.IconComplete = null;
-        Telemachus.data.IconIncomplete = null;
-        Telemachus.data.RewardPoints = 0;
-        Telemachus.data.TargetProgress = 1f;
-        Telemachus.data.Secret = false;
-        Achievements.Add(Telemachus);
+        List<string> TelemachusDesecrefies = new List<string>();
+        Achievements.Add(new Achievement(
+            "Telemachus",
+            "Post a good photo taken with a telephoto lens to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            TelemachusDesecrefies
+        ));
 
-        Achievement WideAwake = new Achievement();
-        WideAwake.data.Name = "Wide Awake";
-        WideAwake.data.Description = "Post a good photo taken using a wide-angle lens to your blog.";
-        WideAwake.data.IconComplete = null;
-        WideAwake.data.IconIncomplete = null;
-        WideAwake.data.RewardPoints = 0;
-        WideAwake.data.TargetProgress = 1f;
-        WideAwake.data.Secret = false;
-        Achievements.Add(WideAwake);
+        List<string> WideAwakeDesecrefies = new List<string>();
+        Achievements.Add(new Achievement(
+            "Wide Awake",
+            "Post a good photo taken using a wide-angle lens to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            WideAwakeDesecrefies
+        ));
 
-        Achievement Hipstergram = new Achievement();
-        Hipstergram.data.Name = "Hipstergram";
-        Hipstergram.data.Description = "Post a good photo taking using a lens filter to your blog.";
-        Hipstergram.data.IconComplete = null;
-        Hipstergram.data.IconIncomplete = null;
-        Hipstergram.data.RewardPoints = 0;
-        Hipstergram.data.TargetProgress = 1f;
-        Hipstergram.data.Secret = false;
-        Achievements.Add(Hipstergram);
+        List<string> HipstergramDesecrefies = new List<string>();
+        Achievements.Add(new Achievement(
+            "Hipstergram",
+            "Post a good photo taking using a lens filter to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            HipstergramDesecrefies
+        ));
 
-        Achievement OwlHaveWhatShesHaving = new Achievement();
-        OwlHaveWhatShesHaving.data.Name = "Owl Have What She's Having";
-        OwlHaveWhatShesHaving.data.Description = "Post a good photo containing an owl to your blog.";
-        OwlHaveWhatShesHaving.data.IconComplete = null;
-        OwlHaveWhatShesHaving.data.IconIncomplete = null;
-        OwlHaveWhatShesHaving.data.RewardPoints = 0;
-        OwlHaveWhatShesHaving.data.TargetProgress = 1f;
-        OwlHaveWhatShesHaving.data.Secret = false;
-        OwlHaveWhatShesHaving.data.deSecrefies[0] = "Say Cheese";
-        Achievements.Add(OwlHaveWhatShesHaving);
+        List<string> doeDesecrefies = new List<string>();
+        doeDesecrefies.Add("Say Cheese");
+        Achievements.Add(new Achievement(
+            "Doe, a Deer, a Female Deer",
+            "Post a good photo containing a deer to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            doeDesecrefies
+        ));
 
-        Achievement doe = new Achievement();
-        doe.data.Name = "Doe, a Deer, a Female Deer";
-        doe.data.Description = "Post a good photo containing a deer to your blog.";
-        doe.data.IconComplete = null;
-        doe.data.IconIncomplete = null;
-        doe.data.RewardPoints = 0;
-        doe.data.TargetProgress = 1f;
-        doe.data.Secret = false;
-        doe.data.deSecrefies[0] = "Say Cheese";
-        Achievements.Add(doe);
+        List<string> foxDesecrefies = new List<string>();
+        foxDesecrefies.Add("Say Cheese");
+        Achievements.Add(new Achievement(
+            "What the Fox",
+            "Post a good photo containing a fox to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            foxDesecrefies
+        ));
 
-        Achievement fox = new Achievement();
-        fox.data.Name = "What the Fox";
-        fox.data.Description = "Post a good photo containing a fox to your blog.";
-        fox.data.IconComplete = null;
-        fox.data.IconIncomplete = null;
-        fox.data.RewardPoints = 0;
-        fox.data.TargetProgress = 1f;
-        fox.data.Secret = false;
-        fox.data.deSecrefies[0] = "Say Cheese";
-        Achievements.Add(fox);
+        List<string> MountaineerDesecrefies = new List<string>();;
+        Achievements.Add(new Achievement(
+            "Mountaineer",
+            "Reach the highest point in the park.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            true,
+            MountaineerDesecrefies
+        ));
 
-        Achievement Mountaineer = new Achievement();
-        Mountaineer.data.Name = "Mountaineer";
-        Mountaineer.data.Description = "Reach the highest point in the park.";
-        Mountaineer.data.IconComplete = null;
-        Mountaineer.data.IconIncomplete = null;
-        Mountaineer.data.RewardPoints = 0;
-        Mountaineer.data.TargetProgress = 1f;
-        Mountaineer.data.Secret = true;
-        Achievements.Add(Mountaineer);
+        List<string> MementoDesecrefies = new List<string>(); ;
+        Achievements.Add(new Achievement(
+            "Memento",
+            "Unlock the largest memory card.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            MementoDesecrefies
+        ));
 
-        Achievement Memento = new Achievement();
-        Memento.data.Name = "Memento";
-        Memento.data.Description = "Unlock the largest memory card.";
-        Memento.data.IconComplete = null;
-        Memento.data.IconIncomplete = null;
-        Memento.data.RewardPoints = 0;
-        Memento.data.TargetProgress = 1f;
-        Memento.data.Secret = false;
-        Achievements.Add(Memento);
-
-        Achievement cheese = new Achievement();
-        cheese.data.Name = "Say Cheese";
-        cheese.data.Description = "Post a photo of an animal striking an unusual pose to your blog.";
-        cheese.data.IconComplete = null;
-        cheese.data.IconIncomplete = null;
-        cheese.data.RewardPoints = 0;
-        cheese.data.TargetProgress = 1f;
-        cheese.data.Secret = true;
-        Achievements.Add(cheese);
+        List<string> cheeseDesecrefies = new List<string>(); ;
+        Achievements.Add(new Achievement(
+            "Say Cheese",
+            "Post a photo of an animal striking an unusual pose to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            true,
+            cheeseDesecrefies
+        ));
     }
 
     public void saveAchievements() {
@@ -443,14 +500,14 @@ public class AchievementManager : MonoBehaviour {
         // If info.Length is 0, then there is no cheevo data saved on disk, so we should set some up!
         if (info.Length == 0) {
             initializeAchievements();
+            saveAchievements();
         } else {
             foreach (FileInfo file in info) {
                 fullCheevoPath = savePath + file.Name;
                 FileStream cheevoFile = File.Open(fullCheevoPath, FileMode.Open);
-
-                Achievement cheevo = new Achievement();
-                SerializeableCheevoData cheevoData = (SerializeableCheevoData)binForm.Deserialize(cheevoFile);
-                cheevo.data = cheevoData;
+                
+                SerializeableBadgeData badgeData = (SerializeableBadgeData)binForm.Deserialize(cheevoFile);
+                Achievement cheevo = new Achievement(badgeData);
 
                 cheevoFile.Close();
                 Achievements.Add(cheevo);
