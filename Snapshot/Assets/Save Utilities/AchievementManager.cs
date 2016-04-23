@@ -107,13 +107,13 @@ public class Achievement {
         GUI.Label(new Rect(80.0f, 5.0f, position.width - 80.0f - 50.0f, 25.0f), data.Name, style);
 
         if (data.Secret && !data.Earned) {
-            GUI.Label(new Rect(80.0f, 25.0f, position.width - 80.0f, 25.0f), "Description Hidden!", style);
-            GUI.Label(new Rect(position.width - 50.0f, 5.0f, 25.0f, 25.0f), "???", style);
-            GUI.Label(new Rect(position.width - 250.0f, 50.0f, 250.0f, 25.0f), "Progress Hidden!", style);
+            GUI.Label(new Rect(80.0f, 25.0f, position.width - 80.0f, 25.0f), "???", style); // Description
+            //GUI.Label(new Rect(position.width - 50.0f, 5.0f, 25.0f, 25.0f), "???", style); // Reward Points (not used)
+            GUI.Label(new Rect(position.width - 250.0f, 50.0f, 250.0f, 25.0f), "???", style); // Progress
         } else {
             GUI.Label(new Rect(80.0f, 25.0f, position.width - 80.0f, 25.0f), data.Description, style);
-            GUI.Label(new Rect(position.width - 50.0f, 5.0f, 25.0f, 25.0f), data.RewardPoints.ToString(), style);
-            GUI.Label(new Rect(position.width - 250.0f, 50.0f, 250.0f, 25.0f), "Progress: [" + data.currentProgress.ToString("0.#") + " out of " + data.TargetProgress.ToString("0.#") + "]", style);
+            //GUI.Label(new Rect(position.width - 50.0f, 5.0f, 25.0f, 25.0f), data.RewardPoints.ToString(), style);
+            GUI.Label(new Rect(position.width - 250.0f, 50.0f, 250.0f, 25.0f), "Progress: " + data.currentProgress.ToString("0.#") + " out of " + data.TargetProgress.ToString("0.#"), style);
         }
 
         GUI.EndGroup();

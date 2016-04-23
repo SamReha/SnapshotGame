@@ -24,12 +24,19 @@ public class BadgeUIManager : MonoBehaviour {
     // Sets up a scrollview and fills it out with each Achievement.
     void OnGUI() {
         float yValue = 5.0f;
-        float achievementGUIWidth = 500.0f;
+        float achievementGUIWidth = Screen.width / 2;
 
-        GUI.Label(new Rect(200.0f, 5.0f, 200.0f, 25.0f), "-- Badges --");
+        Rect scrollViewPosition = new Rect(0, 0, Screen.width / 2, Screen.height * 0.80f);
+        scrollViewPosition.center = new Vector2(Screen.width / 2, Screen.height / 2);
+        Rect scrollViewRect = new Rect(0, 0, achievementGUIWidth - 16.0f, cheevoMgr.Achievements.Count * 80.0f);
+        Rect labelTextRect = new Rect(0, 0, 200.0f, 25.0f);
+        labelTextRect.center = new Vector2(Screen.width / 2, Screen.height / 2);
 
-        achievementScrollviewLocation = GUI.BeginScrollView(new Rect(0.0f, 25.0f, achievementGUIWidth + 25.0f, 400.0f), achievementScrollviewLocation,
-                                                            new Rect(0.0f, 0.0f, achievementGUIWidth, cheevoMgr.Achievements.Count * 80.0f));
+        //GUI.Label(labelTextRect, "Your Badges");
+
+        achievementScrollviewLocation = GUI.BeginScrollView(scrollViewPosition,
+                                                            achievementScrollviewLocation,
+                                                            scrollViewRect);
 
         foreach (Achievement achievement in cheevoMgr.Achievements) {
             Rect position = new Rect(5.0f, yValue, achievementGUIWidth, 75.0f);
