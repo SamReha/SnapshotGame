@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 	private AudioSource pauseSource;
-	private AudioClip pauseClip;
 
 	public GameObject PanelPause;
 	public GameObject PanelBag;

@@ -129,13 +129,16 @@ public class AchievementManager : MonoBehaviour {
     private int currentRewardPoints = 0;
     private int potentialRewardPoints = 0;
     private string savePath;
+    private bool achievementsLoaded = false;
 
-    void Start() {
+    void Awake() {
         savePath = Application.persistentDataPath + "/cheevos/";
         //Debug.Log(savePath);
 
         Achievements = new List<Achievement>();
+    }
 
+    void Start() {
         loadAchievements();
         ValidateAchievements();
         UpdateRewardPointTotals();
@@ -487,7 +490,7 @@ public class AchievementManager : MonoBehaviour {
     }
 
     public void loadAchievements() {
-        DirectoryInfo dir = new DirectoryInfo(Application.persistentDataPath + "/cheevos/");
+        DirectoryInfo dir = new DirectoryInfo(savePath);
 
         if (!dir.Exists) {
             dir.Create();
@@ -501,7 +504,7 @@ public class AchievementManager : MonoBehaviour {
         if (info.Length == 0) {
             initializeAchievements();
             saveAchievements();
-        } else {
+        } else if (!achievementsLoaded) {   // Make sure we don't attempt to load the achievements twice
             foreach (FileInfo file in info) {
                 fullCheevoPath = savePath + file.Name;
                 FileStream cheevoFile = File.Open(fullCheevoPath, FileMode.Open);
@@ -512,6 +515,7 @@ public class AchievementManager : MonoBehaviour {
                 cheevoFile.Close();
                 Achievements.Add(cheevo);
             }
+            achievementsLoaded = true;
         }
     }
 }
