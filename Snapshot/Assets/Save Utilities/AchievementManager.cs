@@ -384,7 +384,7 @@ public class AchievementManager : MonoBehaviour {
             WideAwakeDesecrefies
         ));
 
-        List<string> HipstergramDesecrefies = new List<string>();
+        /*List<string> HipstergramDesecrefies = new List<string>();
         Achievements.Add(new Achievement(
             "Hipstergram",
             "Post a good photo taking using a lens filter to your blog.",
@@ -394,7 +394,7 @@ public class AchievementManager : MonoBehaviour {
             1f,
             false,
             HipstergramDesecrefies
-        ));
+        ));*/
 
         List<string> doeDesecrefies = new List<string>();
         doeDesecrefies.Add("Say Cheese");
@@ -422,6 +422,19 @@ public class AchievementManager : MonoBehaviour {
             foxDesecrefies
         ));
 
+        List<string> owlDesecrefies = new List<string>();
+        owlDesecrefies.Add("Say Cheese");
+        Achievements.Add(new Achievement(
+            "Owl Have What She's Having",
+            "Post a good photo containing an owl to your blog.",
+            "badge_icons/AchievementIncompleteIcon",
+            "badge_icons/AchievementCompleteIcon",
+            0,
+            1f,
+            false,
+            owlDesecrefies
+        ));
+
         List<string> MountaineerDesecrefies = new List<string>();;
         Achievements.Add(new Achievement(
             "Mountaineer",
@@ -434,7 +447,7 @@ public class AchievementManager : MonoBehaviour {
             MountaineerDesecrefies
         ));
 
-        List<string> MementoDesecrefies = new List<string>(); ;
+        /*List<string> MementoDesecrefies = new List<string>(); ;
         Achievements.Add(new Achievement(
             "Memento",
             "Unlock the largest memory card.",
@@ -444,9 +457,9 @@ public class AchievementManager : MonoBehaviour {
             1f,
             false,
             MementoDesecrefies
-        ));
+        ));*/
 
-        List<string> cheeseDesecrefies = new List<string>(); ;
+        /*List<string> cheeseDesecrefies = new List<string>(); ;
         Achievements.Add(new Achievement(
             "Say Cheese",
             "Post a photo of an animal striking an unusual pose to your blog.",
@@ -456,7 +469,7 @@ public class AchievementManager : MonoBehaviour {
             1f,
             true,
             cheeseDesecrefies
-        ));
+        ));*/
     }
 
     public void saveAchievements() {
