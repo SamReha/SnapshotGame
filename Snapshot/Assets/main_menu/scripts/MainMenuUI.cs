@@ -34,4 +34,9 @@ public class MainMenuUI : MonoBehaviour {
         mainMenuSource.Stop();
         SceneManager.LoadScene("badges");
     }
+
+    public void goToCredits() {
+        mainMenuSource.Stop();
+        SceneManager.LoadScene("credits");
+    }
 }
