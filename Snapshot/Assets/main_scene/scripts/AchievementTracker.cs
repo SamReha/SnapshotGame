@@ -26,5 +26,9 @@ public class AchievementTracker : MonoBehaviour {
             manager.AddProgressToAchievement("Master Backpacker", distanceTraveled);
             timeOfLastUpdate = Time.time;
         }
+
+        if (player.transform.position.y >= 200) {
+            manager.SetProgressToAchievement("Mountaineer", 1.0f);
+        }
 	}
 }

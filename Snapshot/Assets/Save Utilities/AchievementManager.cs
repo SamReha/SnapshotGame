@@ -122,7 +122,7 @@ public class Achievement {
 
 public class AchievementManager : MonoBehaviour {
     public List<Achievement> Achievements;
-    public AudioClip EarnedSound;
+    public AudioSource EarnedSound;
     public GUIStyle GUIStyleAchievementEarned;
     public GUIStyle GUIStyleAchievementNotEarned;
 
@@ -186,7 +186,7 @@ public class AchievementManager : MonoBehaviour {
         }
 
         UpdateRewardPointTotals(); // Gamer Score analog - we don't really use it.
-        //AudioSource.PlayClipAtPoint(EarnedSound, Camera.main.transform.position); // Need to add sound effect, maybe add popup, too?
+        EarnedSound.Play(); // Need better sound effect, maybe add popup, too?
     }
 
     public void AddProgressToAchievement(string achievementName, float progressAmount) {

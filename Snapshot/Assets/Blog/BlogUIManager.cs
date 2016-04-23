@@ -10,6 +10,7 @@ public class BlogUIManager : MonoBehaviour {
 	public GameObject scrollManager;
 	public GameObject postedPhotosManager;
 	public Text moneyText;
+    public AchievementManager achievementManager;
 
 	// Use this for initialization
 	void Start () {
@@ -27,7 +28,8 @@ public class BlogUIManager : MonoBehaviour {
 	}
 
 	public void loadMainMenu() {
-		blogSource.Stop ();
+        achievementManager.saveAchievements();
+        blogSource.Stop ();
 		SceneManager.LoadScene ("main_menu");
 	}
 
@@ -47,10 +49,15 @@ public class BlogUIManager : MonoBehaviour {
 		}
 		PlayerProfile.profile.save ();
 
-		scrollManager.GetComponent<ScrollViewManager> ().updatePostableImages();
+        // Update achievements
+        achievementManager.AddProgressToAchievement("Journeyman Photographer", newPhotos.Count);
+        achievementManager.AddProgressToAchievement("Experienced Photographer", newPhotos.Count);
+        achievementManager.AddProgressToAchievement("Expert Photographer", newPhotos.Count);
+
+        scrollManager.GetComponent<ScrollViewManager> ().updatePostableImages();
 		postedPhotosManager.GetComponent<PostedPhotosManager> ().updatePhotos();
 		postedPhotosManager.GetComponent<PostedPhotosManager> ().getMetaData();
-	}
+    }
 
 	float getMoneyFromScore(float scoreOne, float scoreTwo, float scoreThree) {
 		if (scoreOne >= scoreTwo && scoreOne >= scoreThree) {
