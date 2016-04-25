@@ -82,84 +82,84 @@ Material:
         first:
           name: _FrontTex
         second:
-          m_Texture: {fileID: 2800000, guid: 5edf93547f9e1e74db46eb56adeb56cb, type: 3}
+          m_Texture: {fileID: 2800000, guid: d659847fc2119724c8af97687900dc45, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _FrontTex2
         second:
-          m_Texture: {fileID: 2800000, guid: 5edf93547f9e1e74db46eb56adeb56cb, type: 3}
+          m_Texture: {fileID: 2800000, guid: d659847fc2119724c8af97687900dc45, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BackTex
         second:
-          m_Texture: {fileID: 2800000, guid: ba8cc99377d6ed84aa4f7b38730e8d99, type: 3}
+          m_Texture: {fileID: 2800000, guid: 42f4778a8bf27514c9161f418800d28e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BackTex2
         second:
-          m_Texture: {fileID: 2800000, guid: ba8cc99377d6ed84aa4f7b38730e8d99, type: 3}
+          m_Texture: {fileID: 2800000, guid: 42f4778a8bf27514c9161f418800d28e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _LeftTex
         second:
-          m_Texture: {fileID: 2800000, guid: 55c6e5e6995372b4fa32a26fcd94ac9f, type: 3}
+          m_Texture: {fileID: 2800000, guid: a45e42c5f4477b442a146709f19929e4, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _LeftTex2
         second:
-          m_Texture: {fileID: 2800000, guid: 55c6e5e6995372b4fa32a26fcd94ac9f, type: 3}
+          m_Texture: {fileID: 2800000, guid: a45e42c5f4477b442a146709f19929e4, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _RightTex
         second:
-          m_Texture: {fileID: 2800000, guid: 6c208faf50609fe488045f6575bca88a, type: 3}
+          m_Texture: {fileID: 2800000, guid: 7e38cdc9c3992b24b9b53ce5fb92dcf2, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _RightTex2
         second:
-          m_Texture: {fileID: 2800000, guid: 6c208faf50609fe488045f6575bca88a, type: 3}
+          m_Texture: {fileID: 2800000, guid: 7e38cdc9c3992b24b9b53ce5fb92dcf2, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _UpTex
         second:
-          m_Texture: {fileID: 2800000, guid: 0b2d6f229635c1f4784c598d37a03442, type: 3}
+          m_Texture: {fileID: 2800000, guid: d495c1cb1f68e3e4a80270182a05800e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _UpTex2
         second:
-          m_Texture: {fileID: 2800000, guid: 0b2d6f229635c1f4784c598d37a03442, type: 3}
+          m_Texture: {fileID: 2800000, guid: d495c1cb1f68e3e4a80270182a05800e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _DownTex
         second:
-          m_Texture: {fileID: 2800000, guid: 0dffe91a7ae36c6428e7b1f93db38fd1, type: 3}
+          m_Texture: {fileID: 2800000, guid: 5dc97da9ac7d5df4f84601dd8d0f3035, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _DownTex2
         second:
-          m_Texture: {fileID: 2800000, guid: 0dffe91a7ae36c6428e7b1f93db38fd1, type: 3}
+          m_Texture: {fileID: 2800000, guid: 5dc97da9ac7d5df4f84601dd8d0f3035, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -228,7 +228,7 @@ Material:
       data:
         first:
           name: _Blend
-        second: 0.0925
+        second: 0
     m_Colors:
       data:
         first:
@@ -237,7 +237,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 0.94509804, b: 0.7921569, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _Tint
