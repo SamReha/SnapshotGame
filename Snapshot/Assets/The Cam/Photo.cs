@@ -6,14 +6,18 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class Photo {
-
 	public Texture2D photo;
 	public string pathname;
 	public List<GameObject> visible = new List<GameObject> ();
 	public float balanceValue = 0f;
 	public float spacingValue = 0f;
 	public float interestingnessValue = 0f;
-
+    public bool containsFox = false;
+    public bool containsOwl = false;
+    public bool containsDeer = false;
+    public bool containsPosingAnimal = false;
+    public bool takenWithTelephoto = false;
+    public bool takenWithWide = false;
 
 
 	// Use this for initialization
@@ -72,6 +76,12 @@ public class Photo {
 		saveData.balan = balanceValue;
 		saveData.spaci = spacingValue;
 		saveData.inter = interestingnessValue;
+        saveData.containsFox = containsFox;
+        saveData.containsOwl = containsOwl;
+        saveData.containsDeer = containsDeer;
+        saveData.containsPosingAnimal = containsPosingAnimal;
+        saveData.takenWithTelephoto = takenWithTelephoto;
+        saveData.takenWithWide = takenWithWide;
 
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
@@ -84,9 +94,15 @@ public class Photo {
 		balanceValue = 0;
 		spacingValue = 0;
 		interestingnessValue = 0;
+        containsFox = false;
+        containsOwl = false;
+        containsDeer = false;
+        containsPosingAnimal = false;
+        takenWithTelephoto = false;
+        takenWithWide = false;
 		save ();
 	}
-		/*
+    /*
 	 * InternalProfile is a serializeable copy of the player's data.
 	 * 
 	 * Why not just have this be a public member? Well, it's easier to type
@@ -98,5 +114,11 @@ public class Photo {
 		public float balan;
 		public float spaci;
 		public float inter;
-	}
+        public bool containsFox;
+        public bool containsOwl;
+        public bool containsDeer;
+        public bool containsPosingAnimal;
+        public bool takenWithTelephoto;
+        public bool takenWithWide;
+    }
 }

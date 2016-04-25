@@ -95,8 +95,13 @@ namespace UnityStandardAssets.ImageEffects {
 					p.balanceValue = cameraPrefab.GetComponent<PhotoEval> ().balance;
 					p.spacingValue = cameraPrefab.GetComponent<PhotoEval> ().spacing;
 					p.interestingnessValue = cameraPrefab.GetComponent<PhotoEval> ().interest;
+                    p.containsDeer = cameraPrefab.GetComponent<PhotoEval>().containsDeer;
+                    p.containsFox = cameraPrefab.GetComponent<PhotoEval>().containsFox;
+                    p.containsOwl = cameraPrefab.GetComponent<PhotoEval>().containsOwl;
+                    p.takenWithTelephoto = cameraPrefab.GetComponent<PhotoEval>().takenWithTelephoto;
+                    p.takenWithWide = cameraPrefab.GetComponent<PhotoEval>().takenWithWideAngle;
 
-					c.targetTexture = null;
+                    c.targetTexture = null;
 					RenderTexture.active = null;
 					Destroy (rt); 
 					pics.Add (p);
