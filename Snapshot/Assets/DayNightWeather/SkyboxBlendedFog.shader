@@ -1,7 +1,7 @@
 ﻿Shader "Skybox/Blended" {
 Properties {
     _Tint ("Tint Color", Color) = (.5, .5, .5, .5)
-    _Blend ("Blend", Range(0.0,1.0)) = 0.5
+    _Blend ("Blend", Range(0.0,1.0)) = 0.0
     _FrontTex ("Front (+Z)", 2D) = "white" {}
     _BackTex ("Back (-Z)", 2D) = "white" {}
     _LeftTex ("Left (+X)", 2D) = "white" {}

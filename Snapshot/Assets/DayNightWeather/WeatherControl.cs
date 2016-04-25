@@ -48,13 +48,17 @@ public class WeatherControl : MonoBehaviour {
 	//  Minor variables
 	int transitionTimer;
 	float originalTimeSet; 
-	Material skyMat;
+	public Material skyMat;
 
-	private bool pm = true;
+	private bool pm;
+	private bool sr;
+	private bool n;
+	private bool ss;
+
 
 	// Use this for initialization
 	void Start () {
-		skyMat = RenderSettings.skybox;
+		skyMat = GetComponent<Skybox> ().material;
 		//  Create the weather profiles
 		cloudynight = new WeatherProfile (cloudynight_top,
 			cloudynight_front, cloudynight_bottom,
@@ -82,8 +86,8 @@ public class WeatherControl : MonoBehaviour {
 			sunrise_back
 		);
 
-		currentWeather = sunny;
-		SetCurrentWeather (sunny, 1);
+		currentWeather = cloudynight;
+		SetCurrentWeather (cloudynight, 1);
 	}
 
 	void SetCurrentWeather( WeatherProfile nextProfile , int stepsToTransition){
@@ -113,48 +117,56 @@ public class WeatherControl : MonoBehaviour {
 	void Update () {
 		float timeOfDay;
 		int timeZone;
-		timeOfDay = GetComponent<DayNightCycle>().constantTime;
+		timeOfDay = GetComponent<DayNightCycle>().getTimeOfDay();
 		timeZone = -1;  //  Prevents weather switcher from calling twice
         //  Decrement the steps timer
 		transitionTimer--;
 		//Debug.Log ("Time:   " + timeOfDay);
-		if (transitionTimer >= 0) {
-			float progress = (originalTimeSet - transitionTimer) / originalTimeSet; /*  timePassed/total */
+		if (transitionTimer > 0) {
+			float progress = (originalTimeSet - (float)transitionTimer) / originalTimeSet; /*  timePassed/total */
 			skyMat.SetFloat ("_Blend", progress);
 		} else {
 			skyMat.SetFloat ("_Blend", 0);
 		}
 
-		float sunriseTrigger = -0.2f;
-		float dayTrigger = 0.58f;
-		float sunsetTrigger = -.75f;
-		float nightTrigger = 0.35f;
+		float sunriseTrigger = 0f;
+		float dayTrigger = 0.125f;
+		float sunsetTrigger = 0.625f;
+		float nightTrigger = 0.875f;
 
 		//  If the weathercontroller is not already busy mreging weathers
 		if (transitionTimer < 0) {
-			if (Mathf.Abs (timeOfDay) > 0.9f) {
+			/*if (Mathf.Abs (timeOfDay) > 0.75f) {
 				if (timeOfDay > 0) {
 					pm = true;
 				} else {
 					pm = false;
 				}
-			}
+			}*/
 
 			//  Change the skybox depending on the time of the day
 			//  Debug.Log("Time of day: " + timeOfDay);
-			if (timeOfDay <= nightTrigger && pm) {
+			if (timeOfDay >= nightTrigger && pm) {
 				//  Night
+				Debug.Log("Night");
+				pm = false;
 				SetCurrentWeather (cloudynight, 800);
-			} else if (timeOfDay > sunriseTrigger && !pm) {
+			} else if (timeOfDay >= sunriseTrigger && sr) {
 				//  Sunrise
+				Debug.Log("Sunrise");
+				sr = false;
 				SetCurrentWeather (sunrise, 800);
-			} else if (timeOfDay > dayTrigger && !pm) {
+			} else if (timeOfDay >= dayTrigger && n) {
 				//  Day
+				Debug.Log("Noon");
+				n = false;
 				SetCurrentWeather (sunny, 800);
-			} else if (timeOfDay > 0.05f && timeOfDay <= .75f && pm) {
+			} else if (timeOfDay >= sunsetTrigger && ss) {
 				//  sunset
+				Debug.Log("Sunset");
+				ss = false;
 				SetCurrentWeather (sunset, 800);
-			} 
+			}
 		}
 
 	}

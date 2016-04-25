@@ -31,7 +31,7 @@ public class DayNightCycle : MonoBehaviour {
 
     Light mainLight;
     Skybox sky;
-    Material skyMat;
+    public Material skyMat;
     public ParticleSystem stars;
     public Transform moon;
 	public Material moonMaterial;
@@ -40,7 +40,7 @@ public class DayNightCycle : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         mainLight = GetComponent<Light>();
-        skyMat = RenderSettings.skybox;
+		skyMat = GetComponent<Skybox> ().material;
 	}
 	
 
@@ -53,7 +53,6 @@ public class DayNightCycle : MonoBehaviour {
 	    constantTime = Vector3.Dot(mainLight.transform.forward, Vector3.down);
 		float clampedTime = Mathf.Clamp01((constantTime - minPoint) / tRange);
 
-		//Debug.Log ("Time of day is: " + timeOfDay);
 
         //  Linearly change the sun's brightness depending on the time
 		float i = ((maxIntensity - minIntensity) * clampedTime) * minAmbient;
@@ -74,6 +73,7 @@ public class DayNightCycle : MonoBehaviour {
         //  Linearly change the atmosphere thickness
 		i = ((dayAtmosphereThickness - nightAtmosphereThickness) * clampedTime) + nightAtmosphereThickness;
         skyMat.SetFloat("_AtmosphereThickness", i);
+
 		//  Blend the skyboxes
 
         //  Seperates the speed of night and day
