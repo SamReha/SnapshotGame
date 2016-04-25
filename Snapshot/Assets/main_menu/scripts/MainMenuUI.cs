@@ -30,8 +30,13 @@ public class MainMenuUI : MonoBehaviour {
 		SceneManager.LoadScene ("blog");
 	}
 
-    public void goToCredits()
-    {
+    public void goToBadges() {
+        mainMenuSource.Stop();
+        SceneManager.LoadScene("badges");
+    }
+
+    public void goToCredits() {
+        mainMenuSource.Stop();
         SceneManager.LoadScene("credits");
     }
 }
