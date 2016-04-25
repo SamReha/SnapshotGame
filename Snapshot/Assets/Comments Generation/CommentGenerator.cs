@@ -14,7 +14,7 @@ public class CommentGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		json = System.IO.File.ReadAllText(@Application.dataPath+"/Comments Generation/Comments.json");
+		json = System.IO.File.ReadAllText(@Application.dataPath+"/Resources/Comments.json");
 		JsonConvert.PopulateObject (json, comment);
 		foreach (NonTerminals nt in comment.nonTerms.Values) {
 			parseNonTerminals (nt);
