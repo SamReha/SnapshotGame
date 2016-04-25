@@ -27,6 +27,9 @@ public class PlayerProfile : MonoBehaviour {
 	public bool tutFlagShutterSpeed;
 	public bool tutFlagViewControls;
 
+	public float timeElapsedInPark = 0;  //Park time added in Snapshotcam.cs
+	public float timeElapsedInMenu = 0;  //Park time added in Snapshotcam.cs
+
 	// Use this for initialization
 	void Start () {}
 
@@ -41,6 +44,18 @@ public class PlayerProfile : MonoBehaviour {
 		} else if (profile != this) {
 			Destroy (gameObject);
 		}
+	}
+
+	void Update(){
+		if (Application.loadedLevel == 1) {
+			//  Player is in the park
+			timeElapsedInPark += Time.deltaTime;
+		} else {
+			//  Player is not in the park
+			timeElapsedInMenu += Time.deltaTime;
+		}
+		Debug.Log ("Time in park: "+ timeElapsedInPark);
+		Debug.Log ("Time in menu: "+ timeElapsedInMenu);
 	}
 
 	/*
@@ -75,11 +90,14 @@ public class PlayerProfile : MonoBehaviour {
 			tutFlagShutterSpeed = saveData.tutFlagShutterSpeed;
 			tutFlagViewControls = saveData.tutFlagViewControls;
 
+			timeElapsedInPark = saveData.timeElapsedInPark;
+			timeElapsedInMenu = saveData.timeElapsedInMenu;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
 		}
 	}
+
 
 	/*
 	 * Tries to write to a save file for the current player.
@@ -112,6 +130,9 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.tutFlagShutterSpeed = tutFlagShutterSpeed;
 		saveData.tutFlagViewControls = tutFlagViewControls;
 
+		saveData.timeElapsedInPark = timeElapsedInPark;
+		saveData.timeElapsedInMenu = timeElapsedInMenu;
+
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
 	}
@@ -138,6 +159,9 @@ public class PlayerProfile : MonoBehaviour {
 		tutFlagChangeLens = false;
 		tutFlagShutterSpeed = false;
 		tutFlagViewControls = false;
+
+		timeElapsedInPark = 0;
+		timeElapsedInMenu = 0;
 
 		save ();
 	}
@@ -168,4 +192,7 @@ class InternalProfile {
 	public bool tutFlagChangeLens;
 	public bool tutFlagShutterSpeed;
 	public bool tutFlagViewControls;
+
+	public float timeElapsedInPark;
+	public float timeElapsedInMenu;
 }
