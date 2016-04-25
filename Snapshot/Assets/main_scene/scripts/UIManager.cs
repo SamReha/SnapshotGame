@@ -5,18 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 	private AudioSource pauseSource;
-	private AudioClip pauseClip;
 
 	public GameObject PanelPause;
 	public GameObject PanelBag;
 	public GameObject PanelControls;
 	public FirstPersonController player;
+    public AchievementManager manager;
 	public bool isPaused;
 	public bool isOpen;
 	public bool cameraUP;
 
 	// Use this for initialization
 	void Start () {
+        manager.loadAchievements();
 		isPaused = false;
 		isOpen = false;
 
@@ -78,6 +79,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void exitPark() {
+        manager.saveAchievements();
 		//  Upload pictures from the camera to the photo buffer. 
 		pauseSource.Stop();
 		SceneManager.LoadScene("main_menu");
