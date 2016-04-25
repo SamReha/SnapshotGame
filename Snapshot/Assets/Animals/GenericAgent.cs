@@ -127,6 +127,7 @@ public class GenericAgent : MonoBehaviour {
 		} 
 
 		if (surprised) {
+            playAnimation("Run");
 			WanderToNextWaypoint ();
 		}  
 		if (meandering) { //  If the animal has reached their destination waypoint,
