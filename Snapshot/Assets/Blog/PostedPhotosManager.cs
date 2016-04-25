@@ -72,6 +72,7 @@ public class PostedPhotosManager : MonoBehaviour {
 				RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
 				r.texture = pic;
 				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
+				curPicture.GetComponentInChildren<Toggle> ().GetComponentInChildren<Image> ().enabled = false;
 				curPicture.transform.SetParent(this.transform, false);
 			}
 		}
@@ -108,12 +109,10 @@ public class PostedPhotosManager : MonoBehaviour {
 				} else {
 					markup = "perfect";
 				}
-				Debug.Log (markup);
-				textData.text = "ewgnkjvegjkvejkvrkhvsf kvwe kvwnkvfn ";
 				textData.text = gameObject.GetComponent<CommentGenerator>().GenerateComment (markup);
 				//Debug.Log (textData.text);
 				textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
-				metaData.GetComponent<RectTransform> ().position = new Vector3 (-45f, -90f, 0f);
+				metaData.GetComponent<RectTransform> ().position = new Vector3 (0f, -90f, 0f);
 				//Debug.Log ("CHILD: " + child);
 
 				metaData.transform.SetParent (child, false);
