@@ -95,7 +95,10 @@ public class BlogUIManager : MonoBehaviour {
     }
 
 	float getMoneyFromScore(Photo photo) {
-        return bestScore(photo) * 10.0f;
+        Debug.Log("This photo has a score of: Balance: " + photo.balanceValue
+                  + " Spacing: " + photo.spacingValue + " Interest: " + photo.interestingnessValue);
+
+        return Mathf.Max(0, bestScore(photo) * 10.0f);
 	}
 
     float bestScore(Photo photo) {

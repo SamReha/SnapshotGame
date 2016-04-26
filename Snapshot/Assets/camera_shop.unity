@@ -1504,9 +1504,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyText: {fileID: 1172549998}
-  wideButton: {fileID: 548057498}
-  portButton: {fileID: 613650452}
-  teleButton: {fileID: 42578384}
+  wideButton: {fileID: 1319283626}
+  portButton: {fileID: 1370602491}
+  teleButton: {fileID: 361662088}
 --- !u!114 &345953844
 MonoBehaviour:
   m_ObjectHideFlags: 0

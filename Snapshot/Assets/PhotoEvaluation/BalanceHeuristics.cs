@@ -29,9 +29,16 @@ public class BalanceHeuristics {
 		float standardDeviation = Mathf.Sqrt(variance);
 		if (standardDeviation != 0.0f) {
 			float score = mean / standardDeviation;
-			// NaN protection!
-			if (score == float.NaN) return Mathf.Infinity;
-			return Mathf.Min(score, 10f);
+            // NaN protection!
+            //if (score == float.NaN) return Mathf.Infinity;
+            if (score == float.NaN) return 0f;
+
+            // Guard against negative scores
+            if (score < 0f) {
+                score = 0f;
+            }
+
+            return Mathf.Min(score, 10f);
 		} else {
 			return 10f;
 		}
@@ -120,6 +127,11 @@ public class BalanceHeuristics {
 			actualScore = 0.0f;
 			Debug.Log("CenteredBalance NaN");
 		}
+
+        if (actualScore < 0f) {
+            actualScore = 0f;
+        }
+
 		Debug.Log ("Balance is: " + actualScore);
 		return actualScore;
 	}
