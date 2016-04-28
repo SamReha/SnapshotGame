@@ -9,11 +9,13 @@ public class UIManager : MonoBehaviour {
 	public GameObject PanelPause;
 	public GameObject PanelBag;
 	public GameObject PanelControls;
+    public SettingsManager settingsManager;
 	public FirstPersonController player;
     public AchievementManager manager;
 	public bool isPaused;
 	public bool isOpen;
 	public bool cameraUP;
+    public bool viewControls = false;
 
 	// Use this for initialization
 	void Start () {
@@ -33,14 +35,23 @@ public class UIManager : MonoBehaviour {
 		if (Input.GetButtonDown("Cancel")) {
 			isPaused = !isPaused;
 		}
-		if (Input.GetKeyDown (KeyCode.K)) {
-			isOpen = !isOpen;
-		}
-		if (Input.GetButtonUp ("View Controls")) {
-			PanelControls.SetActive(!PanelControls.activeSelf);
-		}
+		
 		OpenBag (isOpen);
 		setPause(isPaused);
+
+        // Be sure not to show the control panel when paused
+        if (isPaused) {
+            PanelControls.SetActive(false);
+        } else {
+            PanelControls.SetActive(viewControls);
+
+            if (Input.GetKeyDown (KeyCode.K)) {
+                isOpen = !isOpen;
+            }
+            if (Input.GetButtonUp ("View Controls")) {
+                viewControls = !viewControls;
+            }
+        }
 	}
 
 	public void OpenBag(bool bagState){
