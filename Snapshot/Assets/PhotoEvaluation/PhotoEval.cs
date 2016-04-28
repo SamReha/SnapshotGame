@@ -20,9 +20,9 @@ public class PhotoEval : MonoBehaviour {
 	private Camera cam;
 	private UIManager uimanager;
 
-	public float balance = -1f;
-	public float spacing = -1f;
-	public float interest = -1f;
+	public float balance = 0f;
+	public float spacing = 0f;
+	public float interest = 0f;
     public bool containsFox = false;
     public bool containsOwl = false;
     public bool containsDeer = false;

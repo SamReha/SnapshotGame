@@ -7,13 +7,6 @@ namespace AssemblyCSharp {
 		public SpacingHeuristics () {}
 
 		/*
-		 * One two, one two this is just a test
-		 */
-		public static float testHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam) {
-			return 1f;
-		}
-
-		/*
 		 * Considering the following 3 x 3 rule of thirds grid:
 		 *  0 | 1 | 2 
 		 * -----------
@@ -69,6 +62,12 @@ namespace AssemblyCSharp {
 			}
 
 			float score = sectorDensity [4] / averageSectorDensity;
+
+            // Guard against potential negative values
+            if (score < 0f) {
+                return 0f;
+            }
+
 			return score;
 		}
 	}

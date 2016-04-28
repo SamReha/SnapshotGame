@@ -35,8 +35,15 @@ namespace AssemblyCSharp {
 				}
 			}
 			highestScore = Mathf.Max (score, highestScore);
-			//Debug.Log ("Interest score is: " + score + "  Highest: " + highestScore + "    -- " + score/highestScore);
-			return score/highestScore;
+            //Debug.Log ("Interest score is: " + score + "  Highest: " + highestScore + "    -- " + score/highestScore);
+
+            // Guard against potential negative score
+            float finalScore = score / highestScore;
+            if (finalScore < 0f) {
+                finalScore = 0f;
+            }
+
+			return finalScore;
 		}
 	}
 }

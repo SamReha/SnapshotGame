@@ -112,9 +112,12 @@ public class ShopUIManager : MonoBehaviour {
 	}
 
 	public void buyLens(float price, string name) {
-		PlayerProfile.profile.lenses.Add (name);
-		PlayerProfile.profile.money -= price;
-		PlayerProfile.profile.save ();
+        if (PlayerProfile.profile.money >= price
+            && !PlayerProfile.profile.lenses.Contains(name)) {
+            PlayerProfile.profile.lenses.Add(name);
+            PlayerProfile.profile.money -= price;
+            PlayerProfile.profile.save();
+        }
 	}
 
 	public void buyWideLens() {
