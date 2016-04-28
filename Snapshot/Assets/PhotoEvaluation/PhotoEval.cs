@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityStandardAssets.ImageEffects;
 
 public class PhotoEval : MonoBehaviour {
 	public GameObject terrain;
@@ -19,9 +20,15 @@ public class PhotoEval : MonoBehaviour {
 	private Camera cam;
 	private UIManager uimanager;
 
-	public float balance = -1f;
-	public float spacing = -1f;
-	public float interest = -1f;
+	public float balance = 0f;
+	public float spacing = 0f;
+	public float interest = 0f;
+    public bool containsFox = false;
+    public bool containsOwl = false;
+    public bool containsDeer = false;
+    public bool containsPosingAnimal = false;
+    public bool takenWithTelephoto = false;
+    public bool takenWithWideAngle = false;
 
 	// Key: heuristic function Value: weight
 	Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float> spacingHeuristicMap;
@@ -73,12 +80,32 @@ public class PhotoEval : MonoBehaviour {
 					viewPos = cam.WorldToViewportPoint (go.transform.position);
 					//Debug.Log ("Position: " + viewPos.ToString ("F4"));
 					CalcObjPercentage (corners, go);
-					//Debug.Log ("Percent in Frame: " + percentInFrame);
-					//IsFramed (i);
-					//Debug.Log ("Centered: " + percentCentered);
-				}
-				//  Subject might return null if visibleObj's is empty
-				GameObject subject = getSubject (visibleObjs);
+                    //Debug.Log ("Percent in Frame: " + percentInFrame);
+                    //IsFramed (i);
+                    //Debug.Log ("Centered: " + percentCentered);
+
+                    if (go.name == "Fox") {
+                        containsFox = true;
+                    } else containsFox = false;
+                    if (go.name == "Owl") {
+                        containsOwl = true;
+                    } else containsOwl = false;
+                    if (go.name == "Deer") {
+                        containsDeer = true;
+                    } else containsDeer = false;
+                }
+
+                string lensUsedInPhoto = cam.GetComponentInParent<SnapshotCam>().currentLens;
+                if (lensUsedInPhoto.Contains("tele")) {
+                    takenWithTelephoto = true;
+                } else takenWithTelephoto = false;
+
+                if (lensUsedInPhoto.Contains("wide")) {
+                    takenWithWideAngle = true;
+                } else takenWithWideAngle = false;
+
+                //  Subject might return null if visibleObj's is empty
+                GameObject subject = getSubject (visibleObjs);
 
 				// Evaluate spacing
 				spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);

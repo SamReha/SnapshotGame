@@ -27,7 +27,7 @@ public class DayNightCycle : MonoBehaviour {
     public float dayRotateSpeed;
     public float nightRotateSpeed;
     //  Adjust the skySpeed constant to speed up/slow down the time of day
-    float skySpeed = .5f;
+    float skySpeed = .16666f;
 
     Light mainLight;
     Skybox sky;
@@ -41,6 +41,8 @@ public class DayNightCycle : MonoBehaviour {
 	void Start () {
         mainLight = GetComponent<Light>();
         skyMat = RenderSettings.skybox;
+
+		//skySpeed = 0.01;
 	}
 	
 

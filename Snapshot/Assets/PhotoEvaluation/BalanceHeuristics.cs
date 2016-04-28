@@ -12,17 +12,15 @@ public class BalanceHeuristics {
 	public static float StandardDeviation(GameObject subject, List<GameObject> visibleObjects, Camera cam){
 		List<float> screenPercents = new List<float> ();
 		float mean = 0f;
+		Debug.Log ("Objects: " + visibleObjects.Count);
 		for(int i = 0; i < visibleObjects.Count; i++){
 			float x = GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().CalcScreenPercentage(visibleObjects[i]);
+			screenPercents.Add (x);
 			mean += x;
 		}
       	mean = mean / visibleObjects.Count;
 		List<float> deviation = new List<float>();
-		float subjectDeviation = 0;
-		/*if (subject != null){
-		    subjectDeviation = Mathf.Abs(GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().CalcScreenPercentage (subject) - mean);
-		}*/
-		float variance = 0; 
+		float variance = 0;
 		for(int i = 0; i < screenPercents.Count; i++){
 			float x = screenPercents[i] - mean;
 			variance += x * x;
@@ -30,11 +28,17 @@ public class BalanceHeuristics {
       		variance = variance / visibleObjects.Count;
 		float standardDeviation = Mathf.Sqrt(variance);
 		if (standardDeviation != 0.0f) {
-			float score = 10 / standardDeviation;
+			float score = mean / standardDeviation;
+            // NaN protection!
+            //if (score == float.NaN) return Mathf.Infinity;
+            if (score == float.NaN) return 0f;
 
-			// NaN protection!
-			if (score == float.NaN) return 10f;
-			return score;
+            // Guard against negative scores
+            if (score < 0f) {
+                score = 0f;
+            }
+
+            return Mathf.Min(score, 10f);
 		} else {
 			return 10f;
 		}
@@ -123,6 +127,11 @@ public class BalanceHeuristics {
 			actualScore = 0.0f;
 			Debug.Log("CenteredBalance NaN");
 		}
+
+        if (actualScore < 0f) {
+            actualScore = 0f;
+        }
+
 		Debug.Log ("Balance is: " + actualScore);
 		return actualScore;
 	}

@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 	private AudioSource pauseSource;
-	private AudioClip pauseClip;
 
 	public GameObject PanelPause;
 	public GameObject PanelBag;
@@ -17,15 +16,17 @@ public class UIManager : MonoBehaviour {
 	public float basicCameraTipTime = 7;
 	public float seeControlsTipTime = 15;
 	public FirstPersonController player;
-	private PlayerProfile playerData;
+  public AchievementManager manager;
 	public bool isPaused;
 	public bool isOpen;
 	public bool cameraUP;
 
+  private PlayerProfile playerData;
 	private float timeAfterTip = 0;
 
 	// Use this for initialization
 	void Start () {
+        manager.loadAchievements();
 		isPaused = false;
 		isOpen = false;
 
@@ -33,7 +34,7 @@ public class UIManager : MonoBehaviour {
 		playerData = player.GetComponentInChildren<PlayerProfile> ();
 
 		pauseSource.ignoreListenerPause = true;
-		pauseSource.Play (); 
+		pauseSource.Play ();
 		pauseSource.Pause ();
 		PanelControls.SetActive(false);
 
@@ -41,7 +42,7 @@ public class UIManager : MonoBehaviour {
 		BasicCameraTip.SetActive(false);
 		SeeControlsTip.SetActive(false);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -70,7 +71,7 @@ public class UIManager : MonoBehaviour {
 			timeAfterTip = playerData.timeElapsedInPark;
 			MovementTip.SetActive(false);
 		}
-		
+
 		if (Input.GetButtonDown ("Take Photo")) {
 			playerData.tutFlagSnap = true;
 			timeAfterTip = playerData.timeElapsedInPark;
@@ -130,7 +131,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void exitPark() {
-		//  Upload pictures from the camera to the photo buffer. 
+        manager.saveAchievements();
+		//  Upload pictures from the camera to the photo buffer.
 		pauseSource.Stop();
 		SceneManager.LoadScene("main_menu");
 		AudioManager.getInstance().setExitToMenu (true);

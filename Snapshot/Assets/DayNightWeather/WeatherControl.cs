@@ -82,8 +82,8 @@ public class WeatherControl : MonoBehaviour {
 			sunrise_back
 		);
 
-		currentWeather = sunny;
-		SetCurrentWeather (sunny, 1);
+		currentWeather = cloudynight;
+		SetCurrentWeather (cloudynight, 1);
 	}
 
 	void SetCurrentWeather( WeatherProfile nextProfile , int stepsToTransition){
@@ -113,7 +113,7 @@ public class WeatherControl : MonoBehaviour {
 	void Update () {
 		float timeOfDay;
 		int timeZone;
-		timeOfDay = GetComponent<DayNightCycle>().constantTime;
+		timeOfDay = GetComponent<DayNightCycle>().getTimeOfDay();
 		timeZone = -1;  //  Prevents weather switcher from calling twice
         //  Decrement the steps timer
 		transitionTimer--;
@@ -125,35 +125,43 @@ public class WeatherControl : MonoBehaviour {
 			skyMat.SetFloat ("_Blend", 0);
 		}
 
-		float sunriseTrigger = -0.2f;
-		float dayTrigger = 0.58f;
-		float sunsetTrigger = -.75f;
-		float nightTrigger = 0.35f;
+		Debug.Log ("PM: " + pm + " TOD: " + timeOfDay + " Tick: " + transitionTimer);
+
+		float sunriseTrigger = 0.0f;
+		float dayTrigger = 0.02f;
+		float sunsetTrigger = 0.375f;
+		float nightTrigger = 0.45f;
 
 		//  If the weathercontroller is not already busy mreging weathers
 		if (transitionTimer < 0) {
-			if (Mathf.Abs (timeOfDay) > 0.9f) {
+			if (timeOfDay > 0.45f) {
 				if (timeOfDay > 0) {
 					pm = true;
 				} else {
 					pm = false;
 				}
+			} else {
+				pm = false;
 			}
 
 			//  Change the skybox depending on the time of the day
 			//  Debug.Log("Time of day: " + timeOfDay);
-			if (timeOfDay <= nightTrigger && pm) {
+			if (timeOfDay >= nightTrigger && pm) {
 				//  Night
-				SetCurrentWeather (cloudynight, 800);
-			} else if (timeOfDay > sunriseTrigger && !pm) {
+				Debug.Log ("Night: " + timeOfDay);
+				SetCurrentWeather (cloudynight, 1600);
+			} else if (timeOfDay >= sunriseTrigger && timeOfDay < dayTrigger && !pm) {
 				//  Sunrise
-				SetCurrentWeather (sunrise, 800);
-			} else if (timeOfDay > dayTrigger && !pm) {
+				Debug.Log ("Sunrise: " + timeOfDay);
+				SetCurrentWeather (sunrise, 1200);
+			} else if (timeOfDay >= dayTrigger && timeOfDay < sunsetTrigger && !pm) {
 				//  Day
-				SetCurrentWeather (sunny, 800);
-			} else if (timeOfDay > 0.05f && timeOfDay <= .75f && pm) {
+				Debug.Log ("Day: " + timeOfDay);
+				SetCurrentWeather (sunny, 1200);
+			} else if (timeOfDay >= sunsetTrigger && timeOfDay < nightTrigger && !pm) {
 				//  sunset
-				SetCurrentWeather (sunset, 800);
+				Debug.Log ("Sunset: " + timeOfDay);
+				SetCurrentWeather (sunset, 200);
 			} 
 		}
 
