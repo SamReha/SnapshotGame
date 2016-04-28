@@ -8895,7 +8895,8 @@ Prefab:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 66625b276e507dc4880304197a970ba5, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9500000, guid: e10c19b043ba14d48aabbb6af0a22d40, type: 3}
   m_ParentPrefab: {fileID: 100100000, guid: e10c19b043ba14d48aabbb6af0a22d40, type: 3}
   m_IsPrefabParent: 0
 --- !u!4 &1467685787 stripped
@@ -11777,6 +11778,23 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 100050, guid: e10c19b043ba14d48aabbb6af0a22d40, type: 3}
   m_PrefabInternal: {fileID: 1458705319}
+--- !u!95 &1848603312
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1848603311}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 66625b276e507dc4880304197a970ba5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &1848603314
 MonoBehaviour:
   m_ObjectHideFlags: 0

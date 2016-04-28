@@ -162,7 +162,9 @@ public class GenericAgent : MonoBehaviour {
 		//  After we figure out the speed of creature, use it to determine what animation to play
 		if (agent.speed <= 0) {
 			playAnimation ("Idle");
-		} else {
+		} else if (agent.speed >= fear_speed) {
+            playAnimation("Run");
+        } else {
 			playAnimation ("Walk");
 		}
 	}
