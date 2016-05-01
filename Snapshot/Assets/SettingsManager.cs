@@ -30,6 +30,9 @@ public class SettingsManager : MonoBehaviour {
     }
 
     public void exitSettings() {
+        exitAudioSettings();
+        exitControlPanel();
+
         settingsPanel.SetActive(false);
         pausePanel.SetActive(true);
     }

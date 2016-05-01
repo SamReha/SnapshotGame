@@ -12,46 +12,43 @@ public class UIManager : MonoBehaviour {
     public SettingsManager settingsManager;
 	public FirstPersonController player;
     public AchievementManager manager;
-	public bool isPaused;
-	public bool isOpen;
-	public bool cameraUP;
+	public bool isPaused = false;
+	public bool bagIsOpen = false;
+    public bool cameraUP;
     public bool viewControls = false;
 
 	// Use this for initialization
 	void Start () {
         manager.loadAchievements();
-		isPaused = false;
-		isOpen = false;
 
 		pauseSource = GetComponent<AudioSource> ();
 
 		pauseSource.ignoreListenerPause = true;
 		pauseSource.Play (); 
 		pauseSource.Pause ();
-	}
+
+        PanelControls.SetActive(viewControls);
+        PanelPause.SetActive(isPaused);
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown("Cancel")) {
 			isPaused = !isPaused;
 		}
-		
-		OpenBag (isOpen);
-		setPause(isPaused);
-
-        // Be sure not to show the control panel when paused
-        if (isPaused) {
-            PanelControls.SetActive(false);
-        } else {
-            PanelControls.SetActive(viewControls);
-
-            if (Input.GetKeyDown (KeyCode.K)) {
-                isOpen = !isOpen;
-            }
-            if (Input.GetButtonUp ("View Controls")) {
-                viewControls = !viewControls;
-            }
+        if (Input.GetKeyDown(KeyCode.K)) {
+            bagIsOpen = !bagIsOpen;
         }
+        if (Input.GetButtonUp("View Controls")) {
+            viewControls = !viewControls;
+        }
+
+        if (!isPaused) {
+            PanelControls.SetActive(viewControls);
+        }
+
+        setPause(isPaused);
+        OpenBag (bagIsOpen);
 	}
 
 	public void OpenBag(bool bagState){
@@ -67,26 +64,35 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void setPause(bool pauseState) {
-		//player.m_MouseLook.enabled = !pauseState;
-		player.m_MouseLook.SetCursorLock (!pauseState);
+        player.m_MouseLook.SetCursorLock(!pauseState);
+        PanelPause.SetActive(pauseState);
+        AudioListener.pause = pauseState;
 
-		PanelPause.SetActive(pauseState);
-		if (pauseState) {
-			Time.timeScale = 0.0f;
-			AudioListener.pause = true;
+        if (pauseState) {
+            // Do logic to pause
+            Time.timeScale = 0.0f;
 
-			pauseSource.UnPause ();
-		} else {
-			Time.timeScale = 1.0f;
-			AudioListener.pause = false;
+            pauseSource.Pause();
 
-			pauseSource.Pause ();
-		}
+            PanelControls.SetActive(false);
+
+            //Cursor.lockState = CursorLockMode.None;
+        } else {
+            // Do logic to unpause
+            Time.timeScale = 1.0f;
+
+            pauseSource.UnPause();
+
+            PanelControls.SetActive(viewControls);
+            settingsManager.exitSettings();
+
+            //Cursor.lockState = CursorLockMode.Locked;
+        }
 	}
 
 	// A handy method for when passing args is difficult
 	public void unPause() {
-		isPaused = false;
+        isPaused = false;
 	}
 
 	public void exitPark() {
