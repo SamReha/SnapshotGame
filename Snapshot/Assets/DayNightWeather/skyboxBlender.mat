@@ -228,11 +228,7 @@ Material:
       data:
         first:
           name: _Blend
-<<<<<<< HEAD
         second: 0.010833333
-=======
-        second: 0
->>>>>>> parent of fb6422e... Tutorial Finalized
     m_Colors:
       data:
         first:

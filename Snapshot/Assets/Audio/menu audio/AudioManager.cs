@@ -148,7 +148,7 @@ public class AudioManager : MonoBehaviour
   	 *     to get a value between 0.0 and 1.0 for distance between minThreshold and maxThreshold
   	 */
 	private void updateAnimalVolume() {
-		Debug.Log (exitToMenu);
+		//Debug.Log (exitToMenu);
 		/*
   		 * We can abstract this by placing all animals in a separate render layer and then
   		 * using a Physics.OverlapSphere to get all animals within a maximum distance. Then
