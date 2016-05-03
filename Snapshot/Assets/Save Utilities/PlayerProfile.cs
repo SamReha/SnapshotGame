@@ -10,7 +10,8 @@ public class PlayerProfile : MonoBehaviour {
 
 	public static PlayerProfile profile;
 	public float money;
-	public List<string> lenses;
+    public uint memoryCardCapacity;
+    public List<string> lenses;
 	public List<string> postedPhotos;
 
 	// Use this for initialization
@@ -46,6 +47,7 @@ public class PlayerProfile : MonoBehaviour {
 			saveFile.Close ();
 
 			money = saveData.money;
+            memoryCardCapacity = saveData.memoryCardCapacity;
 			lenses = saveData.lenses;
 			postedPhotos = saveData.postedPhotos;
 		} else {
@@ -71,6 +73,7 @@ public class PlayerProfile : MonoBehaviour {
 
 		InternalProfile saveData = new InternalProfile ();
 		saveData.money = money;
+        saveData.memoryCardCapacity = memoryCardCapacity;
 		saveData.lenses = lenses;
 		saveData.postedPhotos = postedPhotos;
 
@@ -83,6 +86,7 @@ public class PlayerProfile : MonoBehaviour {
 	 */
 	private void createProfile() {
 		money = 0;
+        memoryCardCapacity = 8;
 		lenses = new List<string> ();
 		postedPhotos = new List<string> ();
 
@@ -102,6 +106,7 @@ public class PlayerProfile : MonoBehaviour {
 [Serializable]
 class InternalProfile {
 	public float money;
+    public uint memoryCardCapacity;
 	public List<string> lenses;
 	public List<string> postedPhotos;
 }
