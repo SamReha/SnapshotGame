@@ -105,13 +105,18 @@ public class EquipmentManager : MonoBehaviour {
         BinaryFormatter binForm = new BinaryFormatter();
         string fullEquipmentPath;
 
+		// First, check to see if we even have a directory to save into. If not, then be a dear and create one
+		DirectoryInfo equipmentDir = new DirectoryInfo(savePath + dirName);
+		if (!equipmentDir.Exists) {
+			equipmentDir.Create ();
+		}
+
         foreach (Equipment<TSerializeableType> equipment in equipList) {
             // We need to pull info out of equipment.data without actually knowing it's type, which requires a bit of fuckery.
             // If these next few lines are confusing, feel free to read up on C# generics and typing! :P
             Type serializableType = equipment.data.GetType();
-            PropertyInfo propInfo = serializableType.GetProperty("name", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);     // Ah fuck why doesn't this work. :(
-            Debug.Log(propInfo);
-            string equipmentName = (string)propInfo.GetValue(equipment.data, null);
+			FieldInfo nameField = serializableType.GetField("name");
+			string equipmentName = (string)nameField.GetValue(equipment.data);
 
             fullEquipmentPath = savePath + dirName + equipmentName + extension;
             FileStream equipmentFile;
