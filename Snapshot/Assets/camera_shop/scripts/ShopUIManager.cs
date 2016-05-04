@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class ShopUIManager : MonoBehaviour {
 	private AudioSource shopSource;
 	public Text moneyText;
+    public EquipmentManager equipManager;
 
 	//private Dictionary<string,PurchaseButton> purchaseButtons; // Ugh I am not clever enough for this.
 	public Button wideButton;
@@ -21,9 +22,15 @@ public class ShopUIManager : MonoBehaviour {
 	float telePrice = 400f;
 	string teleName = "tele1";
 
+    public List<Button> memoryCardButtons = new List<Button>();
+
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
+        equipManager.loadEquipment();
+
+        configureMemoryCardButtons();
+
 		shopSource = GetComponent<AudioSource> ();
 
 		shopSource.ignoreListenerPause = true;
@@ -120,7 +127,14 @@ public class ShopUIManager : MonoBehaviour {
         }
 	}
 
-	public void buyWideLens() {
+    private void configureMemoryCardButtons() {
+        Button button = memoryCardButtons[0];
+        EquipmentManager.Equipment<EquipmentManager.MemCardData> memoryCard = equipManager.memCards[0];
+
+        button.GetComponent<Text>().text = memoryCard.data.name;
+    }
+
+    public void buyWideLens() {
 		// Assume lens is not owned and player has enough money
 		buyLens(widePrice, wideName);
 	}
