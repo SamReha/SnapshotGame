@@ -128,11 +128,44 @@ public class ShopUIManager : MonoBehaviour {
 	}
 
     private void configureMemoryCardButtons() {
-        Button button = memoryCardButtons[0];
-        EquipmentManager.Equipment<EquipmentManager.MemCardData> memoryCard = equipManager.memCards[0];
+		for (int i = 0; i < memoryCardButtons.Count; i++) {
+			Button button = memoryCardButtons [i];
+			EquipmentManager.Equipment<EquipmentManager.MemCardData> memoryCard = equipManager.memCards [i];
 
-        button.GetComponent<Text>().text = memoryCard.data.name;
+			if (memoryCard.data.owned) {
+				button.GetComponentInChildren<Text> ().text = memoryCard.data.name + "\nAlready Owned";
+				button.interactable = false;
+			} else {
+				float cost = memoryCard.data.cost;
+				button.GetComponentInChildren<Text> ().text = memoryCard.data.name + "\n$" + cost;
+
+				if (cost > PlayerProfile.profile.money) {
+					button.interactable = false;
+				}
+
+				button.onClick.AddListener (() => {buyMemoryCard (memoryCard);});
+			}
+
+		}
     }
+
+	private void buyMemoryCard(EquipmentManager.Equipment<EquipmentManager.MemCardData> memCard) {
+		// If it's not already owned and the player has enough money
+		if (memCard.data.owned == false && PlayerProfile.profile.money >= memCard.data.cost) {
+			PlayerProfile.profile.money -= memCard.data.cost;
+			memCard.data.owned = true;
+
+			if (PlayerProfile.profile.memoryCardCapacity < memCard.data.capacity) {
+				PlayerProfile.profile.memoryCardCapacity = memCard.data.capacity;
+			}
+
+			PlayerProfile.profile.save ();
+			equipManager.saveEquipment ();
+
+			// Refresh the buttons to ensure they look correct after purchase
+			configureMemoryCardButtons ();
+		}
+	}
 
     public void buyWideLens() {
 		// Assume lens is not owned and player has enough money

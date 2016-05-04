@@ -56,6 +56,10 @@ public class EquipmentManager : MonoBehaviour {
         }
     }
 
+	public void saveEquipment() {
+		saveEquipmentType<MemCardData>(memCards, memCardPath, ".memcard");
+	}
+
     /*
      * TSerializeableType: The type of the serializable class associated with the type of Equipment you want to load (ie, MemCardData for Memory Cards)
      * dirName: The (partial) directory path to where the equip files should be located (ie, "memcards/" if the files are in Application.PersisitentDataPath/equipment/memcards/)
@@ -139,6 +143,7 @@ public class EquipmentManager : MonoBehaviour {
         eightCardData.description = "A basic memory card that only holds 8 photos. How boring.";
         eightCardData.cost = 0f;
         eightCardData.capacity = 8;
+		eightCardData.owned = true;	// A special case for when you want to start the player off with a particular item
         eightCard.data = eightCardData;
         memCards.Add(eightCard);
 
