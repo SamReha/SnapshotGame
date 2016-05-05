@@ -454,7 +454,7 @@ MonoBehaviour:
   Guid: 
   _componentHolder: {fileID: 0}
   _onEventNotifyEventName: 
-  _audioClip: {fileID: 8300000, guid: 70dabc41ad6874986ae6f2c487695e3d, type: 3}
+  _audioClip: {fileID: 8300000, guid: 0db74fb7b01e81346ae5fb593c05b8bc, type: 3}
   _audioClipHandle:
     _audioClipPath: 
     _useAudioClipPath: 1
@@ -6205,11 +6205,23 @@ Prefab:
     - target: {fileID: 11463554, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
       propertyPath: _audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 67618249e43e94ab2b6b466e5d1975aa, type: 3}
+      objectReference: {fileID: 8300000, guid: e0efbb92b56e9bd4a9bdde00195e5d2a, type: 3}
     - target: {fileID: 11485572, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
       propertyPath: _audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 45d26a4f11cba4f2f924cd8c3e30ec4d, type: 3}
+      objectReference: {fileID: 8300000, guid: 966348ea47d276a40a2eef915346dfed, type: 3}
+    - target: {fileID: 11454246, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
+      propertyPath: _audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 222ce7e6be8e45b408d829006fe03d2e, type: 3}
+    - target: {fileID: 11400718, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
+      propertyPath: _audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1abbbef8c7c5be94eb0f68f28ee691b7, type: 3}
+    - target: {fileID: 11427604, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
+      propertyPath: _audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 53d9425f48de02f4fa2178b6af14b92d, type: 3}
     m_RemovedComponents:
     - {fileID: 11496352, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
@@ -8527,7 +8539,7 @@ MonoBehaviour:
   Guid: 
   _componentHolder: {fileID: 0}
   _onEventNotifyEventName: 
-  _audioClip: {fileID: 8300000, guid: 858f358ad344647ebbee83042b02d652, type: 3}
+  _audioClip: {fileID: 8300000, guid: 264ac3db8ceafed4ab221f83a4813dd2, type: 3}
   _audioClipHandle:
     _audioClipPath: 
     _useAudioClipPath: 1
