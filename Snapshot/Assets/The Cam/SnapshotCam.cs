@@ -44,6 +44,8 @@ namespace UnityStandardAssets.ImageEffects {
 		private Vector3 cameraHeldUp;
 		private Vector3 cameraHeldDown;
 
+		int lensIter;
+
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
 			currentLens = "Portrait Lens";
@@ -53,11 +55,13 @@ namespace UnityStandardAssets.ImageEffects {
 
 			// Set portrait lens
 			GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
-			currentLens = "Portrait Lens";
+			currentLens = "port1";
 			GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = true;
-			parent.GetComponentInParent<DepthOfField> ().focalSize = PortraitLens.GetComponent<Lens> ().focalSize;
-			parent.GetComponentInParent<DepthOfField> ().focalLength = PortraitLens.GetComponent<Lens> ().focalDistance;
-			parent.GetComponentInParent<Camera> ().fieldOfView = PortraitLens.GetComponent<Lens> ().fieldOfView;
+			parent.GetComponentInParent<DepthOfField> ().focalSize = GameObject.Find(currentLens).GetComponent<Lens> ().focalSize;
+			parent.GetComponentInParent<DepthOfField> ().focalLength = GameObject.Find(currentLens).GetComponent<Lens> ().focalDistance;
+			parent.GetComponentInParent<Camera> ().fieldOfView = GameObject.Find(currentLens).GetComponent<Lens> ().fieldOfView;
+
+			lensIter = 0;
 
 			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
 			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
@@ -65,6 +69,8 @@ namespace UnityStandardAssets.ImageEffects {
 		}
 
 		void Update () {
+			Debug.Log (Application.persistentDataPath);
+
 			if (Input.GetButton("Camera Switch")) {
 				parent.transform.localPosition = cameraHeldUp;
 			} else {
@@ -73,6 +79,7 @@ namespace UnityStandardAssets.ImageEffects {
 
 			// When player presses down, a beep is heard
 			if (!uimanager.isPaused) {
+				Debug.Log ("Why");
 				if (Input.GetButtonDown ("Take Photo")) {
 					cameraAudio.PlayOneShot (cam_click, 0.7f);  //  beep beep
 					buttonDownWhilePaused = false;
@@ -206,6 +213,28 @@ namespace UnityStandardAssets.ImageEffects {
 				parent.GetComponentInParent<DepthOfField> ().focalLength = TelephotoLens.GetComponent<Lens> ().focalDistance;
 				parent.GetComponentInParent<Camera> ().fieldOfView = TelephotoLens.GetComponent<Lens> ().fieldOfView;
 			}
+
+			/*if (Input.GetButtonDown ("Portrait")) {
+
+				lensIter++;
+				Debug.Log ("Lens Iter" + lensIter);
+				if (lensIter == PlayerProfile.profile.lenses.Count) {
+					lensIter = 0;
+				}
+				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
+				currentLens = PlayerProfile.profile.lenses [lensIter];
+				Debug.Log ("Current: " + currentLens);
+				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = true;
+				parent.GetComponentInParent<DepthOfField> ().focalSize = GameObject.Find(currentLens).GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = GameObject.Find(currentLens).GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = GameObject.Find(currentLens).GetComponent<Lens> ().fieldOfView;
+
+			}
+
+			if (Input.GetButtonDown ("Wide Angle")) {
+				
+			}*/
+
 
 			if (Input.GetButtonDown("Shutter Speed Up") && shutterInt < 5) {
 				// Access component Camera Motion Blur

@@ -94,6 +94,7 @@ public class PlayerProfile : MonoBehaviour {
 		filters = new List<string> ();
 		postedPhotos = new List<string> ();
 
+		filters.Add ("clear");
 		lenses.Add ("port1");
 
 		save ();
