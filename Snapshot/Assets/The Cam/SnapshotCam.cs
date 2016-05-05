@@ -9,6 +9,7 @@ namespace UnityStandardAssets.ImageEffects {
 		public GameObject PortraitLens;
 		public GameObject WideAngleLens;
 		public GameObject TelephotoLens;
+		public GameObject FilterPrefab;
 
 		public string currentLens;
 
@@ -45,10 +46,11 @@ namespace UnityStandardAssets.ImageEffects {
 		private Vector3 cameraHeldDown;
 
 		int lensIter;
+		int filterIter;
 
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
-			currentLens = "Portrait Lens";
+			currentLens = "port1";
 			parent = GameObject.Find("PlayerCam");
 			cameraHeldUp = new Vector3(0.0f, 0.0f, -0.15f);
 			cameraHeldDown = new Vector3(0.293f, -0.499f, 0.16f);
@@ -61,15 +63,18 @@ namespace UnityStandardAssets.ImageEffects {
 			parent.GetComponentInParent<DepthOfField> ().focalLength = GameObject.Find(currentLens).GetComponent<Lens> ().focalDistance;
 			parent.GetComponentInParent<Camera> ().fieldOfView = GameObject.Find(currentLens).GetComponent<Lens> ().fieldOfView;
 
+			FilterPrefab.SetActive (false);
+
 			lensIter = 0;
+			filterIter = 0;
 
 			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
-			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
+			uimanager = GameObject.Find ("UIManager").GetComponent<UIManager> ();
 			PlayerProfile.profile.load ();
 		}
 
 		void Update () {
-			Debug.Log (Application.persistentDataPath);
+			Debug.Log (PlayerProfile.profile.lenses.Count);
 
 			if (Input.GetButton("Camera Switch")) {
 				parent.transform.localPosition = cameraHeldUp;
@@ -183,7 +188,7 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Change between camera lenses
 			//Portrait
-			if (Input.GetButtonDown ("Portrait") && currentLens != "Portrait Lens" && PlayerProfile.profile.lenses.Contains ("port1")) {
+			/*if (Input.GetButtonDown ("Portrait") && currentLens != "port1" && PlayerProfile.profile.lenses.Contains ("port1")) {
 				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Portrait Lens";
@@ -194,7 +199,7 @@ namespace UnityStandardAssets.ImageEffects {
 
 			}
 			// Wide Angle
-			if (Input.GetButtonDown ("Wide Angle") && currentLens != "Wide Angle Lens" && PlayerProfile.profile.lenses.Contains ("wide1")) {
+			if (Input.GetButtonDown ("Wide Angle") && currentLens != "wide1" && PlayerProfile.profile.lenses.Contains ("wide1")) {
 				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Wide Angle Lens";
@@ -204,7 +209,7 @@ namespace UnityStandardAssets.ImageEffects {
 				parent.GetComponentInParent<Camera> ().fieldOfView = WideAngleLens.GetComponent<Lens> ().fieldOfView;
 			}
 			// Telephoto
-			if (Input.GetButtonDown ("Telephoto") && currentLens != "telephoto_lens" && PlayerProfile.profile.lenses.Contains ("tele1")) {
+			if (Input.GetButtonDown ("Telephoto") && currentLens != "tele1" && PlayerProfile.profile.lenses.Contains ("tele1")) {
 				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "telephoto_lens";
@@ -212,9 +217,9 @@ namespace UnityStandardAssets.ImageEffects {
 				parent.GetComponentInParent<DepthOfField> ().focalSize = TelephotoLens.GetComponent<Lens> ().focalSize;
 				parent.GetComponentInParent<DepthOfField> ().focalLength = TelephotoLens.GetComponent<Lens> ().focalDistance;
 				parent.GetComponentInParent<Camera> ().fieldOfView = TelephotoLens.GetComponent<Lens> ().fieldOfView;
-			}
+			}*/
 
-			/*if (Input.GetButtonDown ("Portrait")) {
+			if (Input.GetButtonDown ("Portrait")) {
 
 				lensIter++;
 				Debug.Log ("Lens Iter" + lensIter);
@@ -232,8 +237,18 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 
 			if (Input.GetButtonDown ("Wide Angle")) {
-				
-			}*/
+				filterIter++;
+				if (filterIter == PlayerProfile.profile.filters.Count) {
+					filterIter = 0;
+					Debug.Log (PlayerProfile.profile.filters [filterIter]);
+					FilterPrefab.SetActive (false);
+				} else {
+					Debug.Log (PlayerProfile.profile.filters [filterIter]);
+					Texture newFilter = Resources.Load (PlayerProfile.profile.filters [filterIter], typeof(Texture)) as Texture;
+					FilterPrefab.SetActive (true);
+					FilterPrefab.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", newFilter);
+				}
+			}
 
 
 			if (Input.GetButtonDown("Shutter Speed Up") && shutterInt < 5) {

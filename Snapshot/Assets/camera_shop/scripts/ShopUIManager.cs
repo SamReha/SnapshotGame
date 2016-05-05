@@ -23,27 +23,27 @@ public class ShopUIManager : MonoBehaviour {
 
 	public Button filterB;
 	float fBPrice = 100f;
-	string fBName = "fb";
+	string fBName = "bluefilter";
 
 	public Button filterO;
 	float fOPrice = 100f;
-	string fOName = "fo";
+	string fOName = "orangefilter";
 
 	public Button filterBO;
 	float fBOPrice = 100f;
-	string fBOName = "fbo";
+	string fBOName = "blueorangefilter";
 
 	public Button filterBC;
 	float fBCPrice = 100f;
-	string fBCName = "fbc";
+	string fBCName = "bluefadefilter";
 
 	public Button filterOC;
 	float fOCPrice = 100f;
-	string fOCName = "foc";
+	string fOCName = "orangefadefilter";
 
 	public Button filterR;
 	float fRPrice = 100f;
-	string fRName = "fr";
+	string fRName = "rainbowfilter";
 
 	public Button bagFive;
 	float bFPrice = 100f;
