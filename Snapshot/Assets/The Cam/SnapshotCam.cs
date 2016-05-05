@@ -78,47 +78,50 @@ namespace UnityStandardAssets.ImageEffects {
 					buttonDownWhilePaused = false;
 					//  Then upon release the photo is taken
 				} else if (Input.GetButtonUp ("Take Photo") && !buttonDownWhilePaused) {
-					cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
-					//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
-					RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
-					Camera c = parent.GetComponent<Camera> ();	// Gets the camera to output to the render tuexture
-					c.targetTexture = rt;
-					Texture2D t2d = new Texture2D (width, height, TextureFormat.RGB24, false); // Texture2D that wil be stored in the Photo object
-					c.Render (); // Forces the camera to render
-					RenderTexture.active = rt;
-					t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
-					Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
-					p.photo = t2d;
+					if (PlayerProfile.profile.memoryCardCapacity > pics.Count) {
+						cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
+						//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
+						RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
+						Camera c = parent.GetComponent<Camera> ();	// Gets the camera to output to the render tuexture
+						c.targetTexture = rt;
+						Texture2D t2d = new Texture2D (width, height, TextureFormat.RGB24, false); // Texture2D that wil be stored in the Photo object
+						c.Render (); // Forces the camera to render
+						RenderTexture.active = rt;
+						t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
+						Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
+						p.photo = t2d;
 
-					GameObject cameraPrefab = GameObject.Find("Camera Prefab");
-					p.visible = cameraPrefab.GetComponent<PhotoEval> ().visibleObjs;
-					p.balanceValue = cameraPrefab.GetComponent<PhotoEval> ().balance;
-					p.spacingValue = cameraPrefab.GetComponent<PhotoEval> ().spacing;
-					p.interestingnessValue = cameraPrefab.GetComponent<PhotoEval> ().interest;
-                    p.containsDeer = cameraPrefab.GetComponent<PhotoEval>().containsDeer;
-                    p.containsFox = cameraPrefab.GetComponent<PhotoEval>().containsFox;
-                    p.containsOwl = cameraPrefab.GetComponent<PhotoEval>().containsOwl;
-                    p.takenWithTelephoto = cameraPrefab.GetComponent<PhotoEval>().takenWithTelephoto;
-                    p.takenWithWide = cameraPrefab.GetComponent<PhotoEval>().takenWithWideAngle;
+						PhotoEval photoEvaluator = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ();
+						photoEvaluator.evaluatePhoto ();
+						p.visible = photoEvaluator.visibleObjs;
+						p.balanceValue = photoEvaluator.balance;
+						p.spacingValue = photoEvaluator.spacing;
+						p.interestingnessValue = photoEvaluator.interest;
+						p.containsDeer = photoEvaluator.containsDeer;
+						p.containsFox = photoEvaluator.containsFox;
+						p.containsOwl = photoEvaluator.containsOwl;
+						p.takenWithTelephoto = photoEvaluator.takenWithTelephoto;
+						p.takenWithWide = photoEvaluator.takenWithWideAngle;
 
-                    c.targetTexture = null;
-					RenderTexture.active = null;
-					Destroy (rt); 
-					pics.Add (p);
-					byte[] bytes = t2d.EncodeToPNG (); 
-					p.pathname = Application.dataPath + "/Resources/screen"
+						c.targetTexture = null;
+						RenderTexture.active = null;
+						Destroy (rt); 
+						pics.Add (p);
+						byte[] bytes = t2d.EncodeToPNG (); 
+						p.pathname = Application.dataPath + "/Resources/screen"
 						+ System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
-					//  Save image
-					string filename = p.pathname + ".png"; 
-					System.IO.File.WriteAllBytes (filename, bytes);
-					Debug.Log (string.Format ("Took screenshot to: {0}", filename));
-					//  Save meta
-					p.save();
-					Camera c2 = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-					c.targetTexture = camView;	// Sets the render texture
-					c2.Render ();	// Renders the Player view
-					c2.targetTexture = null;
-					buttonDownWhilePaused = true;
+						//  Save image
+						string filename = p.pathname + ".png"; 
+						System.IO.File.WriteAllBytes (filename, bytes);
+						Debug.Log (string.Format ("Took screenshot to: {0}", filename));
+						//  Save meta
+						p.save ();
+						Camera c2 = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
+						c.targetTexture = camView;	// Sets the render texture
+						c2.Render ();	// Renders the Player view
+						c2.targetTexture = null;
+						buttonDownWhilePaused = true;
+					}
 				}
 			}
 			// Aperture Size

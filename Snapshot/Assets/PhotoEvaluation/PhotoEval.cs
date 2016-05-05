@@ -61,58 +61,6 @@ public class PhotoEval : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (!uimanager.isPaused) {
-			if (Input.GetButtonUp ("Take Photo")) {
-				SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
-				visibleObjs = unobstructedList.Values.ToList ();
-				/*
-				foreach(GameObject obj in unobstructedList.Values){
-					Debug.Log (obj.name);
-				}
-				*/
-				if (unobstructedList.Count == 0) {
-					print ("Empty");
-				}
-				for (int i = 0; i < visibleObjs.Count; i++) {
-					GameObject go = visibleObjs [i];
-					//Debug.Log ("Object: " + go.name);
-					Corners (go);
-					viewPos = cam.WorldToViewportPoint (go.transform.position);
-					//Debug.Log ("Position: " + viewPos.ToString ("F4"));
-					CalcObjPercentage (corners, go);
-                    //Debug.Log ("Percent in Frame: " + percentInFrame);
-                    //IsFramed (i);
-                    //Debug.Log ("Centered: " + percentCentered);
-
-                    if (go.name == "Fox") {
-                        containsFox = true;
-                    } else containsFox = false;
-                    if (go.name == "Owl") {
-                        containsOwl = true;
-                    } else containsOwl = false;
-                    if (go.name == "Deer") {
-                        containsDeer = true;
-                    } else containsDeer = false;
-                }
-
-                string lensUsedInPhoto = cam.GetComponentInParent<SnapshotCam>().currentLens;
-                if (lensUsedInPhoto.Contains("tele")) {
-                    takenWithTelephoto = true;
-                } else takenWithTelephoto = false;
-
-                if (lensUsedInPhoto.Contains("wide")) {
-                    takenWithWideAngle = true;
-                } else takenWithWideAngle = false;
-
-                //  Subject might return null if visibleObj's is empty
-                GameObject subject = getSubject (visibleObjs);
-
-				// Evaluate spacing
-				spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);
-				balance = evaluateHeuristics (subject, visibleObjs, balanceHeuristicMap);
-				interest = evaluateHeuristics (subject, visibleObjs, interestHeuristicMap);
-			}
-		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);
 		}
@@ -125,6 +73,49 @@ public class PhotoEval : MonoBehaviour {
 		foreach (Ray rayCasted in raysGrounded){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.gray);
 		}
+	}
+
+	public void evaluatePhoto() {
+		SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
+		visibleObjs = unobstructedList.Values.ToList ();
+
+		if (unobstructedList.Count == 0) {
+			print ("Empty");
+		}
+
+		foreach (GameObject visibleObj in visibleObjs) {
+			Corners (visibleObj);
+			viewPos = cam.WorldToViewportPoint (visibleObj.transform.position);
+			CalcObjPercentage (corners, visibleObj);
+			//IsFramed (i);
+
+			if (visibleObj.name == "Fox") {
+				containsFox = true;
+			} else containsFox = false;
+			if (visibleObj.name == "Owl") {
+				containsOwl = true;
+			} else containsOwl = false;
+			if (visibleObj.name == "Deer") {
+				containsDeer = true;
+			} else containsDeer = false;
+		}
+
+		string lensUsedInPhoto = cam.GetComponentInParent<SnapshotCam>().currentLens;
+		if (lensUsedInPhoto.Contains("tele")) {
+			takenWithTelephoto = true;
+		} else takenWithTelephoto = false;
+
+		if (lensUsedInPhoto.Contains("wide")) {
+			takenWithWideAngle = true;
+		} else takenWithWideAngle = false;
+
+		//  Subject might return null if visibleObj's is empty
+		GameObject subject = getSubject (visibleObjs);
+
+		// Evaluate spacing
+		spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);
+		balance = evaluateHeuristics (subject, visibleObjs, balanceHeuristicMap);
+		interest = evaluateHeuristics (subject, visibleObjs, interestHeuristicMap);
 	}
 
 	public void PhotoValues (){
