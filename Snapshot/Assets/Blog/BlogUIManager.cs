@@ -90,9 +90,10 @@ public class BlogUIManager : MonoBehaviour {
 
 			Debug.Log (imageName);
 			// Finally, move the photo from .../Resources/UploadQueue/ to .../Resources/PostedImages/
-			System.IO.File.Move(pathToUploadQueue + imageName + ".metaphoto", pathToPostedPhotos + imageName + ".metaphoto");
-			System.IO.File.Move(pathToUploadQueue + imageName + ".png", pathToPostedPhotos + imageName + ".png");
-			System.IO.File.Move(pathToUploadQueue + imageName + ".meta", pathToPostedPhotos + imageName + ".meta");
+			File.Move(pathToUploadQueue + imageName + ".metaphoto", pathToPostedPhotos + imageName + ".metaphoto");
+			File.Move(pathToUploadQueue + imageName + ".png", pathToPostedPhotos + imageName + ".png");
+			File.Move(pathToUploadQueue + imageName + ".metaphoto.meta", pathToPostedPhotos + imageName + ".metaphoto.meta");
+            File.Move(pathToUploadQueue + imageName + ".png.meta", pathToPostedPhotos + imageName + ".png.meta");
         }
 		PlayerProfile.profile.save ();
 
