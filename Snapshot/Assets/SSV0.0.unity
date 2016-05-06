@@ -1391,7 +1391,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: f641a116214862748abb7fbc6432c49f, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: f641a116214862748abb7fbc6432c49f, type: 3}
       propertyPath: m_LocalScale.x
@@ -3045,7 +3045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &573709785
 Transform:
   m_ObjectHideFlags: 0
@@ -4444,7 +4444,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   money: 0
+  bagSize: 0
   lenses: []
+  filters: []
   postedPhotos: []
 --- !u!114 &806870223
 MonoBehaviour:
@@ -4717,7 +4719,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400058, guid: 124cbcab80b1bbd47adbbdec8b71d63a, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 124cbcab80b1bbd47adbbdec8b71d63a, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5040,6 +5042,7 @@ MonoBehaviour:
   PortraitLens: {fileID: 1993560830}
   WideAngleLens: {fileID: 1511510749}
   TelephotoLens: {fileID: 44606921}
+  FilterPrefab: {fileID: 573709784}
   currentLens: 
   width: 1024
   height: 1024
@@ -6196,7 +6199,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 492580, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
       propertyPath: m_RootOrder
-      value: 23
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 11408000, guid: c3d0a8a8ae0aec54daf007d77475be22, type: 2}
       propertyPath: _panLevel
@@ -6371,7 +6374,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 04e47f79ce86fc04184a7f9f7454c684, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 04e47f79ce86fc04184a7f9f7454c684, type: 3}
       propertyPath: m_LocalScale.x
@@ -7342,6 +7345,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 100000, guid: e22aed073ce89404c9cc7f17fd2c4467, type: 3}
+      propertyPath: m_Name
+      value: port1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e22aed073ce89404c9cc7f17fd2c4467, type: 3}
   m_IsPrefabParent: 0
@@ -7974,7 +7981,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 133444, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_Name
@@ -9609,7 +9616,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400050, guid: e10c19b043ba14d48aabbb6af0a22d40, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400050, guid: e10c19b043ba14d48aabbb6af0a22d40, type: 3}
       propertyPath: m_LocalScale.x
@@ -11297,6 +11304,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[3]
       value: 
       objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 100000, guid: b39ff2d924d657648805bdb5eab733e6, type: 3}
+      propertyPath: m_Name
+      value: tele1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b39ff2d924d657648805bdb5eab733e6, type: 3}
   m_IsPrefabParent: 0
@@ -11861,7 +11872,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: ded1d0426e99f3846859a34684ccaac6, type: 3}
       propertyPath: m_Name
-      value: Wide Angle Lens
+      value: wide1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ded1d0426e99f3846859a34684ccaac6, type: 3}
       propertyPath: m_LocalScale.x
@@ -12617,7 +12628,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 406126, guid: ace096da448575648af7d6eeabdd88bb, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 178670, guid: ace096da448575648af7d6eeabdd88bb, type: 2}
       propertyPath: m_IsActive
@@ -14015,7 +14026,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
       propertyPath: m_IsActive

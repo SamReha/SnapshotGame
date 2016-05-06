@@ -10,7 +10,9 @@ public class PlayerProfile : MonoBehaviour {
 
 	public static PlayerProfile profile;
 	public float money;
+	public float bagSize;
 	public List<string> lenses;
+	public List<string> filters;
 	public List<string> postedPhotos;
 
 	// Use this for initialization
@@ -46,7 +48,9 @@ public class PlayerProfile : MonoBehaviour {
 			saveFile.Close ();
 
 			money = saveData.money;
+			bagSize = saveData.bagSize;
 			lenses = saveData.lenses;
+			filters = saveData.filters;
 			postedPhotos = saveData.postedPhotos;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
@@ -71,7 +75,9 @@ public class PlayerProfile : MonoBehaviour {
 
 		InternalProfile saveData = new InternalProfile ();
 		saveData.money = money;
+		saveData.bagSize = bagSize;
 		saveData.lenses = lenses;
+		saveData.filters = filters;
 		saveData.postedPhotos = postedPhotos;
 
 		binForm.Serialize (saveFile, saveData);
@@ -83,9 +89,12 @@ public class PlayerProfile : MonoBehaviour {
 	 */
 	private void createProfile() {
 		money = 0;
+		bagSize = 5;
 		lenses = new List<string> ();
+		filters = new List<string> ();
 		postedPhotos = new List<string> ();
 
+		filters.Add ("clear");
 		lenses.Add ("port1");
 
 		save ();
@@ -102,6 +111,8 @@ public class PlayerProfile : MonoBehaviour {
 [Serializable]
 class InternalProfile {
 	public float money;
+	public float bagSize;
 	public List<string> lenses;
+	public List<string> filters;
 	public List<string> postedPhotos;
 }

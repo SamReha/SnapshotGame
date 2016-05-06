@@ -21,6 +21,36 @@ public class ShopUIManager : MonoBehaviour {
 	float telePrice = 400f;
 	string teleName = "tele1";
 
+	public Button filterB;
+	float fBPrice = 100f;
+	string fBName = "bluefilter";
+
+	public Button filterO;
+	float fOPrice = 100f;
+	string fOName = "orangefilter";
+
+	public Button filterBO;
+	float fBOPrice = 100f;
+	string fBOName = "blueorangefilter";
+
+	public Button filterBC;
+	float fBCPrice = 100f;
+	string fBCName = "bluefadefilter";
+
+	public Button filterOC;
+	float fOCPrice = 100f;
+	string fOCName = "orangefadefilter";
+
+	public Button filterR;
+	float fRPrice = 100f;
+	string fRName = "rainbowfilter";
+
+	public Button bagFive;
+	float bFPrice = 100f;
+
+	public Button bagTen;
+	float bTPrice = 1000f;
+
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
@@ -94,6 +124,78 @@ public class ShopUIManager : MonoBehaviour {
 			portButton.interactable = true;
 		}
 
+		if (PlayerProfile.profile.filters.Contains (fBName)) {
+			filterB.GetComponentInChildren<Text> ().text = "Already Owned";
+			filterB.interactable = false;
+		} else if (PlayerProfile.profile.money < fBPrice) {
+			filterB.interactable = false;
+		} else {
+			filterB.interactable = true;
+		}
+
+		if (PlayerProfile.profile.filters.Contains (fOName)) {
+			filterO.GetComponentInChildren<Text> ().text = "Already Owned";
+			filterO.interactable = false;
+		} else if (PlayerProfile.profile.money < fOPrice) {
+			filterO.interactable = false;
+		} else {
+			filterO.interactable = true;
+		}
+
+		if (PlayerProfile.profile.filters.Contains (fBOName)) {
+			filterBO.GetComponentInChildren<Text> ().text = "Already Owned";
+			filterBO.interactable = false;
+		} else if (PlayerProfile.profile.money < fBOPrice) {
+			filterBO.interactable = false;
+		} else {
+			filterBO.interactable = true;
+		}
+
+		if (PlayerProfile.profile.filters.Contains (fBCName)) {
+			filterBC.GetComponentInChildren<Text> ().text = "Already Owned";
+			filterBC.interactable = false;
+		} else if (PlayerProfile.profile.money < fBCPrice) {
+			filterBC.interactable = false;
+		} else {
+			filterBC.interactable = true;
+		}
+
+		if (PlayerProfile.profile.filters.Contains (fOCName)) {
+			filterOC.GetComponentInChildren<Text> ().text = "Already Owned";
+			filterOC.interactable = false;
+		} else if (PlayerProfile.profile.money < fOCPrice) {
+			filterOC.interactable = false;
+		} else {
+			filterOC.interactable = true;
+		}
+
+		if (PlayerProfile.profile.filters.Contains (fRName)) {
+			filterR.GetComponentInChildren<Text> ().text = "Already Owned";
+			filterR.interactable = false;
+		} else if (PlayerProfile.profile.money < fRPrice) {
+			filterR.interactable = false;
+		} else {
+			filterR.interactable = true;
+		}
+
+		if (PlayerProfile.profile.bagSize == 5) {
+			bagFive.GetComponentInChildren<Text> ().text = "Already Owned";
+			bagFive.interactable = false;
+		} else if (PlayerProfile.profile.money < bFPrice) {
+			bagFive.interactable = false;
+		} else {
+			bagFive.interactable = true;
+		}
+
+		if (PlayerProfile.profile.bagSize == 10) {
+			bagTen.GetComponentInChildren<Text> ().text = "Already Owned";
+			bagTen.interactable = false;
+		} else if (PlayerProfile.profile.money < bTPrice) {
+			bagTen.interactable = false;
+		} else {
+			bagTen.interactable = true;
+		}
+
 		moneyText.text = "$" + PlayerProfile.profile.money;
 
 		/*foreach (KeyValuePair<string, PurchaseButton> entry in purchaseButtons) {
@@ -119,6 +221,24 @@ public class ShopUIManager : MonoBehaviour {
             PlayerProfile.profile.save();
         }
 	}
+		
+	public void buyFilter(float price, string name){
+		if (PlayerProfile.profile.money >= price
+			&& !PlayerProfile.profile.filters.Contains(name)) {
+			PlayerProfile.profile.filters.Add(name);
+			PlayerProfile.profile.money -= price;
+			PlayerProfile.profile.save();
+		}
+	}
+
+	public void buyBag(float size, float price){
+		if (PlayerProfile.profile.money >= price 
+			&& PlayerProfile.profile.bagSize < size) {
+			PlayerProfile.profile.bagSize = size;
+			PlayerProfile.profile.money -= price;
+			PlayerProfile.profile.save();
+		}
+	}
 
 	public void buyWideLens() {
 		// Assume lens is not owned and player has enough money
@@ -133,6 +253,38 @@ public class ShopUIManager : MonoBehaviour {
 	public void buyTeleLens() {
 		// Assume lens is not owned and player has enough money
 		buyLens(telePrice, teleName);
+	}
+
+	public void buyFilterB(){
+		buyFilter (fBPrice, fBName);
+	}
+
+	public void buyFilterO(){
+		buyFilter (fOPrice, fOName);
+	}
+
+	public void buyFilterBO(){
+		buyFilter (fBOPrice, fBOName);
+	}
+
+	public void buyFilterBC(){
+		buyFilter (fBCPrice, fBCName);
+	}
+
+	public void buyFilterOC(){
+		buyFilter (fOCPrice, fOCName);
+	}
+
+	public void buyFilterR(){
+		buyFilter (fRPrice, fRName);
+	}
+
+	public void buyBagFive(){
+		buyBag (5, bFPrice);
+	}
+
+	public void buyBagTen(){
+		buyBag (10, bTPrice);
 	}
 
 	public void loadMainMenu() {
