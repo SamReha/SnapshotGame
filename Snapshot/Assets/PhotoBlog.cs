@@ -10,7 +10,7 @@ public class PhotoBlog : MonoBehaviour {
 	List<Photo> uploaded;
 
 	public void Start () {
-		uploadPending = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals>().pics;
+        uploadPending = null;// GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals>().pics;
 		//uploaded = GameObject.Find ("Camera Prefab").GetComponent<SnapshotCam> ().pics;
 	}
 

@@ -12,9 +12,6 @@ namespace UnityStandardAssets.ImageEffects {
 
 		public string currentLens;
 
-		// List that will contain all of the photos that the player takes
-		public List<Photo> pics;
-
 		// These two ints determine the resolution of the photos taken  
 		public int width = 1024;
 		public int height = 1024;
@@ -44,6 +41,8 @@ namespace UnityStandardAssets.ImageEffects {
 		private Vector3 cameraHeldUp;
 		private Vector3 cameraHeldDown;
 
+        private MemoryCardReader memCardReader;
+
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
 			currentLens = "Portrait Lens";
@@ -58,9 +57,10 @@ namespace UnityStandardAssets.ImageEffects {
 			parent.GetComponentInParent<DepthOfField> ().focalSize = PortraitLens.GetComponent<Lens> ().focalSize;
 			parent.GetComponentInParent<DepthOfField> ().focalLength = PortraitLens.GetComponent<Lens> ().focalDistance;
 			parent.GetComponentInParent<Camera> ().fieldOfView = PortraitLens.GetComponent<Lens> ().fieldOfView;
+            
+            memCardReader = GameObject.Find("/MemoryCardManager").GetComponent<MemoryCardReader>();
 
-			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
-			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
+            uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
 			PlayerProfile.profile.load ();
 		}
 
@@ -78,7 +78,9 @@ namespace UnityStandardAssets.ImageEffects {
 					buttonDownWhilePaused = false;
 					//  Then upon release the photo is taken
 				} else if (Input.GetButtonUp ("Take Photo") && !buttonDownWhilePaused) {
-					if (PlayerProfile.profile.memoryCardCapacity > pics.Count) {
+                    float count = memCardReader.getPhotoCount();
+                    Debug.Log("Capacity: " + PlayerProfile.profile.memoryCardCapacity + " Number of pics: " + count);
+					if (PlayerProfile.profile.memoryCardCapacity > count) {
 						cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
 						//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
 						RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
@@ -106,10 +108,11 @@ namespace UnityStandardAssets.ImageEffects {
 						c.targetTexture = null;
 						RenderTexture.active = null;
 						Destroy (rt); 
-						pics.Add (p);
-						byte[] bytes = t2d.EncodeToPNG (); 
-						p.pathname = Application.dataPath + "/Resources/screen"
-						+ System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
+						byte[] bytes = t2d.EncodeToPNG ();
+
+                        // Note that pictures now get saved to the UploadQueue directory
+						p.pathname = Application.dataPath + "/Resources/UploadQueue/screen"
+                        + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
 						//  Save image
 						string filename = p.pathname + ".png"; 
 						System.IO.File.WriteAllBytes (filename, bytes);
