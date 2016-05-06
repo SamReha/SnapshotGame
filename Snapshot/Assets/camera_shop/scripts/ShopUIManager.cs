@@ -138,6 +138,10 @@ public class ShopUIManager : MonoBehaviour {
 	public void loadMainMenu() {
 		shopSource.Stop ();
 		SceneManager.LoadScene ("main_menu");
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Play();
+		}
 	}
 }
 
