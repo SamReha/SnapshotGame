@@ -9,6 +9,7 @@ namespace UnityStandardAssets.ImageEffects {
 		public GameObject PortraitLens;
 		public GameObject WideAngleLens;
 		public GameObject TelephotoLens;
+		public CameraMenuManager camMenuManager;
 
 		public string currentLens;
 
@@ -78,9 +79,7 @@ namespace UnityStandardAssets.ImageEffects {
 					buttonDownWhilePaused = false;
 					//  Then upon release the photo is taken
 				} else if (Input.GetButtonUp ("Take Photo") && !buttonDownWhilePaused) {
-                    float count = memCardReader.getPhotoCount();
-                    Debug.Log("Capacity: " + PlayerProfile.profile.memoryCardCapacity + " Number of pics: " + count);
-					if (PlayerProfile.profile.memoryCardCapacity > count) {
+					if (PlayerProfile.profile.memoryCardCapacity > memCardReader.getPhotoCount ()) {
 						cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
 						//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
 						RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
@@ -110,9 +109,9 @@ namespace UnityStandardAssets.ImageEffects {
 						Destroy (rt); 
 						byte[] bytes = t2d.EncodeToPNG ();
 
-                        // Note that pictures now get saved to the UploadQueue directory
+						// Note that pictures now get saved to the UploadQueue directory
 						p.pathname = Application.dataPath + "/Resources/UploadQueue/screen"
-                        + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
+						+ System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
 						//  Save image
 						string filename = p.pathname + ".png"; 
 						System.IO.File.WriteAllBytes (filename, bytes);
@@ -124,6 +123,11 @@ namespace UnityStandardAssets.ImageEffects {
 						c2.Render ();	// Renders the Player view
 						c2.targetTexture = null;
 						buttonDownWhilePaused = true;
+
+						// Finally, tell the Camera Menu Manager to update the photo count
+						camMenuManager.updatePhotoCounter();
+					} else {
+						camMenuManager.warnAboutFullCard ();
 					}
 				}
 			}

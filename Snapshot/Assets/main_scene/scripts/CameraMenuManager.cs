@@ -7,16 +7,27 @@ public class CameraMenuManager : MonoBehaviour {
     public Text photoCounter;
     public Button memoryCardFullWarning;
     public MemoryCardReader memCardReader;
+	public GameObject photoReview;
 
+	private bool reviewingPhotos = false;
     private float warningTime = 0f;
 
 	// Use this for initialization
 	void Start () {
-        photoCounter.text = updatePhotoCounter();
+		PlayerProfile.profile.load ();
+        updatePhotoCounter();
     }
 	
 	// Update is called once per frame
 	void Update () {
+		// Toggle active Photo Review Thingy
+		photoReview.SetActive(reviewingPhotos);
+
+		// Check to see if the user wants to review their photos
+		if (Input.GetButton ("Photo Review")) {
+			reviewingPhotos = !reviewingPhotos;
+		}
+
         // Handle warning timer
         if (warningTime <= 0f) {
             memoryCardFullWarning.gameObject.SetActive(false);
@@ -30,7 +41,7 @@ public class CameraMenuManager : MonoBehaviour {
         warningTime = 2f;
     }
 
-    public string updatePhotoCounter() {
-        return memCardReader.getPhotoCount() + " / " + PlayerProfile.profile.memoryCardCapacity;
+    public void updatePhotoCounter() {
+		photoCounter.text = memCardReader.getPhotoCount() + " / " + PlayerProfile.profile.memoryCardCapacity;
     }
 }

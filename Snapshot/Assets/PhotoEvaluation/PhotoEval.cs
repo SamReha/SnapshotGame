@@ -120,11 +120,6 @@ public class PhotoEval : MonoBehaviour {
 
 	public void PhotoValues (){
 		SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
-		/*
-			foreach(GameObject obj in unobstructedList.Values){
-				Debug.Log (obj.name);
-			}
-			*/
 		if (unobstructedList.Count == 0) {
 			print ("Empty");
 		}
@@ -134,14 +129,14 @@ public class PhotoEval : MonoBehaviour {
 		foreach ( KeyValuePair<float, GameObject> kvp in unobstructedList) {
 			i++;  //  i is a temporary solution. I suggest we work around using indecies
 			GameObject go = kvp.Value;
-			Debug.Log ("Object: " + go.name);
+			//Debug.Log ("Object: " + go.name);
 			Corners (go);
 			viewPos = cam.WorldToViewportPoint (go.transform.position);
-			Debug.Log ("Position: " + viewPos.ToString("F4"));
+			//Debug.Log ("Position: " + viewPos.ToString("F4"));
 			CalcObjPercentage (corners, go);
-			Debug.Log ("Percent in Frame: " + percentInFrame);
+			//Debug.Log ("Percent in Frame: " + percentInFrame);
 			IsFramed (i);
-			Debug.Log ("Centered: " + percentCentered);
+			//Debug.Log ("Centered: " + percentCentered);
 		}
 	}
 
@@ -239,11 +234,11 @@ public class PhotoEval : MonoBehaviour {
 			totalVerts = blockedVerts + visibleVerts;
 			//  Remove completely covered instances
 			if (visibleVerts <= 0){
-				Debug.Log ("Raycast missed. Removing " + obj.Value.name + " from the list.");
+				//Debug.Log ("Raycast missed. Removing " + obj.Value.name + " from the list.");
 				obj.Value.GetComponent<Photographable>().percentOccluded = 0;
 				returnList.Remove (obj.Key);
 			} else {
-				Debug.Log(	"Object " + obj.Value.name + " visibility: " + (float)visibleVerts*100f/(totalVerts) + "%");
+				//Debug.Log("Object " + obj.Value.name + " visibility: " + (float)visibleVerts*100f/(totalVerts) + "%");
 				obj.Value.GetComponent<Photographable> ().percentOccluded = (float)visibleVerts / (totalVerts);
 			}
 		}
@@ -440,7 +435,7 @@ public class PhotoEval : MonoBehaviour {
 	void IsFramed(int i){
 		float x = viewPos.x;
 		float y = viewPos.y;
-		Debug.Log ("Percent in frame: size " + percentInFrame.Count + " while i is " + i);
+		//Debug.Log ("Percent in frame: size " + percentInFrame.Count + " while i is " + i);
 		if (percentInFrame[i] > 0) {
 			if (x <= 0.6f && x >= 0.4f) {
 				if (y <= 0.6f && y >= 0.4f) {
@@ -504,7 +499,7 @@ public class PhotoEval : MonoBehaviour {
 	}
 
 	void Corners(GameObject go){
-		Debug.Log ("Game Object name: " + go.name);
+		//Debug.Log ("Game Object name: " + go.name);
 		Bounds bounds = go.GetComponent<MeshFilter>().mesh.bounds;
 		Vector3 v3Center = bounds.center;
 		Vector3 v3Extents = bounds.extents;
