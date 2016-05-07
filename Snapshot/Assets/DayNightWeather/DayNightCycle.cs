@@ -12,17 +12,15 @@ public class DayNightCycle : MonoBehaviour {
 
     //  Sun disappears slightly after the horizon
     public float minPoint = 0.2f;
+    //public float maxAmbient = 1f;
+    //public float minAmbient = .15f;
+	public float minAmbientPoint = -0.2f;
+    //public Gradient nightDayFogColor;
+    //public AnimationCurve fogDensityCurve;
+    //public float fogScale = 1f;
+    //public float dayAtmosphereThickness = 0.4f;
+    //public float nightAtmosphereThickness = 0.87f;
 
-    public float maxAmbient = 1f;
-    public float minAmbient = .15f;
-    public float minAmbientPoint = -0.2f;
-
-    public Gradient nightDayFogColor;
-    public AnimationCurve fogDensityCurve;
-    public float fogScale = 1f;
-
-    public float dayAtmosphereThickness = 0.4f;
-    public float nightAtmosphereThickness = 0.87f;
     //  Change the speed of day/night independently
     public float dayRotateSpeed;
     public float nightRotateSpeed;
@@ -36,10 +34,12 @@ public class DayNightCycle : MonoBehaviour {
     public Transform moon;
 	public Material moonMaterial;
 	public float constantTime;
+	WeatherControl weatherController;
 
 	// Use this for initialization
 	void Start () {
-        mainLight = GetComponent<Light>();
+		mainLight = GetComponent<Light>();
+		weatherController = GetComponent<WeatherControl>();
         skyMat = RenderSettings.skybox;
 
 		//skySpeed = 0.01;
@@ -58,7 +58,7 @@ public class DayNightCycle : MonoBehaviour {
 		//Debug.Log ("Time of day is: " + timeOfDay);
 
         //  Linearly change the sun's brightness depending on the time
-		float i = ((maxIntensity - minIntensity) * clampedTime) * minAmbient;
+		float i = ((maxIntensity - minIntensity) * clampedTime) * weatherController.currentWeather.minAmbient;
         RenderSettings.ambientIntensity = i;
 
         //  Set the sunlight to wherever the normalized sun position falls on the gradient.
@@ -70,11 +70,11 @@ public class DayNightCycle : MonoBehaviour {
 		skyMat.color = mainLight.color;
 
         //  Determine fog color/density depending on the time of the day
-		RenderSettings.fogColor = nightDayFogColor.Evaluate(clampedTime);
-		RenderSettings.fogDensity = fogDensityCurve.Evaluate(clampedTime) * fogScale;
+		RenderSettings.fogColor = weatherController.currentWeather.nightDayFogColor.Evaluate(clampedTime);
+		RenderSettings.fogDensity = weatherController.currentWeather.fogDensityCurve.Evaluate(clampedTime) * weatherController.currentWeather.fogScale;
 
         //  Linearly change the atmosphere thickness
-		i = ((dayAtmosphereThickness - nightAtmosphereThickness) * clampedTime) + nightAtmosphereThickness;
+		i = ((weatherController.currentWeather.dayAtmosphereThickness - weatherController.currentWeather.nightAtmosphereThickness) * clampedTime) + weatherController.currentWeather.nightAtmosphereThickness;
         skyMat.SetFloat("_AtmosphereThickness", i);
 		//  Blend the skyboxes
 
