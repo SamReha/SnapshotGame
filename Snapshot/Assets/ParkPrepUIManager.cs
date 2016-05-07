@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class ParkPrepUIManager : MonoBehaviour {
 	private int itemCount = 0;
-	private const int MAX_ITEMS = 5; //for now
+	private float MAX_ITEMS; //for now
 	private const int MIN_ITEMS = 0;
 
 	private Text itemCountTxt;
@@ -17,13 +18,13 @@ public class ParkPrepUIManager : MonoBehaviour {
 
 	private Toggle[] toggles_inventory;
 	private Toggle[] toggles_bag;
-	string blah = "blah";
 
 	void Start () {
 		PlayerProfile.profile.load();
 		if (!src) {
 			src = MainMenuUI.mainMenuSource;
 		}
+			
 		itemCountTxt = GameObject.FindGameObjectWithTag("itemCountText").GetComponent<Text>();
 		bagEmpty = GameObject.FindGameObjectWithTag ("empty text").GetComponent<Text>();
 		itemCountTxt.text = "Total Items: " + itemCount + "/" + MAX_ITEMS;
@@ -32,12 +33,15 @@ public class ParkPrepUIManager : MonoBehaviour {
 		toggles_b = GameObject.FindGameObjectWithTag ("toggles_bag").GetComponent<ToggleGroup>();
 		toggles_inventory = toggles.GetComponentsInChildren<Toggle>();
 		toggles_bag = toggles_b.GetComponentsInChildren<Toggle>();
+		MAX_ITEMS = PlayerProfile.profile.bagSize;
 
+		int numItems = PlayerProfile.profile.lenses.Count + PlayerProfile.profile.filters.Count;
 
 		for (int j = 0; j < toggles_bag.Length; j++) {
 			toggles_bag[j].gameObject.SetActive (false);
 			toggles_bag[j].GetComponentInChildren<Text>().fontSize = 12;
 		}
+			
 
 		//make it easier to initalize everything
 		for (int k = 0; k < toggles_inventory.Length; k++) {
@@ -46,12 +50,14 @@ public class ParkPrepUIManager : MonoBehaviour {
 			toggles_inventory [k].gameObject.SetActive (false);
 		}
 
-		for (int ii = 0; ii < PlayerProfile.profile.lenses.Count; ii++) {
+		for (int ii = 0; ii < numItems; ii++) {
 			toggles_inventory [ii].gameObject.SetActive (true);
 			toggles_inventory [ii].isOn = false;
 			toggles_inventory [ii].interactable = true;
 			toggles_inventory [ii].GetComponentInChildren<Text> ().fontSize = 12;
 		}
+
+
 		initItemNames ();
 	}
 
@@ -123,17 +129,47 @@ public class ParkPrepUIManager : MonoBehaviour {
 	}
 
 	public void initItemNames() {
-		for (int i = 0; i < PlayerProfile.profile.lenses.Count; i++) {
-			if (PlayerProfile.profile.lenses [i].Equals ("port1")) {
+		List<string> everything = PlayerProfile.profile.lenses;
+
+		for (int i = 0; i < PlayerProfile.profile.filters.Count; i++) {
+			everything.Add (PlayerProfile.profile.filters [i]);
+		}
+		for ( int i = 0; i < everything.Count; i++) {
+			if (everything [i].Equals ("port1")) {
 				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Basic Portrait Lens";
 				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
-			} else if (PlayerProfile.profile.lenses [i].Equals ("wide1")) {
+			} else if (everything [i].Equals ("wide1")) {
 				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Basic Wide Angle Lens";
 				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
-			} else if (PlayerProfile.profile.lenses [i].Equals ("tele1")) {
+			} else if (everything [i].Equals ("tele1")) {
 				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Basic Telephoto Lens";
+				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
+			} else if (everything [i].Equals ("clear")) {
+				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Basic Clear Filter";
+				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
+			} else if (everything [i].Equals ("bluefilter")) {
+				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Blue Filter";
+				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
+			} else if (everything [i].Equals ("orangefilter")) {
+				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Orange Filter";
+				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
+			} else if (everything [i].Equals ("blueorangefilter")) {
+				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Blue Orange Filter";
+				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
+			} else if (everything [i].Equals ("bluefadefilter")) {
+				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Faded Blue Filter";
+				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
+			} else if (everything [i].Equals ("orangefadefilter")) {
+				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Faded Orange Filter";
+				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
+			} else if (everything [i].Equals ("rainbowfilter")) {
+				toggles_inventory [i].GetComponentInChildren<Text> ().text = "Rainbow Filter";
 				toggles_bag [i].GetComponentInChildren<Text> ().text = toggles_inventory [i].GetComponentInChildren<Text> ().text;
 			}
 		}
+
+	//	foreach (string filter in PlayerProfile.profile.filters) {
+
+
 	}
 }
