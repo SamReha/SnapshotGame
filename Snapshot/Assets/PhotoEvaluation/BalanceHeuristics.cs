@@ -5,10 +5,6 @@ using System.Collections.Generic;
 public class BalanceHeuristics {
 	public BalanceHeuristics () {}
 
-	public static float TestHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam) {
-		return 1f;
-	}
-
 	public static float StandardDeviation(GameObject subject, List<GameObject> visibleObjects, Camera cam){
 		List<float> screenPercents = new List<float> ();
 		float mean = 0f;

@@ -30,13 +30,12 @@ public class Photographable : MonoBehaviour {
 	void Update () {
 		planes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-		if (GeometryUtility.TestPlanesAABB (planes, anObjCollider.bounds)) {
-			List<GameObject> v = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().visibleObjs;
+        List<GameObject> v = GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().visibleObjs;
+        if (GeometryUtility.TestPlanesAABB (planes, anObjCollider.bounds)) {
 			if (!v.Contains (gameObject)) {
 				v.Add (gameObject);
 			}
 		} else {
-			List<GameObject> v = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().visibleObjs;
 			if (v.Contains (gameObject)) {
 				v.Remove (gameObject);
 			}

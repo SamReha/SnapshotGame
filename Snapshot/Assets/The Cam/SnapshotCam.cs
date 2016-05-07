@@ -124,9 +124,10 @@ namespace UnityStandardAssets.ImageEffects {
 						c2.targetTexture = null;
 						buttonDownWhilePaused = true;
 
-						// Finally, tell the Camera Menu Manager to update the photo count
+						// Finally, tell the Camera Menu Manager to update its own info
 						camMenuManager.updatePhotoCounter();
-					} else {
+                        camMenuManager.updatePhotoReviewUI();
+                    } else {
 						camMenuManager.warnAboutFullCard ();
 					}
 				}
