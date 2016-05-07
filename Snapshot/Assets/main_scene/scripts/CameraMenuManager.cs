@@ -6,6 +6,7 @@ using UnityEditor;
 
 public class CameraMenuManager : MonoBehaviour {
     public Canvas cameraCanvas;
+    public GameObject cameraMenuViewPortContents;
     public Text photoCounter;
     public Button memoryCardFullWarning;
     public MemoryCardReader memCardReader;
@@ -41,7 +42,7 @@ public class CameraMenuManager : MonoBehaviour {
 	}
 
     public void updatePhotoReviewUI() {
-        foreach (Transform child in transform) {
+        foreach (Transform child in cameraMenuViewPortContents.transform) {
             Destroy(child.gameObject);
         }
 
@@ -55,15 +56,14 @@ public class CameraMenuManager : MonoBehaviour {
         foreach (FileInfo photoFile in info) {
             string filename = photoFile.Name;
 
-            GameObject curPicture = (GameObject)Instantiate(newPicture);
+            GameObject curPicture = Instantiate(newPicture);
             Texture2D pic = new Texture2D(2, 2);
             byte[] bytes = File.ReadAllBytes(memCardReader.pathToUploadQueue + filename);
             pic.LoadImage(bytes);
-            RawImage rawImage = (RawImage)curPicture.GetComponent<RawImage>();
+            RawImage rawImage = curPicture.GetComponent<RawImage>();
             rawImage.texture = pic;
             curPicture.GetComponent<RawImage>().name = filename.Replace(".png", "");
-            curPicture.transform.SetParent(this.transform, false);
-            //curNames.Add(curPicture);
+            curPicture.transform.SetParent(cameraMenuViewPortContents.transform, false);
         }
     }
 
