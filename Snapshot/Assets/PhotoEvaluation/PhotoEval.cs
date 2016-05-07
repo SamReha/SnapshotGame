@@ -53,7 +53,7 @@ public class PhotoEval : MonoBehaviour {
 
 		balanceHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 1f);
-		//balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 1f);
+		balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 1f);
 
 		interestHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
