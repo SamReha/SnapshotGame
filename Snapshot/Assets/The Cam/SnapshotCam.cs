@@ -69,7 +69,7 @@ namespace UnityStandardAssets.ImageEffects {
 			filterIter = 0;
 
 			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
-			uimanager = GameObject.Find ("UIManager").GetComponent<UIManager> ();
+			uimanager = GameObject.FindGameObjectWithTag("UIMan").GetComponent<UIManager> ();
 			PlayerProfile.profile.load ();
 		}
 
