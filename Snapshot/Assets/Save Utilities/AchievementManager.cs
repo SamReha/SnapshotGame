@@ -186,7 +186,7 @@ public class AchievementManager : MonoBehaviour {
         }
 
         UpdateRewardPointTotals(); // Gamer Score analog - we don't really use it.
-        EarnedSound.Play(); // Need better sound effect, maybe add popup, too?
+        //EarnedSound.Play(); // Need better sound effect, maybe add popup, too?
     }
 
     public void AddProgressToAchievement(string achievementName, float progressAmount) {

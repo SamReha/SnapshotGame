@@ -16,39 +16,17 @@ public class ScrollViewManager : MonoBehaviour {
     public Toggle toggle;
     public List<GameObject> curNames = new List<GameObject>();
 
+	private string pathToUploadQueue;
+
 #if UNITY_EDITOR
     [MenuItem ("AssetDatabase/Snapshot")]
 #endif
 
     // Use this for initialization
     void Start () {
-#if UNITY_EDITOR
-		//  Make sure pictures are loaded into resources
-        AssetDatabase.Refresh();
-#endif
-        int counter = 0;
-		DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/Resources/");
-        //Debug.Log(dir);
-        FileInfo[] info = dir.GetFiles("*.png");
-        foreach (FileInfo f in info)
-        {
-            //Debug.Log(f);
-            string filename = f.Name;
-            //Debug.Log(filename);
+		pathToUploadQueue = Application.dataPath + "/Resources/UploadQueue/";
 
-			if (!PlayerProfile.profile.postedPhotos.Contains (filename.Replace (".png", ""))) {
-				GameObject curPicture = (GameObject)Instantiate (newPicture);
-				Texture2D pic = new Texture2D (2, 2);
-				byte[] bytes = File.ReadAllBytes (Application.dataPath + "/Resources/" + filename);
-				pic.LoadImage (bytes);
-				RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
-				r.texture = pic;
-				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
-				curPicture.transform.SetParent (this.transform, false);
-				curNames.Add (curPicture);
-			}
-            counter++;
-        }
+		updatePostableImages ();
 
 		imagesToPost = new List<string> ();
 	}
@@ -77,28 +55,21 @@ public class ScrollViewManager : MonoBehaviour {
 		//  Make sure pictures are loaded into resources
 		AssetDatabase.Refresh();
 		#endif
-		int counter = 0;
-		DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/Resources/");
-		//Debug.Log(dir);
-		FileInfo[] info = dir.GetFiles("*.png");
-		foreach (FileInfo f in info)
-		{
-			//Debug.Log(f);
-			string filename = f.Name;
-			//Debug.Log(filename);
 
-			if (!PlayerProfile.profile.postedPhotos.Contains (filename.Replace (".png", ""))) {
-				GameObject curPicture = (GameObject)Instantiate (newPicture);
-				Texture2D pic = new Texture2D (2, 2);
-				byte[] bytes = File.ReadAllBytes (Application.dataPath + "/Resources/" + filename);
-				pic.LoadImage (bytes);
-				RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
-				r.texture = pic;
-				curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
-				curPicture.transform.SetParent (this.transform, false);
-				curNames.Add (curPicture);
-			}
-			counter++;
+		DirectoryInfo dir = new DirectoryInfo(pathToUploadQueue);
+		FileInfo[] info = dir.GetFiles("*.png");
+		foreach (FileInfo photoFile in info) {
+			string filename = photoFile.Name;
+
+			GameObject curPicture = (GameObject)Instantiate (newPicture);
+			Texture2D pic = new Texture2D (2, 2);
+			byte[] bytes = File.ReadAllBytes (pathToUploadQueue + filename);
+			pic.LoadImage (bytes);
+			RawImage rawImage = (RawImage) curPicture.GetComponent<RawImage> ();
+			rawImage.texture = pic;
+			curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
+			curPicture.transform.SetParent (this.transform, false);
+			curNames.Add (curPicture);
 		}
 	}
 
