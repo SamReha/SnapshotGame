@@ -7,8 +7,8 @@ using System.Collections.Generic;
 public class ShopUIManager : MonoBehaviour {
 	private AudioSource shopSource;
 	public Text moneyText;
+    public EquipmentManager equipManager;
 
-	//private Dictionary<string,PurchaseButton> purchaseButtons; // Ugh I am not clever enough for this.
 	public Button wideButton;
 	float widePrice = 250f;
 	string wideName = "wide1";
@@ -51,9 +51,15 @@ public class ShopUIManager : MonoBehaviour {
 	public Button bagTen;
 	float bTPrice = 1000f;
 
+	public List<Button> memoryCardButtons = new List<Button>();
+
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
+        equipManager.loadEquipment();
+
+        configureMemoryCardButtons();
+
 		shopSource = GetComponent<AudioSource> ();
 
 		shopSource.ignoreListenerPause = true;
@@ -240,7 +246,47 @@ public class ShopUIManager : MonoBehaviour {
 		}
 	}
 
-	public void buyWideLens() {
+    private void configureMemoryCardButtons() {
+		for (int i = 0; i < memoryCardButtons.Count; i++) {
+			Button button = memoryCardButtons [i];
+			EquipmentManager.Equipment<EquipmentManager.MemCardData> memoryCard = equipManager.memCards [i];
+
+			if (memoryCard.data.owned) {
+				button.GetComponentInChildren<Text> ().text = memoryCard.data.name + "\nAlready Owned";
+				button.interactable = false;
+			} else {
+				float cost = memoryCard.data.cost;
+				button.GetComponentInChildren<Text> ().text = memoryCard.data.name + "\n$" + cost;
+
+				if (cost > PlayerProfile.profile.money) {
+					button.interactable = false;
+				}
+
+				button.onClick.AddListener (() => {buyMemoryCard (memoryCard);});
+			}
+
+		}
+    }
+
+	private void buyMemoryCard(EquipmentManager.Equipment<EquipmentManager.MemCardData> memCard) {
+		// If it's not already owned and the player has enough money
+		if (memCard.data.owned == false && PlayerProfile.profile.money >= memCard.data.cost) {
+			PlayerProfile.profile.money -= memCard.data.cost;
+			memCard.data.owned = true;
+
+			if (PlayerProfile.profile.memoryCardCapacity < memCard.data.capacity) {
+				PlayerProfile.profile.memoryCardCapacity = memCard.data.capacity;
+			}
+
+			PlayerProfile.profile.save ();
+			equipManager.saveEquipment ();
+
+			// Refresh the buttons to ensure they look correct after purchase
+			configureMemoryCardButtons ();
+		}
+	}
+
+    public void buyWideLens() {
 		// Assume lens is not owned and player has enough money
 		buyLens(widePrice, wideName);
 	}

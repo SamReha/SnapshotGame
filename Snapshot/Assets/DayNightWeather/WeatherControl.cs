@@ -185,7 +185,7 @@ public class WeatherControl : MonoBehaviour {
 			skyMat.SetFloat ("_Blend", 0);
 		}
 
-		Debug.Log ("PM: " + pm + " TOD: " + timeOfDay + " Tick: " + transitionTimer);
+		//Debug.Log ("PM: " + pm + " TOD: " + timeOfDay + " Tick: " + transitionTimer);
 
 		float sunriseTrigger = 0.0f;
 		float dayTrigger = 0.02f;

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerCam
   - Camera Ignores
+  - UIMan
   layers:
   - Default
   - TransparentFX

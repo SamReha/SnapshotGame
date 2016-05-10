@@ -22,3 +22,7 @@ sysinfo.txt
 
 # Mac file-system meta file
 .DS_Store
+
+# Project Specific Files
+UploadQueue/
+PostedImages/

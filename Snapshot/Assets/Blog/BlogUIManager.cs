@@ -12,6 +12,9 @@ public class BlogUIManager : MonoBehaviour {
 	public Text moneyText;
     public AchievementManager achievementManager;
 
+	private string pathToPostedPhotos;
+	private string pathToUploadQueue;
+
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
@@ -19,6 +22,9 @@ public class BlogUIManager : MonoBehaviour {
 
 		blogSource.ignoreListenerPause = true;
 		blogSource.Play ();
+
+		pathToPostedPhotos = Application.dataPath + "/Resources/PostedImages/";
+		pathToUploadQueue = Application.dataPath + "/Resources/UploadQueue/";
 	}
 	
 	// Update is called once per frame
@@ -46,7 +52,7 @@ public class BlogUIManager : MonoBehaviour {
 			PlayerProfile.profile.postedPhotos.Add(imageName);
 			Photo photo = new Photo ();
 
-			photo.pathname = Application.dataPath + "/Resources/" +  imageName + ".metaphoto";
+			photo.pathname = pathToUploadQueue + imageName + ".metaphoto";
 			photo.load ();
 			PlayerProfile.profile.money += getMoneyFromScore(photo);
 			//Debug.Log (photo.balanceValue + ", " + photo.interestingnessValue + ", " + photo.spacingValue);
@@ -85,6 +91,13 @@ public class BlogUIManager : MonoBehaviour {
             if (photo.takenWithWide && bestScore(photo) >= 50.0f) {
                 achievementManager.SetProgressToAchievement("Wide Awake", 1.0f);
             }
+
+			Debug.Log (imageName);
+			// Finally, move the photo from .../Resources/UploadQueue/ to .../Resources/PostedImages/
+			File.Move(pathToUploadQueue + imageName + ".metaphoto", pathToPostedPhotos + imageName + ".metaphoto");
+			File.Move(pathToUploadQueue + imageName + ".png", pathToPostedPhotos + imageName + ".png");
+			File.Move(pathToUploadQueue + imageName + ".metaphoto.meta", pathToPostedPhotos + imageName + ".metaphoto.meta");
+            File.Move(pathToUploadQueue + imageName + ".png.meta", pathToPostedPhotos + imageName + ".png.meta");
         }
 		PlayerProfile.profile.save ();
 
