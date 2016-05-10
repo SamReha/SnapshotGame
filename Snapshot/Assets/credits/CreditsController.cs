@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -45,5 +45,9 @@ public class CreditsController : MonoBehaviour {
     public void goBackOnClick() {
         muzak.Stop();
         SceneManager.LoadScene("main_menu");
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Play();
+		}
     }
 }

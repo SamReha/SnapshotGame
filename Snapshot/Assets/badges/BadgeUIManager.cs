@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -19,6 +19,10 @@ public class BadgeUIManager : MonoBehaviour {
 
     public void goToMain() {
         SceneManager.LoadScene("main_menu");
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Play();
+		}
     }
 
     // Sets up a scrollview and fills it out with each Achievement.

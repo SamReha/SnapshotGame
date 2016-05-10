@@ -1921,6 +1921,7 @@ GameObject:
   - 224: {fileID: 293367187}
   - 222: {fileID: 293367189}
   - 114: {fileID: 293367188}
+  - 114: {fileID: 293367190}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1943,8 +1944,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 118.3, y: -57.8}
-  m_SizeDelta: {x: 230, y: 120}
+  m_AnchoredPosition: {x: 118.3, y: -104}
+  m_SizeDelta: {x: 230, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &293367188
 MonoBehaviour:
@@ -1958,7 +1959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.278}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.497}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1979,6 +1980,29 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 293367186}
+--- !u!114 &293367190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 293367186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2095666955, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 300, y: 300}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1001 &295882478
 Prefab:
   m_ObjectHideFlags: 0
@@ -3901,7 +3925,7 @@ GameObject:
   - 114: {fileID: 660743909}
   m_Layer: 0
   m_Name: UIManager
-  m_TagString: Untagged
+  m_TagString: UIMan
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4767,7 +4791,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   money: 0
   memoryCardCapacity: 0
+  bagSize: 0
   lenses: []
+  filters: []
   postedPhotos: []
 --- !u!114 &806870223
 MonoBehaviour:
@@ -5364,10 +5390,12 @@ MonoBehaviour:
   WideAngleLens: {fileID: 1511510749}
   TelephotoLens: {fileID: 44606921}
   camMenuManager: {fileID: 660743909}
+  FilterPrefab: {fileID: 573709784}
   currentLens: 
   width: 1024
   height: 1024
   buttonDownWhilePaused: 1
+  uimanager: {fileID: 660743906}
   camView: {fileID: 8400000, guid: d7852825534e1db4482c229f0a0f1339, type: 2}
   cam_click: {fileID: 8300000, guid: 1b2321726ad1c8d489137ae49b3c0312, type: 3}
   cam_shutter: {fileID: 8300000, guid: 3fede9227914d5e4b87b0f18711d5091, type: 3}
@@ -6225,8 +6253,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 525065505}
   m_HandleRect: {fileID: 525065504}
   m_Direction: 2
-  m_Value: 0.9966912
-  m_Size: 0.22354797
+  m_Value: 0.9112414
+  m_Size: 0.22354771
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7963,6 +7991,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 100000, guid: e22aed073ce89404c9cc7f17fd2c4467, type: 3}
+      propertyPath: m_Name
+      value: port1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e22aed073ce89404c9cc7f17fd2c4467, type: 3}
   m_IsPrefabParent: 0
@@ -8571,31 +8603,31 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1000
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 999
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: 0.9999903
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.00000016220127
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.00000016220127
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 0.0044060694
       objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 133444, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_Name
@@ -8709,6 +8741,10 @@ Prefab:
     - target: {fileID: 11430708, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: minAmbient
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 481786, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11453734, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
@@ -12063,6 +12099,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[3]
       value: 
       objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 100000, guid: b39ff2d924d657648805bdb5eab733e6, type: 3}
+      propertyPath: m_Name
+      value: tele1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b39ff2d924d657648805bdb5eab733e6, type: 3}
   m_IsPrefabParent: 0
@@ -12161,30 +12201,525 @@ MonoBehaviour:
   cloudynight_left: {fileID: 2800000, guid: 20041030df20fce4ab03a18b7a649437, type: 3}
   cloudynight_right: {fileID: 2800000, guid: c411584a4a563064d8d41caa685a3d9c, type: 3}
   cloudynight_back: {fileID: 2800000, guid: e3d880deef63e974aab6bc99d6c24a53, type: 3}
+  cloudynight_dayNightColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  cloudynight_maxIntensity: 0
+  cloudynight_minIntensity: 0
+  cloudynight_maxAmbient: 0
+  cloudynight_minAmbient: 0
+  cloudynight_nightDayFogColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  cloudynight_fogDensityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  cloudynight_fogScale: 0
+  cloudynight_dayAtmosphereThickness: 0
+  cloudynight_nightAtmosphereThickness: 0
   overcast_top: {fileID: 2800000, guid: fd0db9d85a017514799ce1851f0a6245, type: 3}
   overcast_front: {fileID: 2800000, guid: 3697312781de0ac45b14ff97864afd25, type: 3}
   overcast_bottom: {fileID: 2800000, guid: 5d9de651527e3b24082026ef0b580bee, type: 3}
   overcast_left: {fileID: 2800000, guid: c81cb236f3de4624192af9a8c1916fa3, type: 3}
   overcast_right: {fileID: 2800000, guid: 5e87a6f8d8ed32c4180cf9a873960d5a, type: 3}
   overcast_back: {fileID: 2800000, guid: dbf73092bbb089347aa97628957acdfd, type: 3}
+  overcast_dayNightColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  overcast_maxIntensity: 0
+  overcast_minIntensity: 0
+  overcast_maxAmbient: 0
+  overcast_minAmbient: 0
+  overcast_nightDayFogColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  overcast_fogDensityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  overcast_fogScale: 0
+  overcast_dayAtmosphereThickness: 0
+  overcast_nightAtmosphereThickness: 0
   sunny_top: {fileID: 2800000, guid: d495c1cb1f68e3e4a80270182a05800e, type: 3}
   sunny_front: {fileID: 2800000, guid: d659847fc2119724c8af97687900dc45, type: 3}
   sunny_bottom: {fileID: 2800000, guid: 5dc97da9ac7d5df4f84601dd8d0f3035, type: 3}
   sunny_left: {fileID: 2800000, guid: a45e42c5f4477b442a146709f19929e4, type: 3}
   sunny_right: {fileID: 2800000, guid: 7e38cdc9c3992b24b9b53ce5fb92dcf2, type: 3}
   sunny_back: {fileID: 2800000, guid: 42f4778a8bf27514c9161f418800d28e, type: 3}
+  sunny_dayNightColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  sunny_maxIntensity: 0
+  sunny_minIntensity: 0
+  sunny_maxAmbient: 0
+  sunny_minAmbient: 0
+  sunny_nightDayFogColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  sunny_fogDensityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sunny_fogScale: 0
+  sunny_dayAtmosphereThickness: 0
+  sunny_nightAtmosphereThickness: 0
   sunset_top: {fileID: 2800000, guid: 0faebcb369c6e6049aed13f4eb3e3cf2, type: 3}
   sunset_front: {fileID: 2800000, guid: 68aba42cc0d349a48a241a7f5a310032, type: 3}
   sunset_bottom: {fileID: 2800000, guid: b43f85a28650d9f4fb420600ce94d5e3, type: 3}
   sunset_left: {fileID: 2800000, guid: d980857cbee900349ac98a3127bbbc0e, type: 3}
   sunset_right: {fileID: 2800000, guid: 9874773b2a0bd094fa1ad11e64cfea79, type: 3}
   sunset_back: {fileID: 2800000, guid: 35051317322ad534cacaf8342a2a65da, type: 3}
+  sunset_dayNightColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  sunset_maxIntensity: 0
+  sunset_minIntensity: 0
+  sunset_maxAmbient: 0
+  sunset_minAmbient: 0
+  sunset_nightDayFogColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  sunset_fogDensityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sunset_fogScale: 0
+  sunset_dayAtmosphereThickness: 0
+  sunset_nightAtmosphereThickness: 0
   sunrise_top: {fileID: 2800000, guid: 0b2d6f229635c1f4784c598d37a03442, type: 3}
   sunrise_front: {fileID: 2800000, guid: ba8cc99377d6ed84aa4f7b38730e8d99, type: 3}
   sunrise_bottom: {fileID: 2800000, guid: 0dffe91a7ae36c6428e7b1f93db38fd1, type: 3}
   sunrise_left: {fileID: 2800000, guid: 6c208faf50609fe488045f6575bca88a, type: 3}
   sunrise_right: {fileID: 2800000, guid: 55c6e5e6995372b4fa32a26fcd94ac9f, type: 3}
   sunrise_back: {fileID: 2800000, guid: 5edf93547f9e1e74db46eb56adeb56cb, type: 3}
+  sunrise_dayNightColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  sunrise_maxIntensity: 0
+  sunrise_minIntensity: 0
+  sunrise_maxAmbient: 0
+  sunrise_minAmbient: 0
+  sunrise_nightDayFogColor:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  sunrise_fogDensityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sunrise_fogScale: 0
+  sunrise_dayAtmosphereThickness: 0
+  sunrise_nightAtmosphereThickness: 0
 --- !u!114 &1675202517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12627,7 +13162,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: ded1d0426e99f3846859a34684ccaac6, type: 3}
       propertyPath: m_Name
-      value: Wide Angle Lens
+      value: wide1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ded1d0426e99f3846859a34684ccaac6, type: 3}
       propertyPath: m_LocalScale.x
@@ -12761,7 +13296,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.018348567, y: 8.184769}
+  m_AnchoredPosition: {x: 0.018348567, y: 219.50311}
   m_SizeDelta: {x: 0, y: 3185}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1762768694
@@ -15288,6 +15823,7 @@ GameObject:
   - 224: {fileID: 2104723705}
   - 222: {fileID: 2104723707}
   - 114: {fileID: 2104723706}
+  - 114: {fileID: 2104723708}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -15307,10 +15843,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 293367187}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 3.5, y: -97}
-  m_SizeDelta: {x: -7, y: 300}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2104723706
 MonoBehaviour:
@@ -15373,6 +15909,24 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2104723704}
+--- !u!114 &2104723708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2104723704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 223
+  m_PreferredHeight: 400
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
 --- !u!1001 &2115574682
 Prefab:
   m_ObjectHideFlags: 0

@@ -37,6 +37,10 @@ public class BlogUIManager : MonoBehaviour {
         achievementManager.saveAchievements();
         blogSource.Stop ();
 		SceneManager.LoadScene ("main_menu");
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Play ();
+		}
 	}
 
 	public void postPhotos() {

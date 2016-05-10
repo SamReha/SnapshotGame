@@ -83,6 +83,7 @@ public class UIManager : MonoBehaviour {
 		//  Upload pictures from the camera to the photo buffer. 
 		pauseSource.Stop();
 		SceneManager.LoadScene("main_menu");
+		ParkPrepUIManager.src.Play ();
 		AudioManager.getInstance().setExitToMenu (true);
 	}
 }
