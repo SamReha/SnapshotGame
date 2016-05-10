@@ -27,6 +27,36 @@ public class GenericAgent : MonoBehaviour {
     Vector3 direct_waypoint;  //  This is the position that the animal always tries to follow
     public Animator anim;
 
+	List<Vector3> waypoints = new List<Vector3>{			
+		new Vector3 (258f, -30f, 165f),
+		new Vector3 (335f, -30f, 106f),
+		new Vector3( 270f, -30f, 67f),
+		new Vector3( 295f, -30f, 28f),
+		new Vector3( 247f, -30f, 14f),
+		new Vector3( 209f, -30f, -24f),
+		new Vector3( 302f, -30f, -10f),
+		new Vector3( 372f, -30f, 50f),
+		new Vector3( 319f, -30f, -31f),
+		new Vector3( 273f, -30f, -66f),
+		new Vector3( 394f, -30f, 30f),
+		new Vector3( 393f, -30f, -97f),
+		new Vector3( 347f, -30f, -70f),
+		new Vector3( 280f, -30f, -97f),
+		new Vector3( 198f, -30f, -61f),
+		new Vector3( 120f, -30f, -58f),
+		new Vector3( 91f, -30f, -37f),
+		new Vector3( 107f, -30f, 6f),
+		new Vector3( 32f, -30f, -75f),
+		new Vector3( 32f, -30f, -22f),
+		new Vector3( 38f, -30f, 36f),
+		new Vector3( -10f, -30f, 66f),
+		new Vector3( 67f, -30f, 77f),
+		new Vector3( 125f, -30f, 45f),
+		new Vector3( 175f, -30f, 7f),
+		new Vector3( 177f, -30f, 43f)
+	};
+
+
 	// Use this for initialization
 	void Start () {
 		playerPosition = GameObject.FindGameObjectWithTag ("Player").transform;
@@ -36,59 +66,17 @@ public class GenericAgent : MonoBehaviour {
 		agent.speed = calm_speed;
 		fear_speed = calm_speed * 20;
 		string animal = gameObject.name;
-
-		if (animal == "Fox") {
-			path_waypoints = new Vector3[8];
-			path_waypoints [0] = (new Vector3 (-60f, -30.0f, 85f));
-			path_waypoints [1] = (new Vector3 (-287f, -30.0f, 212.5f));
-			path_waypoints [2] = (new Vector3 (-303f, -30.0f, 253f));
-			path_waypoints [3] = (new Vector3 (-398f, -30.0f, 191f));
-			path_waypoints [4] = (new Vector3 (-270f, -30.0f, 120f));
-			path_waypoints [5] = (new Vector3 (-273f, -30.0f, -15f));
-			path_waypoints [6] = (new Vector3 (-78f, -30.0f, -40f));
-			path_waypoints [7] = (new Vector3 (81f, -30.0f, 22f));
-		} else if (animal == "Deer") { 
-			path_waypoints = new Vector3[9];
-			path_waypoints [0] = (new Vector3 ( 67f, -30.0f, 27f));
-			path_waypoints [1] = (new Vector3 ( 132f, -30.0f, 29f));
-			path_waypoints [2] = (new Vector3 ( 194f, -30.0f, 148f));
-			path_waypoints [3] = (new Vector3 ( 175f, -30.0f, 244f));
-			path_waypoints [4] = (new Vector3 ( 278f, -30.0f, 256f));
-			path_waypoints [5] = (new Vector3 ( 327f, -30.0f, 190f));
-			path_waypoints [6] = (new Vector3 ( 229f, -30.0f, 45f));
-			path_waypoints [7] = (new Vector3 ( 176f, -30.0f, -28f));
-			path_waypoints [8] = (new Vector3 ( 157f, -30.0f, 21f));
-
-
-		} else if (animal == "Owl") {
-			path_waypoints = new Vector3[7];
-			path_waypoints [0] = (new Vector3 ( -159f, -20.9f, 79f));
-			path_waypoints [1] = (new Vector3 ( -289f, -20.9f, 139f));
-			path_waypoints [2] = (new Vector3 ( -364f, -20.9f, 93f));
-			path_waypoints [3] = (new Vector3 ( -356f, -20.9f, -7f));
-			path_waypoints [4] = (new Vector3 ( -274f, -20.9f, -53f));
-			path_waypoints [5] = (new Vector3 ( -152f, -20.9f, -58f));
-			path_waypoints [6] = (new Vector3 ( -83f, -20.9f, 11f));
-
-		} else {
-			//  Load in the path of the creature here
-			path_waypoints = new Vector3[15];// <--- Don't forget to update this number as the waypoint list grows
-			path_waypoints [0] = (new Vector3 (-60f, -30.0f, 85f));
-			path_waypoints [1] = (new Vector3 (-287f, -30.0f, 212.5f));
-			path_waypoints [2] = (new Vector3 (-303f, -30.0f, 253f));
-			path_waypoints [3] = (new Vector3 (-398f, -30.0f, 191f));
-			path_waypoints [4] = (new Vector3 (-270f, -30.0f, 120f));
-			path_waypoints [5] = (new Vector3 (-273f, -30.0f, -15f));
-			path_waypoints [6] = (new Vector3 (-78f, -30.0f, -40f));
-			path_waypoints [7] = (new Vector3 (81f, -30.0f, 22f));
-			path_waypoints [8] = (new Vector3 (245f, -30.0f, 81f));
-			path_waypoints [9] = (new Vector3 (324f, -30.0f, 124f));
-			path_waypoints [10] = (new Vector3 (285f, -30.0f, -34f));
-			path_waypoints [11] = (new Vector3 (101f, -30.0f, -131f));
-			path_waypoints [12] = (new Vector3 (-65f, -30.0f, -92f));
-			path_waypoints [13] = (new Vector3 (-165f, -30.0f, -44f));
-			path_waypoints [14] = (new Vector3 (14f, -30.0f, 25f));
+		path_waypoints = new Vector3[6];
+		List<int> points;
+		for (int i = 0; i <= path_waypoints.Length; i++) {
+			int x = Random.Range (0, 25);
+			while (points.Contains (x)) {
+				x = Random.Range (0, 25);
+			}
+			points.Add (x);
+			path_waypoints [i] = waypoints [x];
 		}
+
 
 		//  After loading in the path of the creature, set the direct Waypoint to the first in the array
 		direct_waypoint = path_waypoints[currentPathIndex];
