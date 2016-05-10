@@ -2,7 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.IO;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class CameraMenuManager : MonoBehaviour {
     public Canvas cameraCanvas;
