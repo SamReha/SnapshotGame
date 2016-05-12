@@ -19,6 +19,9 @@ public class ParkPrepUIManager : MonoBehaviour {
 	private Toggle[] toggles_inventory;
 	private Toggle[] toggles_bag;
 
+	private List<string> filters = new List<string>();
+	private List<string> lenses = new List<string>();
+
 	void Start () {
 		PlayerProfile.profile.load();
 		if (!src) {
@@ -122,10 +125,57 @@ public class ParkPrepUIManager : MonoBehaviour {
 	}
 
 	public void toPark() {
+		foreach (Toggle t in toggles_bag) {
+			string s = t.GetComponentInChildren<Text> ().text;
+			Debug.Log (s);
+			s = convertName (s);
+			if (PlayerProfile.profile.lenses.Contains (s)) {
+				lenses.Add (s);
+			} else if (PlayerProfile.profile.filters.Contains (s)) {
+				filters.Add (s);
+			}
+		}
+
+		PlayerProfile.profile.filtersInBag = filters;
+		PlayerProfile.profile.lensesInBag = lenses;
+		foreach (string s in PlayerProfile.profile.filtersInBag) {
+			Debug.Log (s);
+		}
+		foreach (string s in PlayerProfile.profile.lensesInBag) {
+			Debug.Log (s);
+		}
+		PlayerProfile.profile.save ();
 		MainMenuUI.mainMenuSource.Stop ();
 		src.Stop ();
 		MainMenuUI.prepMenu = false;
 		SceneManager.LoadScene ("SSV0.0");
+	}
+
+	public string convertName (string name){
+		switch (name) {
+			case "Basic Portrait Lens":
+				return "port1";
+			case "Basic Wide Angle Lens":
+				return "wide1";
+			case "Basic Telephoto Lens":
+				return "tele1";
+			case "Basic Clear Filter":
+				return "clear";
+			case "Blue Filter":
+				return "bluefilter";
+			case "Orange Filter":
+				return "orangefilter";
+			case "Blue Orange Filter":
+				return "blueorangefilter";
+			case "Faded Blue Filter":
+				return "bluefadefilter";
+			case "Faded Orange Filter":
+				return "orangefadefilter";
+			case "Rainbow Filter":
+				return "rainbowfilter";
+			default:
+				return "";
+		}
 	}
 
 	public void initItemNames() {
