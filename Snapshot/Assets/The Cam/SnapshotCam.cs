@@ -57,13 +57,13 @@ namespace UnityStandardAssets.ImageEffects {
 			cameraHeldDown = new Vector3(0.293f, -0.499f, 0.16f);
 
 			// Set portrait lens
-			curLens = GameObject.Find (currentLens);
+			/*curLens = GameObject.Find (currentLens);
 			curLens.GetComponent<MeshRenderer> ().enabled = true;
 
 			parent.GetComponentInParent<DepthOfField> ().focalSize = curLens.GetComponent<Lens> ().focalSize;
 			parent.GetComponentInParent<DepthOfField> ().focalLength = curLens.GetComponent<Lens> ().focalDistance;
 			parent.GetComponentInParent<Camera> ().fieldOfView = curLens.GetComponent<Lens> ().fieldOfView;
-
+*/
 			FilterPrefab.SetActive (false);
 
 			lensIter = 0;
