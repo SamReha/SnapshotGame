@@ -19,12 +19,16 @@ public class ParkPrepUIManager : MonoBehaviour {
 	private Toggle[] toggles_inventory;
 	private Toggle[] toggles_bag;
 
+	private List<string> filters = new List<string>();
+	private List<string> lenses = new List<string>();
+
 	void Start () {
 		PlayerProfile.profile.load();
+
 		if (!src) {
 			src = MainMenuUI.mainMenuSource;
 		}
-			
+
 		itemCountTxt = GameObject.FindGameObjectWithTag("itemCountText").GetComponent<Text>();
 		bagEmpty = GameObject.FindGameObjectWithTag ("empty text").GetComponent<Text>();
 		itemCountTxt.text = "Total Items: " + itemCount + "/" + MAX_ITEMS;
@@ -57,6 +61,8 @@ public class ParkPrepUIManager : MonoBehaviour {
 			toggles_inventory [ii].GetComponentInChildren<Text> ().fontSize = 12;
 		}
 
+		PlayerProfile.profile.lensesInBag.Clear ();
+		PlayerProfile.profile.filtersInBag.Clear ();
 
 		initItemNames ();
 	}
@@ -95,6 +101,8 @@ public class ParkPrepUIManager : MonoBehaviour {
 			}
 		}
 		bagEmpty.gameObject.SetActive(false);
+
+
 	}
 
 	public void move_items_bag() {
@@ -122,14 +130,85 @@ public class ParkPrepUIManager : MonoBehaviour {
 	}
 
 	public void toPark() {
+		foreach (string s in PlayerProfile.profile.filters) {
+			Debug.Log ("Filters: " + s);
+		}
+		foreach (string s in PlayerProfile.profile.lenses) {
+			Debug.Log ("Lenses: " + s);
+		}
+
+		foreach (Toggle t in toggles_bag) {
+			if (t.IsActive ()) {
+				string s = t.GetComponentInChildren<Text> ().text;
+				Debug.Log (s);
+				s = convertName (s);
+				Debug.Log (s + " Lense: " + PlayerProfile.profile.lenses.Contains (s) + " Filter: " + PlayerProfile.profile.filters.Contains (s));
+				if (PlayerProfile.profile.lenses.Contains (s)) {
+					lenses.Add (s);
+				} else if (PlayerProfile.profile.filters.Contains (s)) {
+					filters.Add (s);
+				}
+			}
+		}
+
+		PlayerProfile.profile.filtersInBag = filters;
+		PlayerProfile.profile.lensesInBag = lenses;
+		foreach (string s in PlayerProfile.profile.filtersInBag) {
+			Debug.Log ("Filters in bag: " + s);
+		}
+		foreach (string s in PlayerProfile.profile.lensesInBag) {
+			Debug.Log ("Lenses in bag: " + s);
+		}
+		PlayerProfile.profile.save ();
 		MainMenuUI.mainMenuSource.Stop ();
 		src.Stop ();
 		MainMenuUI.prepMenu = false;
 		SceneManager.LoadScene ("SSV0.0");
 	}
 
+	public string convertName (string name){
+		switch (name) {
+		case "Basic Portrait Lens":
+			Debug.Log (name + " Returning port1");
+			return "port1";
+		case "Basic Wide Angle Lens":
+			Debug.Log (name + " Returning wide1");
+			return "wide1";
+		case "Basic Telephoto Lens":
+			Debug.Log (name + " Returning tele1");
+			return "tele1";
+		case "Basic Clear Filter":
+			Debug.Log (name + " Returning clear");
+			return "clear";
+		case "Blue Filter":
+			Debug.Log (name + " Returning bluefilter");
+			return "bluefilter";
+		case "Orange Filter":
+			Debug.Log (name + " Returning orangefilter");
+			return "orangefilter";
+		case "Blue Orange Filter":
+			Debug.Log (name + " Returning blueorangefilter");
+			return "blueorangefilter";
+		case "Faded Blue Filter":
+			Debug.Log (name + " Returning bluefadefilter");
+			return "bluefadefilter";
+		case "Faded Orange Filter":
+			Debug.Log (name + " Returning orangefadefilter");
+			return "orangefadefilter";
+		case "Rainbow Filter":
+			Debug.Log (name + " Returning rainbowfilter");
+			return "rainbowfilter";
+		default:
+			Debug.Log (name + " Returning null");
+			return "";
+	}
+	}
+
 	public void initItemNames() {
-		List<string> everything = PlayerProfile.profile.lenses;
+		List<string> everything = new List<string> ();
+		foreach (string s in PlayerProfile.profile.lenses) {
+			everything.Add (s);
+		}
 
 		for (int i = 0; i < PlayerProfile.profile.filters.Count; i++) {
 			everything.Add (PlayerProfile.profile.filters [i]);
