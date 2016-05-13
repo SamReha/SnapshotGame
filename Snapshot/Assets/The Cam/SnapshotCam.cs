@@ -51,19 +51,19 @@ namespace UnityStandardAssets.ImageEffects {
 
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
-			currentLens = "port1";
+
 			parent = GameObject.Find("PlayerCam");
 			cameraHeldUp = new Vector3(0.0f, 0.0f, -0.15f);
 			cameraHeldDown = new Vector3(0.293f, -0.499f, 0.16f);
 
 			// Set portrait lens
-			curLens = GameObject.Find (currentLens);
+			/*curLens = GameObject.Find (currentLens);
 			curLens.GetComponent<MeshRenderer> ().enabled = true;
 
 			parent.GetComponentInParent<DepthOfField> ().focalSize = curLens.GetComponent<Lens> ().focalSize;
 			parent.GetComponentInParent<DepthOfField> ().focalLength = curLens.GetComponent<Lens> ().focalDistance;
 			parent.GetComponentInParent<Camera> ().fieldOfView = curLens.GetComponent<Lens> ().fieldOfView;
-
+*/
 			FilterPrefab.SetActive (false);
 
 			lensIter = 0;
@@ -72,6 +72,19 @@ namespace UnityStandardAssets.ImageEffects {
 			memCardReader = GameObject.Find("/MemoryCardManager").GetComponent<MemoryCardReader>();
 
 			PlayerProfile.profile.load ();
+			currentLens = PlayerProfile.profile.lensesInBag[0];
+			curLens = GameObject.Find (currentLens);
+			curLens.GetComponent<MeshRenderer> ().enabled = true;
+
+			parent.GetComponentInParent<DepthOfField> ().focalSize = curLens.GetComponent<Lens> ().focalSize;
+			parent.GetComponentInParent<DepthOfField> ().focalLength = curLens.GetComponent<Lens> ().focalDistance;
+			parent.GetComponentInParent<Camera> ().fieldOfView = curLens.GetComponent<Lens> ().fieldOfView;
+			foreach (string s in PlayerProfile.profile.lensesInBag) {
+				Debug.Log ("Lens " + s);
+			}
+			foreach (string s in PlayerProfile.profile.filtersInBag) {
+				Debug.Log ("Filters " + s);
+			}
 		}
 
 		void Update () {
@@ -233,11 +246,11 @@ namespace UnityStandardAssets.ImageEffects {
 
 				lensIter++;
 				Debug.Log ("Lens Iter" + lensIter);
-				if (lensIter == PlayerProfile.profile.lenses.Count) {
+				if (lensIter == PlayerProfile.profile.lensesInBag.Count) {
 					lensIter = 0;
 				}
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
-				currentLens = PlayerProfile.profile.lenses [lensIter];
+				currentLens = PlayerProfile.profile.lensesInBag [lensIter];
 				Debug.Log ("Current: " + currentLens);
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = true;
 				parent.GetComponentInParent<DepthOfField> ().focalSize = GameObject.Find(currentLens).GetComponent<Lens> ().focalSize;
@@ -248,13 +261,14 @@ namespace UnityStandardAssets.ImageEffects {
 
 			if (Input.GetButtonDown ("Wide Angle")) {
 				filterIter++;
-				if (filterIter == PlayerProfile.profile.filters.Count) {
+				Debug.Log (PlayerProfile.profile.filtersInBag.Count);
+				if (filterIter == PlayerProfile.profile.filtersInBag.Count) {
 					filterIter = 0;
-					Debug.Log (PlayerProfile.profile.filters [filterIter]);
+					Debug.Log (PlayerProfile.profile.filtersInBag [filterIter]);
 					FilterPrefab.SetActive (false);
 				} else {
-					Debug.Log (PlayerProfile.profile.filters [filterIter]);
-					Texture newFilter = Resources.Load (PlayerProfile.profile.filters [filterIter], typeof(Texture)) as Texture;
+					Debug.Log (PlayerProfile.profile.filtersInBag [filterIter]);
+					Texture newFilter = Resources.Load (PlayerProfile.profile.filtersInBag [filterIter], typeof(Texture)) as Texture;
 					FilterPrefab.SetActive (true);
 					FilterPrefab.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", newFilter);
 				}

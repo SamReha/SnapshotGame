@@ -17,6 +17,8 @@ public class PlayerProfile : MonoBehaviour {
 	public List<string> postedPhotos;
 	public float maxInterestTotal;
 	public float maxInterestIndividual;
+	public List<string> lensesInBag;
+	public List<string> filtersInBag;
 
 	// Use this for initialization
 	void Start () {}
@@ -58,6 +60,8 @@ public class PlayerProfile : MonoBehaviour {
 			postedPhotos = saveData.postedPhotos;
 			maxInterestTotal = saveData.maxInterestTotal;
 			maxInterestIndividual = saveData.maxInterestIndividual;
+			lensesInBag = saveData.lensesInBag;
+			filtersInBag = saveData.filtersInBag;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
@@ -88,6 +92,8 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.postedPhotos = postedPhotos;
 		saveData.maxInterestTotal = maxInterestTotal;
 		saveData.maxInterestIndividual = maxInterestIndividual;
+		saveData.lensesInBag = lensesInBag;
+		saveData.filtersInBag = filtersInBag;
 
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
@@ -105,9 +111,13 @@ public class PlayerProfile : MonoBehaviour {
 		postedPhotos = new List<string> ();
 		maxInterestTotal = 20f;
 		maxInterestIndividual = 5f;
+		lensesInBag = new List<string> ();
+		filtersInBag = new List<string> ();
 
 		filters.Add ("clear");
 		lenses.Add ("port1");
+		filtersInBag.Add ("clear");
+		lensesInBag.Add ("port1");
 
 		save ();
 	}
@@ -130,4 +140,6 @@ class InternalProfile {
 	public List<string> postedPhotos;
 	public float maxInterestTotal;
 	public float maxInterestIndividual;
+	public List<string> lensesInBag;
+	public List<string> filtersInBag;
 }

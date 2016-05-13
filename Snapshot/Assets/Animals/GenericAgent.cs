@@ -62,15 +62,15 @@ public class GenericAgent : MonoBehaviour {
 
 		} else if (animal == "Owl") {
 			path_waypoints = new Vector3[7];
-			path_waypoints [0] = (new Vector3 ( -159f, -20.9f, 79f));
-			path_waypoints [1] = (new Vector3 ( -289f, -20.9f, 139f));
-			path_waypoints [2] = (new Vector3 ( -364f, -20.9f, 93f));
-			path_waypoints [3] = (new Vector3 ( -356f, -20.9f, -7f));
-			path_waypoints [4] = (new Vector3 ( -274f, -20.9f, -53f));
-			path_waypoints [5] = (new Vector3 ( -152f, -20.9f, -58f));
-			path_waypoints [6] = (new Vector3 ( -83f, -20.9f, 11f));
+			path_waypoints[0] = (new Vector3 (  0f, -40f, -225f));
+			path_waypoints[1] = (new Vector3 (-90f, -40f, -225f));
+			path_waypoints[2] = (new Vector3 (-60f, -40f, -285f));
+			path_waypoints[3] = (new Vector3 (-80f, -30f, -155f));
+			path_waypoints[4] = (new Vector3 ( 32f, -12f,  -53f));
+            path_waypoints[5] = (new Vector3 (-80f, -30f, -155f));
+            path_waypoints[6] = (new Vector3 (-60f, -40f, -285f));
 
-		} else {
+        } else {
 			//  Load in the path of the creature here
 			path_waypoints = new Vector3[15];// <--- Don't forget to update this number as the waypoint list grows
 			path_waypoints [0] = (new Vector3 (-60f, -30.0f, 85f));
