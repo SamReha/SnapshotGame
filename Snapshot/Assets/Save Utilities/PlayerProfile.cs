@@ -10,8 +10,13 @@ public class PlayerProfile : MonoBehaviour {
 
 	public static PlayerProfile profile;
 	public float money;
-	public List<string> lenses;
+    public uint memoryCardCapacity;
+	public float bagSize;
+    public List<string> lenses;
+	public List<string> filters;
 	public List<string> postedPhotos;
+	public List<string> lensesInBag;
+	public List<string> filtersInBag;
 
 
 	//  Tutorial flags
@@ -54,8 +59,8 @@ public class PlayerProfile : MonoBehaviour {
 			//  Player is not in the park
 			timeElapsedInMenu += Time.deltaTime;
 		}
-		Debug.Log ("Time in park: "+ timeElapsedInPark);
-		Debug.Log ("Time in menu: "+ timeElapsedInMenu);
+		//Debug.Log ("Time in park: "+ timeElapsedInPark);
+		//Debug.Log ("Time in menu: "+ timeElapsedInMenu);
 	}
 
 	/*
@@ -75,7 +80,10 @@ public class PlayerProfile : MonoBehaviour {
 			saveFile.Close ();
 			//  Load in values
 			money = saveData.money;
+            memoryCardCapacity = saveData.memoryCardCapacity;
+			bagSize = saveData.bagSize;
 			lenses = saveData.lenses;
+			filters = saveData.filters;
 			postedPhotos = saveData.postedPhotos;
 
 			tutFlagMovement = saveData.tutFlagMovement;
@@ -92,6 +100,8 @@ public class PlayerProfile : MonoBehaviour {
 
 			timeElapsedInPark = saveData.timeElapsedInPark;
 			timeElapsedInMenu = saveData.timeElapsedInMenu;
+			lensesInBag = saveData.lensesInBag;
+			filtersInBag = saveData.filtersInBag;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
@@ -116,8 +126,12 @@ public class PlayerProfile : MonoBehaviour {
 
 		InternalProfile saveData = new InternalProfile ();
 		saveData.money = money;
+        saveData.memoryCardCapacity = memoryCardCapacity;
+		saveData.bagSize = bagSize;
 		saveData.lenses = lenses;
+		saveData.filters = filters;
 		saveData.postedPhotos = postedPhotos;
+
 		saveData.tutFlagMovement = tutFlagMovement;
 		saveData.tutFlagAim = tutFlagAim;
 		saveData.tutFlagSnap = tutFlagSnap;
@@ -132,6 +146,8 @@ public class PlayerProfile : MonoBehaviour {
 
 		saveData.timeElapsedInPark = timeElapsedInPark;
 		saveData.timeElapsedInMenu = timeElapsedInMenu;
+		saveData.lensesInBag = lensesInBag;
+		saveData.filtersInBag = filtersInBag;
 
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
@@ -142,10 +158,18 @@ public class PlayerProfile : MonoBehaviour {
 	 */
 	private void createProfile() {
 		money = 0;
+        memoryCardCapacity = 8;
+		bagSize = 5;
 		lenses = new List<string> ();
+		filters = new List<string> ();
 		postedPhotos = new List<string> ();
+		lensesInBag = new List<string> ();
+		filtersInBag = new List<string> ();
 
+		filters.Add ("clear");
 		lenses.Add ("port1");
+		filtersInBag.Add ("clear");
+		lensesInBag.Add ("port1");
 
 		//  Tutorial flags
 		tutFlagMovement = false;
@@ -178,8 +202,12 @@ public class PlayerProfile : MonoBehaviour {
 [Serializable]
 class InternalProfile {
 	public float money;
+    public uint memoryCardCapacity;
+	public float bagSize;
 	public List<string> lenses;
+	public List<string> filters;
 	public List<string> postedPhotos;
+
 	//  Tutorial flags
 	public bool tutFlagMovement;
 	public bool tutFlagAim;
@@ -195,4 +223,6 @@ class InternalProfile {
 
 	public float timeElapsedInPark;
 	public float timeElapsedInMenu;
+	public List<string> lensesInBag;
+	public List<string> filtersInBag;
 }

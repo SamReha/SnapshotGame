@@ -56,14 +56,24 @@ public class UIManager : MonoBehaviour {
 		//  Tutorial logic ---------------------
 		if (playerData.timeElapsedInPark > movementTipTime &&
 			!playerData.tutFlagMovement){
+			Debug.Log ("Movement flag active");
 			MovementTip.SetActive(true);
 		}
 		if (playerData.tutFlagMovement && playerData.timeElapsedInPark - timeAfterTip > 5f && !playerData.tutFlagSnap) {
+			Debug.Log ("BasicCam flag active");
 			BasicCameraTip.SetActive(true);
 		}
 		if (playerData.tutFlagSnap && playerData.timeElapsedInPark - timeAfterTip > 5f && !playerData.tutFlagViewControls) {
+			Debug.Log ("ADVANCED flag active");
 			SeeControlsTip.SetActive(true);
 		}
+
+		//Debug.Log ("Movement flag: " + playerData.tutFlagMovement);
+		//Debug.Log ("Camera flag: " + playerData.tutFlagSnap);
+		//Debug.Log ("Advanced flag: " + playerData.tutFlagViewControls);
+		Debug.Log ("elapsed time: " + playerData.timeElapsedInPark );
+		Debug.Log ("tiptime: " + movementTipTime);
+		Debug.Log ("Flag is off: " + (bool)(!playerData.tutFlagMovement));
 
 		if (Input.GetButtonDown ("Horizontal") ||
 			Input.GetButtonDown ("Vertical") && playerData.timeElapsedInPark > movementTipTime) {
@@ -135,6 +145,7 @@ public class UIManager : MonoBehaviour {
 		//  Upload pictures from the camera to the photo buffer.
 		pauseSource.Stop();
 		SceneManager.LoadScene("main_menu");
+		ParkPrepUIManager.src.Play ();
 		AudioManager.getInstance().setExitToMenu (true);
 	}
 }
