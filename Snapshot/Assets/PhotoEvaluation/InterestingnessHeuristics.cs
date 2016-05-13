@@ -12,29 +12,6 @@ namespace AssemblyCSharp {
 		public InterestingnessHeuristics () {
 		}
 
-		private float getHighestTotal(){
-			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerProfile>();
-			if (playerData == null) {
-				Debug.Log ("Could not load playerData from InterestingnessHeuristics");
-				return 0;
-			} else {
-				playerData.maxInterestTotal -= forgetRateTotal;
-				return playerData.maxInterestTotal;
-			}
-		}
-
-		private float getHighestIndividual(){
-			//   d-_-b o-===* ~@~@@@~ 
-			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerProfile>();
-			if (playerData == null) {
-				Debug.Log ("Could not load playerData from InterestingnessHeuristics");
-				return 0;
-			} else {
-				playerData.maxInterestTotal -= forgetRateIndividual;
-				return playerData.maxInterestIndividual;
-			}
-		}
-
 		//  Main Interest Heuristic
 		public static float interestAndBoredomHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam){
 			//  Actively adjusts the high score. Returns a float between 0-1 representing 
@@ -48,7 +25,13 @@ namespace AssemblyCSharp {
 			//  you'll get the same total score as if you took your first picture of 1 tree.
 			//  So the 0.75 weight will make the case where multiple foxes photographed together for the first time in a while
 			//  Will be more than the same situation with only 1 fox, But If you take a photo of a fox every day it won't be worth as much.
-			PlayerProfile playerData = loadPlayerData();
+			//  
+			//  First, load the player profile
+			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerProfile>();
+			if (playerData == null) {
+				Debug.Log ("Could not load playerData from InterestingnessHeuristics");
+				return 0;  //  "Eject button"
+			}
 			float score = 0;
 			foreach (GameObject obj in visibleObjects){
 				Photographable photoData = obj.GetComponent<Photographable>();
@@ -57,11 +40,11 @@ namespace AssemblyCSharp {
 					//  Update the familiarity of the object
 				}
 			}
-			highestScore = Mathf.Max (score, highestScore);
+			playerData.maxInterestTotal = Mathf.Max (score, playerData.maxInterestTotal);
 			//Debug.Log ("Interest score is: " + score + "  Highest: " + highestScore + "    -- " + score/highestScore);
 
 			// Guard against potential negative score
-			float finalScore = score / highestScore;
+			float finalScore = score / playerData.maxInterestTotal;
 			if (finalScore < 0f) {
 				finalScore = 0f;
 			}
@@ -95,7 +78,13 @@ namespace AssemblyCSharp {
 
 		public static float mostInterestingObjectHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam){
 			//  Works exactly like interest and boredom, except it only evaluates the score of the most 
-			PlayerProfile playerData = loadPlayerData();
+
+			//  Load the player profile
+			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerProfile>();
+			if (playerData == null) {
+				Debug.Log ("Could not load playerData from InterestingnessHeuristics");
+				return 0;  //  "Eject button"
+			}
 			float score = 0;
 			foreach (GameObject obj in visibleObjects){
 				Photographable photoData = obj.GetComponent<Photographable>();
@@ -104,11 +93,11 @@ namespace AssemblyCSharp {
 					//  Update the familiarity of the object
 				}
 			}
-			highestScore = Mathf.Max (score, highestScore);
+			playerData.maxInterestIndividual = Mathf.Max (score, playerData.maxInterestIndividual);
 			//Debug.Log ("Interest score is: " + score + "  Highest: " + highestScore + "    -- " + score/highestScore);
 
 			// Guard against potential negative score
-			float finalScore = score / highestScore;
+			float finalScore = score / playerData.maxInterestIndividual;
 			if (finalScore < 0f) {
 				finalScore = 0f;
 			}
