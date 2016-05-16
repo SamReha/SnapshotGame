@@ -57,12 +57,21 @@ public class DayNightCycle : MonoBehaviour {
 
 		//Debug.Log ("Time of day is: " + timeOfDay);
 
-        //  Linearly change the sun's brightness depending on the time
 		float i = ((maxIntensity - minIntensity) * clampedTime) * weatherController.currentWeather.minAmbient;
-        RenderSettings.ambientIntensity = i;
 
-        //  Set the sunlight to wherever the normalized sun position falls on the gradient.
-		mainLight.color = nightDayColor.Evaluate(clampedTime);
+
+		Debug.Log ("LightningIntensity is : "  + weatherController.lightningNormalizedIntensity);
+		if (weatherController.lightningNormalizedIntensity > 0) {
+			//  With lightning flash
+			mainLight.color = Color.white;
+			RenderSettings.ambientIntensity = weatherController.lightningNormalizedIntensity;
+		} else {
+        //  Normal, no lightning flash
+			//  Set the sunlight to wherever the normalized sun position falls on the gradient.
+			mainLight.color = nightDayColor.Evaluate (clampedTime);
+			//  Linearly change the sun's brightness depending on the time
+			RenderSettings.ambientIntensity = i;
+		}
 
         //  Set the ambient light to the same color as the sunlight
         RenderSettings.ambientLight = mainLight.color;

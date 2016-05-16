@@ -97,6 +97,8 @@ public class WeatherControl : MonoBehaviour {
 
 	//  Minor variables
 	int transitionTimer;
+	public float lightningNormalizedIntensity = 1f;  //  Value from 1(Totally bright) to < 0 (Default sky state);
+	public float lightningFadeRate = 0.05f;
 	float originalTimeSet; 
 	Material skyMat;
 
@@ -177,7 +179,9 @@ public class WeatherControl : MonoBehaviour {
 		timeZone = -1;  //  Prevents weather switcher from calling twice
         //  Decrement the steps timer
 		transitionTimer--;
-		//Debug.Log ("Time:   " + timeOfDay);
+		//  If lightning active, dim the flash
+		lightningNormalizedIntensity -= lightningFadeRate;
+		//  If lightning is not currently active, blend the two weather states together if applicable
 		if (transitionTimer >= 0) {
 			float progress = (originalTimeSet - transitionTimer) / originalTimeSet; /*  timePassed/total */
 			skyMat.SetFloat ("_Blend", progress);
