@@ -473,7 +473,7 @@ public class AchievementManager : MonoBehaviour {
     }
 
     public void saveAchievements() {
-        Debug.Log("Saving cheevos to " + savePath);
+        //Debug.Log("Saving cheevos to " + savePath);
         BinaryFormatter binForm = new BinaryFormatter();
         string fullCheevoPath;
 
@@ -490,7 +490,7 @@ public class AchievementManager : MonoBehaviour {
     }
 
     public void saveAchievement(Achievement cheevo) {
-        Debug.Log("Saving cheevo to " + savePath);
+        //Debug.Log("Saving cheevo to " + savePath);
         BinaryFormatter binForm = new BinaryFormatter();
         string fullCheevoPath = savePath + cheevo.data.Name + ".cheevo";
         FileStream cheevoFile;
