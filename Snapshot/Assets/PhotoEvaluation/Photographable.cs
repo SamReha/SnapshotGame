@@ -3,41 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Photographable : MonoBehaviour {
-	
-	public GameObject anObject;
-	public Collider anObjCollider;
+	public Collider selfCollider;
 	private Camera cam;
 	private Plane[] planes;
 
 	public float baseScore;
 	public float percentOccluded;
 
-	public Renderer r;
-
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		baseScore = 1;
-		r = GetComponent<Renderer> ();
-		r.enabled = true;
-		anObject = gameObject;
-		anObjCollider = GetComponent<Collider>();
-		cam = GameObject.Find ("PlayerCam").GetComponent<Camera> ();
+		selfCollider = GetComponent<Collider>();
+
+        cam = GameObject.Find("Camera Prefab").GetComponentInChildren<Camera>();
 	}
-
-
 
 	// Update is called once per frame
 	void Update () {
 		planes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-        List<GameObject> v = GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().visibleObjs;
-        if (GeometryUtility.TestPlanesAABB (planes, anObjCollider.bounds)) {
-			if (!v.Contains (gameObject)) {
-				v.Add (gameObject);
+        List<GameObject> visibleObjects = GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().visibleObjs;
+        if (GeometryUtility.TestPlanesAABB (planes, selfCollider.bounds)) {
+			if (!visibleObjects.Contains (gameObject)) {
+                visibleObjects.Add (gameObject);
 			}
 		} else {
-			if (v.Contains (gameObject)) {
-				v.Remove (gameObject);
+			if (visibleObjects.Contains (gameObject)) {
+                visibleObjects.Remove (gameObject);
 			}
 		}
 	}
