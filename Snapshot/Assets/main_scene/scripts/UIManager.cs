@@ -16,13 +16,15 @@ public class UIManager : MonoBehaviour {
 	public float basicCameraTipTime = 7;
 	public float seeControlsTipTime = 15;
 	public FirstPersonController player;
-  public AchievementManager manager;
+    public AchievementManager manager;
 	public bool isPaused;
 	public bool isOpen;
 	public bool cameraUP;
 
-  private PlayerProfile playerData;
+    PlayerProfile playerData;
 	private float timeAfterTip = 0;
+
+	private float tutTimer;
 
 	// Use this for initialization
 	void Start () {
@@ -41,10 +43,14 @@ public class UIManager : MonoBehaviour {
 		MovementTip.SetActive(false);
 		BasicCameraTip.SetActive(false);
 		SeeControlsTip.SetActive(false);
+
+		tutTimer = playerData.timeElapsedInPark;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		tutTimer += Time.deltaTime;
+		playerData.timeElapsedInPark = tutTimer;
 
 		if (Input.GetButtonDown("Cancel")) {
 			isPaused = !isPaused;
@@ -54,16 +60,16 @@ public class UIManager : MonoBehaviour {
 		}
 
 		//  Tutorial logic ---------------------
-		if (playerData.timeElapsedInPark > movementTipTime &&
+		if (tutTimer > movementTipTime &&
 			!playerData.tutFlagMovement){
 			Debug.Log ("Movement flag active");
 			MovementTip.SetActive(true);
 		}
-		if (playerData.tutFlagMovement && playerData.timeElapsedInPark - timeAfterTip > 5f && !playerData.tutFlagSnap) {
+		if (playerData.tutFlagMovement && tutTimer - timeAfterTip > 5f && !playerData.tutFlagSnap) {
 			Debug.Log ("BasicCam flag active");
 			BasicCameraTip.SetActive(true);
 		}
-		if (playerData.tutFlagSnap && playerData.timeElapsedInPark - timeAfterTip > 5f && !playerData.tutFlagViewControls) {
+		if (playerData.tutFlagSnap && tutTimer - timeAfterTip > 5f && !playerData.tutFlagViewControls) {
 			Debug.Log ("ADVANCED flag active");
 			SeeControlsTip.SetActive(true);
 		}
@@ -71,20 +77,20 @@ public class UIManager : MonoBehaviour {
 		//Debug.Log ("Movement flag: " + playerData.tutFlagMovement);
 		//Debug.Log ("Camera flag: " + playerData.tutFlagSnap);
 		//Debug.Log ("Advanced flag: " + playerData.tutFlagViewControls);
-		Debug.Log ("elapsed time: " + playerData.timeElapsedInPark );
+		Debug.Log ("elapsed time: " + tutTimer );
 		Debug.Log ("tiptime: " + movementTipTime);
 		Debug.Log ("Flag is off: " + (bool)(!playerData.tutFlagMovement));
 
 		if (Input.GetButtonDown ("Horizontal") ||
-			Input.GetButtonDown ("Vertical") && playerData.timeElapsedInPark > movementTipTime) {
+			Input.GetButtonDown ("Vertical") && tutTimer > movementTipTime) {
 			playerData.tutFlagMovement = true;
-			timeAfterTip = playerData.timeElapsedInPark;
+			timeAfterTip = tutTimer;
 			MovementTip.SetActive(false);
 		}
 
 		if (Input.GetButtonDown ("Take Photo")) {
 			playerData.tutFlagSnap = true;
-			timeAfterTip = playerData.timeElapsedInPark;
+			timeAfterTip = tutTimer;
 			BasicCameraTip.SetActive(false);
 
 		}
@@ -106,7 +112,6 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void OpenBag(bool bagState){
-		//player.m_MouseLook.enabled = !bagState;
 		player.m_MouseLook.SetCursorLock (!bagState);
 
 		PanelBag.SetActive(bagState);
@@ -118,7 +123,6 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void setPause(bool pauseState) {
-		//player.m_MouseLook.enabled = !pauseState;
 		player.m_MouseLook.SetCursorLock (!pauseState);
 
 		PanelPause.SetActive(pauseState);
