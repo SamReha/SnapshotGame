@@ -524,7 +524,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\n CAMERA\n\n Press the left mouse button to take a  \n snapshot.\n Hold
-    the right mouse button to bring\n the camera to your face."
+    the right mouse button to look\n through the camera."
 --- !u!222 &39589425
 CanvasRenderer:
   m_ObjectHideFlags: 0
