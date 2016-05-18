@@ -15,6 +15,8 @@ public class PlayerProfile : MonoBehaviour {
     public List<string> lenses;
 	public List<string> filters;
 	public List<string> postedPhotos;
+	public float maxInterestTotal;
+	public float maxInterestIndividual;
 	public List<string> lensesInBag;
 	public List<string> filtersInBag;
 
@@ -85,6 +87,8 @@ public class PlayerProfile : MonoBehaviour {
 			lenses = saveData.lenses;
 			filters = saveData.filters;
 			postedPhotos = saveData.postedPhotos;
+			maxInterestTotal = saveData.maxInterestTotal;
+			maxInterestIndividual = saveData.maxInterestIndividual;
 
 			tutFlagMovement = saveData.tutFlagMovement;
 			tutFlagAim = saveData.tutFlagAim;
@@ -131,6 +135,8 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.lenses = lenses;
 		saveData.filters = filters;
 		saveData.postedPhotos = postedPhotos;
+		saveData.maxInterestTotal = maxInterestTotal;
+		saveData.maxInterestIndividual = maxInterestIndividual;
 
 		saveData.tutFlagMovement = tutFlagMovement;
 		saveData.tutFlagAim = tutFlagAim;
@@ -163,6 +169,8 @@ public class PlayerProfile : MonoBehaviour {
 		lenses = new List<string> ();
 		filters = new List<string> ();
 		postedPhotos = new List<string> ();
+		maxInterestTotal = 20f;
+		maxInterestIndividual = 5f;
 		lensesInBag = new List<string> ();
 		filtersInBag = new List<string> ();
 
@@ -207,6 +215,8 @@ class InternalProfile {
 	public List<string> lenses;
 	public List<string> filters;
 	public List<string> postedPhotos;
+	public float maxInterestTotal;
+	public float maxInterestIndividual;
 
 	//  Tutorial flags
 	public bool tutFlagMovement;
