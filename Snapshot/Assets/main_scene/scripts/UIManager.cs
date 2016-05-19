@@ -77,7 +77,7 @@ public class UIManager : MonoBehaviour {
 		//Debug.Log ("Movement flag: " + playerData.tutFlagMovement);
 		//Debug.Log ("Camera flag: " + playerData.tutFlagSnap);
 		//Debug.Log ("Advanced flag: " + playerData.tutFlagViewControls);
-		Debug.Log ("elapsed time: " + tutTimer );
+		//Debug.Log ("elapsed time: " + tutTimer ); Don't you dare leave a log like this in! It floods the console. >:(
 		Debug.Log ("tiptime: " + movementTipTime);
 		Debug.Log ("Flag is off: " + (bool)(!playerData.tutFlagMovement));
 
