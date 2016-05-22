@@ -119,7 +119,7 @@ public class BalanceHeuristics {
 				score -= difference;
 			//	Debug.Log("percents: " + percentageLeft + ", " + percentageRight);
 				Debug.Log ("Asym score: " + score);
-				return 
+				return score;
 			}
 
 		} else if (leftMostGameObjs.Count > 0 && rightMostGameObjs.Count == 0) {
