@@ -202,7 +202,7 @@ public class ShopUIManager : MonoBehaviour {
 			bagTen.interactable = true;
 		}
 
-		moneyText.text = "$" + PlayerProfile.profile.money;
+		moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
 
 		/*foreach (KeyValuePair<string, PurchaseButton> entry in purchaseButtons) {
 			if (PlayerProfile.profile.lenses.Contains (entry.Key)
