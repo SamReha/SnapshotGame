@@ -100,6 +100,8 @@ public class WeatherControl : MonoBehaviour {
 	float originalTimeSet; 
 	Material skyMat;
 
+	public bool storming = false;
+
 	private bool pm = true;
 
 	// Use this for initialization

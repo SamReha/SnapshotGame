@@ -4,6 +4,8 @@ using System.Collections;
 //  Responsible for making the rain particle emitter 
 public class RainFollow : MonoBehaviour {
 
+	//public ParticleSystem raincloud;
+
 	public Transform playerPosition;
 	// Use this for initialization
 	void Start () {

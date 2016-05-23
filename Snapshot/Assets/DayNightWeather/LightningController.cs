@@ -19,8 +19,7 @@ public class LightningController : MonoBehaviour {
 		if (chance > 995 && lightningTimer < -100) {
 			lightningTimer = 5;
 		}
-		
-		if (lightningTimer > 0) {
+		if (lightningTimer > 0 && weatherBox.storming) {
 			flash.enabled = true;
 		} else {
 			flash.enabled = false;
