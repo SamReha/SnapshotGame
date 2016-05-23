@@ -5,6 +5,8 @@ public class WeatherControl : MonoBehaviour {
 
 	public WeatherProfile currentWeather;
 
+	public int chanceOfRain = 20;
+
 	WeatherProfile cloudynight;
 	public Texture cloudynight_top;
 	public Texture cloudynight_front;
@@ -207,24 +209,45 @@ public class WeatherControl : MonoBehaviour {
 				pm = false;
 			}
 
+
 			//  Change the skybox depending on the time of the day
 			//  Debug.Log("Time of day: " + timeOfDay);
 			if (timeOfDay >= nightTrigger && pm) {
 				//  Night
-				Debug.Log ("Night: " + timeOfDay);
-				SetCurrentWeather (cloudynight, 1600);
+				if (Random.Range (0, 100) > 100-chanceOfRain) {
+					SetCurrentWeather (overcast, 1600);
+					storming = true;
+				} else {
+					SetCurrentWeather (cloudynight, 1600);
+					storming = false;
+				}
 			} else if (timeOfDay >= sunriseTrigger && timeOfDay < dayTrigger && !pm) {
 				//  Sunrise
-				Debug.Log ("Sunrise: " + timeOfDay);
-				SetCurrentWeather (sunrise, 1200);
+				if (Random.Range (0, 100) > 100-chanceOfRain) {
+					SetCurrentWeather (overcast, 1200);
+					storming = true;
+				} else {
+					SetCurrentWeather (sunrise, 1200);
+					storming = false;
+				}
 			} else if (timeOfDay >= dayTrigger && timeOfDay < sunsetTrigger && !pm) {
 				//  Day
-				Debug.Log ("Day: " + timeOfDay);
-				SetCurrentWeather (sunny, 1200);
+				if (Random.Range (0, 100) > 100-chanceOfRain) {
+					SetCurrentWeather (overcast, 1200);
+					storming = true;
+				} else {
+					SetCurrentWeather (sunny, 1200);
+					storming = false;
+				}
 			} else if (timeOfDay >= sunsetTrigger && timeOfDay < nightTrigger && !pm) {
 				//  sunset
-				Debug.Log ("Sunset: " + timeOfDay);
-				SetCurrentWeather (sunset, 200);
+				if (Random.Range (0, 100) > 100-chanceOfRain) {
+					SetCurrentWeather (overcast, 200);
+					storming = true;
+				} else {
+					SetCurrentWeather (sunset, 200);
+					storming = false;
+				}
 			} 
 		}
 

@@ -11226,6 +11226,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 425494, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -11374,6 +11378,58 @@ Prefab:
     - target: {fileID: 481786, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: storming
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[2].value
+      value: 0.43178588
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[2].time
+      value: 0.9830729
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[0].value
+      value: 0.489565
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[1].value
+      value: 0.489565
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[2].inSlope
+      value: 0.07258066
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
+      propertyPath: overcast_fogDensityCurve.m_Curve.Array.data[2].outSlope
+      value: 0.07258066
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11453734, guid: 9448a37243ef09245a30fffc43d8ead1, type: 2}
@@ -15019,6 +15075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1789ae172b84649a735d861d3e0e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chanceOfRain: 20
   cloudynight_top: {fileID: 2800000, guid: 3ae0f32f26d42cd4995b560af1144ce4, type: 3}
   cloudynight_front: {fileID: 2800000, guid: 16a16f212a1c8cd47a9d5c47d65fd5de, type: 3}
   cloudynight_bottom: {fileID: 2800000, guid: 917f670493eef0245aa1eec26667c548, type: 3}
