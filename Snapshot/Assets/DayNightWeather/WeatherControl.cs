@@ -100,12 +100,13 @@ public class WeatherControl : MonoBehaviour {
 	float originalTimeSet; 
 	Material skyMat;
 
-	public bool storming = false;
+	public bool storming;
 
 	private bool pm = true;
 
 	// Use this for initialization
 	void Start () {
+		storming = false;
 		skyMat = RenderSettings.skybox;
 		//  Create the weather profiles
 		cloudynight = new WeatherProfile (cloudynight_top,
