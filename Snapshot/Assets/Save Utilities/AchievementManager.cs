@@ -63,7 +63,12 @@ public class Achievement {
             return false;
         }
 
-        data.currentProgress += progress;
+        float newTotalProgress = data.currentProgress + progress;
+
+        if (data.TargetProgress >= newTotalProgress) {
+          data.currentProgress = newTotalProgress;
+        } else data.currentProgress = data.TargetProgress;
+
         if (data.currentProgress >= data.TargetProgress) {
             data.Earned = true;
             return true;
@@ -78,7 +83,10 @@ public class Achievement {
             return false;
         }
 
-        data.currentProgress = progress;
+        if (data.TargetProgress >= progress) {
+          data.currentProgress = progress;
+        } else data.currentProgress = data.TargetProgress;
+        
         if (progress >= data.TargetProgress) {
             data.Earned = true;
             return true;
