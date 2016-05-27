@@ -13,10 +13,11 @@ public class BlogUIManager : MonoBehaviour {
 	public GameObject nameChangeScreen; 
 	public GameObject uploadedPhotoScreen;
 	public InputField name_field;
+	public static GameObject photoPanel;
 	public Text moneyText;
 	public Text blogNameText;
     public AchievementManager achievementManager;
-	public bool seenSecondScreen = false;
+	public bool seenSecondScreen;
 
 	private string pathToPostedPhotos;
 	private string pathToUploadQueue;
@@ -25,10 +26,12 @@ public class BlogUIManager : MonoBehaviour {
 	void Start () {
 		PlayerProfile.profile.load();
 		uploadedPhotoScreen = GameObject.FindGameObjectWithTag ("postedscreen");
+		photoPanel = GameObject.FindGameObjectWithTag ("photopanel");
 		blogNameText = GameObject.FindGameObjectWithTag ("blogname").GetComponent<Text>();
 		namePrompt = GameObject.FindGameObjectWithTag ("blogprompt");
 		nameChangeScreen = GameObject.FindGameObjectWithTag ("changenamescreen");
 		name_field = GameObject.FindGameObjectWithTag ("blogprompt").GetComponentInChildren<InputField> ();
+		seenSecondScreen = PlayerProfile.profile.blogNameChangeTipSeen;
 		blogSource = GetComponent<AudioSource> ();
 
 		if (!PlayerProfile.profile.blogNamed) {
@@ -39,11 +42,22 @@ public class BlogUIManager : MonoBehaviour {
 			namePrompt.SetActive (false);
 			nameChangeScreen.SetActive (false);
 		}
+		photoPanel.SetActive (false);
 		blogSource.ignoreListenerPause = true;
 		blogSource.Play();
 
 		pathToPostedPhotos = Application.dataPath + "/Resources/PostedImages/";
 		pathToUploadQueue = Application.dataPath + "/Resources/UploadQueue/";
+	}
+
+	public void toPostedPhotos() {
+		GameObject[] objs = GameObject.FindGameObjectsWithTag ("imagebtn");
+
+		foreach (GameObject go in objs) {
+			go.GetComponentInChildren<Button> ().enabled = true;
+		}
+		photoPanel.GetComponentInChildren<Text> ().text = "";
+		photoPanel.SetActive (false);
 	}
 
 	public void nameBlog() {
@@ -55,6 +69,7 @@ public class BlogUIManager : MonoBehaviour {
 			nameChangeScreen.SetActive (true);
 			namePrompt.SetActive (false);
 			nameChangeScreen.GetComponentInChildren<InputField> ().gameObject.SetActive (false);
+			PlayerProfile.profile.blogNameChangeTipSeen = true;
 		} else {
 			namePrompt.SetActive (false);
 		}
