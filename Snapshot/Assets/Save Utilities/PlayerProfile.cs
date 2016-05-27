@@ -35,6 +35,7 @@ public class PlayerProfile : MonoBehaviour {
 	public bool tutFlagViewControls;
 
 	public bool blogNamed;
+	public bool blogNameChangeTipSeen;
 	public string blogName = "New Photographer";
 
 	public float timeElapsedInPark = 0;  //Park time added in Snapshotcam.cs
@@ -111,6 +112,7 @@ public class PlayerProfile : MonoBehaviour {
 			filtersInBag = saveData.filtersInBag;
 			blogNamed = saveData.blogNamed;
 			blogName = saveData.blogName;
+			blogNameChangeTipSeen = saveData.blogNameChangeTipSeen;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
@@ -160,6 +162,7 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.lensesInBag = lensesInBag;
 		saveData.filtersInBag = filtersInBag;
 		saveData.blogNamed = blogNamed;
+		saveData.blogNameChangeTipSeen = blogNameChangeTipSeen;
 		saveData.blogName = blogName;
 
 		binForm.Serialize (saveFile, saveData);
@@ -201,7 +204,8 @@ public class PlayerProfile : MonoBehaviour {
 
 		//blog flags
 		blogNamed = false;
-		blogName = "BlogName";
+		blogNameChangeTipSeen = false;
+		blogName = "New Photographer";
 
 		timeElapsedInPark = 0;
 		timeElapsedInMenu = 0;
@@ -246,6 +250,7 @@ class InternalProfile {
 
 	//blog flags
 	public bool blogNamed;
+	public bool blogNameChangeTipSeen;
 
 	public float timeElapsedInPark;
 	public float timeElapsedInMenu;
