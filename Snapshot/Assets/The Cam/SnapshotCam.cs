@@ -113,20 +113,19 @@ namespace UnityStandardAssets.ImageEffects {
 						c.Render (); // Forces the camera to render
 						RenderTexture.active = rt;
 						t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
-						Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
-						p.photo = t2d;
+						Photo photoMetaData = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
+						photoMetaData.photo = t2d;
 
 						PhotoEval photoEvaluator = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ();
 						photoEvaluator.evaluatePhoto ();
-						p.visible = photoEvaluator.visibleObjs;
-						p.balanceValue = photoEvaluator.balance;
-						p.spacingValue = photoEvaluator.spacing;
-						p.interestingnessValue = photoEvaluator.interest;
-						p.containsDeer = photoEvaluator.containsDeer;
-						p.containsFox = photoEvaluator.containsFox;
-						p.containsOwl = photoEvaluator.containsOwl;
-						p.takenWithTelephoto = photoEvaluator.takenWithTelephoto;
-						p.takenWithWide = photoEvaluator.takenWithWideAngle;
+						photoMetaData.visible = photoEvaluator.visibleObjs;
+						photoMetaData.balanceValue = photoEvaluator.balance;
+						photoMetaData.spacingValue = photoEvaluator.spacing;
+						photoMetaData.interestingnessValue = photoEvaluator.interest;
+						photoMetaData.containsDeer = photoEvaluator.containsDeer;
+						photoMetaData.containsFox = photoEvaluator.containsFox;
+						photoMetaData.takenWithTelephoto = photoEvaluator.takenWithTelephoto;
+						photoMetaData.takenWithWide = photoEvaluator.takenWithWideAngle;
 
 						c.targetTexture = null;
 						RenderTexture.active = null;
@@ -134,14 +133,14 @@ namespace UnityStandardAssets.ImageEffects {
 						byte[] bytes = t2d.EncodeToPNG ();
 
 						// Note that pictures now get saved to the UploadQueue directory
-						p.pathname = Application.dataPath + "/Resources/UploadQueue/screen"
+						photoMetaData.pathname = Application.dataPath + "/Resources/UploadQueue/screen"
 						+ System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
 						//  Save image
-						string filename = p.pathname + ".png"; 
+						string filename = photoMetaData.pathname + ".png"; 
 						System.IO.File.WriteAllBytes (filename, bytes);
 						Debug.Log (string.Format ("Took screenshot to: {0}", filename));
 						//  Save meta
-						p.save ();
+						photoMetaData.save ();
 						Camera c2 = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
 						c.targetTexture = camView;	// Sets the render texture
 						c2.Render ();	// Renders the Player view
