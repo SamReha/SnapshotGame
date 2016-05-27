@@ -38,7 +38,7 @@ public class Photo {
 	 */
 	public void load() {
 		if (File.Exists(pathname)) {
-			Debug.Log("Loading file at " + pathname);
+			//Debug.Log("Loading file at " + pathname);
 			string fullPath = pathname;
 
 			BinaryFormatter binForm = new BinaryFormatter ();
@@ -69,7 +69,7 @@ public class Photo {
 	 * name so we can have multiple save files.
 	 */
 	public void save() {
-		Debug.Log("Saving file to " + pathname);
+		//Debug.Log("Saving file to " + pathname);
 		string fullPath = pathname + ".metaphoto";
 
 		BinaryFormatter binForm = new BinaryFormatter ();

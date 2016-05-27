@@ -72,22 +72,25 @@ public class PostedPhotosManager : MonoBehaviour {
 			GameObject metaData = new GameObject ();
 			metaData.transform.position.Set(20f, 0f, 0f);
 			Text textData = metaData.AddComponent<Text> ();
-			string markup = "";
-			float score = Math.Max(photo.balanceValue, Math.Max(photo.spacingValue, photo.interestingnessValue));
-			//Debug.Log (score);
-			if (score <= 20f) {
-				markup = "bad";
-			} else if (score <= 70f) {
-				markup = "good";
-			} else {
-				markup = "perfect";
-			}
 
 			// Configure comments for photo
 			if (photo.comments.Count == 0) {
+				string markup = "";
+				float score = Math.Max(photo.balanceValue, Math.Max(photo.spacingValue, photo.interestingnessValue));
+				//Debug.Log (score);
+				if (score <= 20f) {
+					markup = "bad";
+				} else if (score <= 70f) {
+					markup = "good";
+				} else {
+					markup = "perfect";
+				}
+
 				photo.comments.Add(gameObject.GetComponent<CommentGenerator>().GenerateComment (markup));
 				photo.save ();
 			}
+
+			//Debug.Log (filename + " - " + photo.comments [0]);
 
 			textData.text = photo.comments[0];
 			textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
