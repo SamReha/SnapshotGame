@@ -9,11 +9,10 @@ namespace UnityStandardAssets.ImageEffects {
 		public GameObject PortraitLens;
 		public GameObject WideAngleLens;
 		public GameObject TelephotoLens;
+		public CameraMenuManager camMenuManager;
+		public GameObject FilterPrefab;
 
 		public string currentLens;
-
-		// List that will contain all of the photos that the player takes
-		public List<Photo> pics;
 
 		// These two ints determine the resolution of the photos taken  
 		public int width = 1024;
@@ -21,7 +20,7 @@ namespace UnityStandardAssets.ImageEffects {
 
 		public bool buttonDownWhilePaused = true;
 
-		private UIManager uimanager;
+		public UIManager uimanager;
 
 		// These are the presets for the size of the aperture and the amount of light the aperture takes in and the shutter speed
 		float[] apertureSize = {0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
@@ -44,27 +43,53 @@ namespace UnityStandardAssets.ImageEffects {
 		private Vector3 cameraHeldUp;
 		private Vector3 cameraHeldDown;
 
+        private MemoryCardReader memCardReader;
+		private GameObject curLens;
+
+		int lensIter;
+		int filterIter;
+
 		void Start () {
 			cameraAudio = GetComponent<AudioSource> ();
-			currentLens = "Portrait Lens";
+
 			parent = GameObject.Find("PlayerCam");
 			cameraHeldUp = new Vector3(0.0f, 0.0f, -0.15f);
 			cameraHeldDown = new Vector3(0.293f, -0.499f, 0.16f);
 
 			// Set portrait lens
-			GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
-			currentLens = "Portrait Lens";
-			GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = true;
-			parent.GetComponentInParent<DepthOfField> ().focalSize = PortraitLens.GetComponent<Lens> ().focalSize;
-			parent.GetComponentInParent<DepthOfField> ().focalLength = PortraitLens.GetComponent<Lens> ().focalDistance;
-			parent.GetComponentInParent<Camera> ().fieldOfView = PortraitLens.GetComponent<Lens> ().fieldOfView;
+			/*curLens = GameObject.Find (currentLens);
+			curLens.GetComponent<MeshRenderer> ().enabled = true;
 
-			pics = GameObject.Find ("PersistentGlobal").GetComponent<PersistentGlobals> ().pics;
-			uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
+			parent.GetComponentInParent<DepthOfField> ().focalSize = curLens.GetComponent<Lens> ().focalSize;
+			parent.GetComponentInParent<DepthOfField> ().focalLength = curLens.GetComponent<Lens> ().focalDistance;
+			parent.GetComponentInParent<Camera> ().fieldOfView = curLens.GetComponent<Lens> ().fieldOfView;
+*/
+			FilterPrefab.SetActive (false);
+
+			lensIter = 0;
+			filterIter = 0;
+
+			memCardReader = GameObject.Find("/MemoryCardManager").GetComponent<MemoryCardReader>();
+
 			PlayerProfile.profile.load ();
+			currentLens = PlayerProfile.profile.lensesInBag[0];
+			curLens = GameObject.Find (currentLens);
+			curLens.GetComponent<MeshRenderer> ().enabled = true;
+
+			parent.GetComponentInParent<DepthOfField> ().focalSize = curLens.GetComponent<Lens> ().focalSize;
+			parent.GetComponentInParent<DepthOfField> ().focalLength = curLens.GetComponent<Lens> ().focalDistance;
+			parent.GetComponentInParent<Camera> ().fieldOfView = curLens.GetComponent<Lens> ().fieldOfView;
+			foreach (string s in PlayerProfile.profile.lensesInBag) {
+				Debug.Log ("Lens " + s);
+			}
+			foreach (string s in PlayerProfile.profile.filtersInBag) {
+				Debug.Log ("Filters " + s);
+			}
 		}
 
 		void Update () {
+			//Debug.Log (PlayerProfile.profile.lenses.Count);
+
 			if (Input.GetButton("Camera Switch")) {
 				parent.transform.localPosition = cameraHeldUp;
 			} else {
@@ -78,42 +103,55 @@ namespace UnityStandardAssets.ImageEffects {
 					buttonDownWhilePaused = false;
 					//  Then upon release the photo is taken
 				} else if (Input.GetButtonUp ("Take Photo") && !buttonDownWhilePaused) {
-					cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
-					//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
-					RenderTexture rt = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
-					Camera c = parent.GetComponent<Camera> ();	// Gets the camera to output to the render tuexture
-					c.targetTexture = rt;
-					Texture2D t2d = new Texture2D (width, height, TextureFormat.RGB24, false); // Texture2D that wil be stored in the Photo object
-					c.Render (); // Forces the camera to render
-					RenderTexture.active = rt;
-					t2d.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
-					Photo p = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
-					p.photo = t2d;
+					if (PlayerProfile.profile.memoryCardCapacity > memCardReader.getPhotoCount ()) {
+						cameraAudio.PlayOneShot (cam_shutter, 0.7f);  //  snap
+						//GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().PhotoValues ();
+						RenderTexture renderTexture = new RenderTexture (width, height, 24);	// Creates a render texture to pull the pixels from
+						Camera parentCamera = parent.GetComponent<Camera> ();	// Gets the camera to output to the render tuexture
+						parentCamera.targetTexture = renderTexture;
+						Texture2D photoTexture = new Texture2D (width, height, TextureFormat.RGB24, false); // Texture2D that wil be stored in the Photo object
+						parentCamera.Render (); // Forces the camera to render
+						RenderTexture.active = renderTexture;
+						photoTexture.ReadPixels (new Rect (0, 0, width, height), 0, 0); // Reads the pixels
+						Photo photoMetaData = new Photo (); // Creates a new Photo object and then stores t2d and list of visible objects
+						photoMetaData.photo = photoTexture;
 
-					GameObject cameraPrefab = GameObject.Find("Camera Prefab");
-					p.visible = cameraPrefab.GetComponent<PhotoEval> ().visibleObjs;
-					p.balanceValue = cameraPrefab.GetComponent<PhotoEval> ().balance;
-					p.spacingValue = cameraPrefab.GetComponent<PhotoEval> ().spacing;
-					p.interestingnessValue = cameraPrefab.GetComponent<PhotoEval> ().interest;
+						PhotoEval photoEvaluator = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ();
+						photoEvaluator.evaluatePhoto ();
+						photoMetaData.balanceValue = photoEvaluator.balance;
+						photoMetaData.spacingValue = photoEvaluator.spacing;
+						photoMetaData.interestingnessValue = photoEvaluator.interest;
+						photoMetaData.containsDeer = photoEvaluator.containsDeer;
+						photoMetaData.containsFox = photoEvaluator.containsFox;
+						photoMetaData.takenWithTelephoto = photoEvaluator.takenWithTelephoto;
+						photoMetaData.takenWithWide = photoEvaluator.takenWithWideAngle;
 
-					c.targetTexture = null;
-					RenderTexture.active = null;
-					Destroy (rt); 
-					pics.Add (p);
-					byte[] bytes = t2d.EncodeToPNG (); 
-					p.pathname = Application.dataPath + "/Resources/screen"
+						parentCamera.targetTexture = null;
+						RenderTexture.active = null;
+						Destroy (renderTexture); 
+						byte[] bytes = photoTexture.EncodeToPNG ();
+
+						// Note that pictures now get saved to the UploadQueue directory
+						photoMetaData.pathname = Application.dataPath + "/Resources/UploadQueue/screen"
 						+ System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
-					//  Save image
-					string filename = p.pathname + ".png"; 
-					System.IO.File.WriteAllBytes (filename, bytes);
-					Debug.Log (string.Format ("Took screenshot to: {0}", filename));
-					//  Save meta
-					p.save();
-					Camera c2 = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-					c.targetTexture = camView;	// Sets the render texture
-					c2.Render ();	// Renders the Player view
-					c2.targetTexture = null;
-					buttonDownWhilePaused = true;
+						//  Save image
+						string filename = photoMetaData.pathname + ".png"; 
+						System.IO.File.WriteAllBytes (filename, bytes);
+						Debug.Log (string.Format ("Took screenshot to: {0}", filename));
+						//  Save meta
+						photoMetaData.save ();
+						Camera mainCameraCam = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
+						parentCamera.targetTexture = camView;	// Sets the render texture
+						mainCameraCam.Render ();	// Renders the Player view
+						mainCameraCam.targetTexture = null;
+						buttonDownWhilePaused = true;
+
+						// Finally, tell the Camera Menu Manager to update its own info
+						camMenuManager.updatePhotoCounter();
+                        camMenuManager.updatePhotoReviewUI();
+                    } else {
+						camMenuManager.warnAboutFullCard ();
+					}
 				}
 			}
 			// Aperture Size
@@ -171,7 +209,7 @@ namespace UnityStandardAssets.ImageEffects {
 			}
 			// Change between camera lenses
 			//Portrait
-			if (Input.GetButtonDown ("Portrait") && currentLens != "Portrait Lens" && PlayerProfile.profile.lenses.Contains ("port1")) {
+			/*if (Input.GetButtonDown ("Portrait") && currentLens != "port1" && PlayerProfile.profile.lenses.Contains ("port1")) {
 				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Portrait Lens";
@@ -182,7 +220,7 @@ namespace UnityStandardAssets.ImageEffects {
 
 			}
 			// Wide Angle
-			if (Input.GetButtonDown ("Wide Angle") && currentLens != "Wide Angle Lens" && PlayerProfile.profile.lenses.Contains ("wide1")) {
+			if (Input.GetButtonDown ("Wide Angle") && currentLens != "wide1" && PlayerProfile.profile.lenses.Contains ("wide1")) {
 				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "Wide Angle Lens";
@@ -192,7 +230,7 @@ namespace UnityStandardAssets.ImageEffects {
 				parent.GetComponentInParent<Camera> ().fieldOfView = WideAngleLens.GetComponent<Lens> ().fieldOfView;
 			}
 			// Telephoto
-			if (Input.GetButtonDown ("Telephoto") && currentLens != "telephoto_lens" && PlayerProfile.profile.lenses.Contains ("tele1")) {
+			if (Input.GetButtonDown ("Telephoto") && currentLens != "tele1" && PlayerProfile.profile.lenses.Contains ("tele1")) {
 				//GameObject parent = GameObject.Find ("PlayerCam");
 				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
 				currentLens = "telephoto_lens";
@@ -200,7 +238,40 @@ namespace UnityStandardAssets.ImageEffects {
 				parent.GetComponentInParent<DepthOfField> ().focalSize = TelephotoLens.GetComponent<Lens> ().focalSize;
 				parent.GetComponentInParent<DepthOfField> ().focalLength = TelephotoLens.GetComponent<Lens> ().focalDistance;
 				parent.GetComponentInParent<Camera> ().fieldOfView = TelephotoLens.GetComponent<Lens> ().fieldOfView;
+			}*/
+
+			if (Input.GetButtonDown ("Portrait")) {
+
+				lensIter++;
+				Debug.Log ("Lens Iter" + lensIter);
+				if (lensIter == PlayerProfile.profile.lensesInBag.Count) {
+					lensIter = 0;
+				}
+				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = false;
+				currentLens = PlayerProfile.profile.lensesInBag [lensIter];
+				Debug.Log ("Current: " + currentLens);
+				GameObject.Find (currentLens).GetComponent<MeshRenderer> ().enabled = true;
+				parent.GetComponentInParent<DepthOfField> ().focalSize = GameObject.Find(currentLens).GetComponent<Lens> ().focalSize;
+				parent.GetComponentInParent<DepthOfField> ().focalLength = GameObject.Find(currentLens).GetComponent<Lens> ().focalDistance;
+				parent.GetComponentInParent<Camera> ().fieldOfView = GameObject.Find(currentLens).GetComponent<Lens> ().fieldOfView;
+
 			}
+
+			if (Input.GetButtonDown ("Wide Angle")) {
+				filterIter++;
+				Debug.Log (PlayerProfile.profile.filtersInBag.Count);
+				if (filterIter == PlayerProfile.profile.filtersInBag.Count) {
+					filterIter = 0;
+					Debug.Log (PlayerProfile.profile.filtersInBag [filterIter]);
+					FilterPrefab.SetActive (false);
+				} else {
+					Debug.Log (PlayerProfile.profile.filtersInBag [filterIter]);
+					Texture newFilter = Resources.Load (PlayerProfile.profile.filtersInBag [filterIter], typeof(Texture)) as Texture;
+					FilterPrefab.SetActive (true);
+					FilterPrefab.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", newFilter);
+				}
+			}
+
 
 			if (Input.GetButtonDown("Shutter Speed Up") && shutterInt < 5) {
 				// Access component Camera Motion Blur

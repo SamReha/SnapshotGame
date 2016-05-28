@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Collections;
+using System;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,8 +23,9 @@ public class PostedPhotosManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         pathToPostedPhotos = Application.dataPath + "/Resources/PostedImages/";
+
         updatePhotos();
-        getMetaData();
+        getMetaData ();
 	}
 
 	void Update() {}
@@ -40,8 +42,9 @@ public class PostedPhotosManager : MonoBehaviour {
 
 		DirectoryInfo dir = new DirectoryInfo(pathToPostedPhotos);
 		FileInfo[] info = dir.GetFiles("*.png");
-		for(int i = 0; i < info.Length; i++) {
-			string filename = info[i].Name;
+
+		foreach (FileInfo file in info) {
+			string filename = file.Name;
 			GameObject curPicture = (GameObject) Instantiate(newPicture);
 			curPicture.GetComponentInChildren<Toggle> ().gameObject.SetActive (false);
 			curPicture.AddComponent<Button> ();
@@ -62,6 +65,7 @@ public class PostedPhotosManager : MonoBehaviour {
 				}
 				viewComments ();
 			});
+
 			Texture2D pic = new Texture2D (2, 2);
 			byte[] bytes = File.ReadAllBytes (pathToPostedPhotos + filename);
 			pic.LoadImage (bytes);
@@ -75,7 +79,7 @@ public class PostedPhotosManager : MonoBehaviour {
 	public string getPhotoComment(Photo p) {
 		//Photo p = new Photo ();
 		p.load ();
-		return p.comment;
+		return p.comments[0];
 	}
 
 	public void viewComments() {
@@ -110,43 +114,34 @@ public class PostedPhotosManager : MonoBehaviour {
 			string filename = file.Name;
 			photo.pathname = pathToPostedPhotos +  filename;
 			photo.load ();
-		//	Debug.Log (photo.hasComment);
 
-
-			//Debug.Log ("Meta data found");
 			Transform child = transform.Find (filename.Replace (".metaphoto", ""));
 			GameObject metaData = new GameObject ();
 			metaData.transform.position.Set(20f, 0f, 0f);
 			Text textData = metaData.AddComponent<Text> ();
-			string markup = "";
-			float score = photo.balanceValue + photo.spacingValue + photo.interestingnessValue;
-			Debug.Log (score);
-			if (score <= 10f) {
-				markup = "bad";
-			} else if (score <= 20f) {
-				markup = "good";
-			} else {
-				markup = "perfect";
-			}
 
-			if (photo.hasComment) {
-				BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text = getPhotoComment(photo);
-			} else {
-				photo.comment = gameObject.GetComponent<CommentGenerator> ().GenerateComment (markup);
-				photo.hasComment = true;
+			// Configure comments for photo
+			if (photo.comments.Count == 0) {
+				string markup = "";
+				float score = Math.Max(photo.balanceValue, Math.Max(photo.spacingValue, photo.interestingnessValue));
+				//Debug.Log (score);
+				if (score <= 20f) {
+					markup = "bad";
+				} else if (score <= 70f) {
+					markup = "good";
+				} else {
+					markup = "perfect";
+				}
+
+				photo.comments.Add(gameObject.GetComponent<CommentGenerator>().GenerateComment (markup));
 				photo.save ();
-				photo.pathname = pathToPostedPhotos +  filename;
-				BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text = getPhotoComment(photo);
-			
 			}
-				//textData.text = gameObject.GetComponent<CommentGenerator> ().GenerateComment (markup);
-			   //BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text = photo.comment;
 
-			//Debug.Log (textData.text);
+			//Debug.Log (filename + " - " + photo.comments [0]);
+
+			textData.text = photo.comments[0];
 			textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 			metaData.GetComponent<RectTransform> ().position = new Vector3 (0f, -90f, 0f);
-			//Debug.Log ("CHILD: " + child);
-
 			metaData.transform.SetParent (child, false);
 		}
 	}

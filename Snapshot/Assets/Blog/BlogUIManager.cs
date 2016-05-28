@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BlogUIManager : MonoBehaviour {
-	private AudioSource blogSource;
 	public GameObject scrollManager;
 	public GameObject postedPhotosManager;
 	public GameObject namePrompt;
@@ -19,6 +18,7 @@ public class BlogUIManager : MonoBehaviour {
     public AchievementManager achievementManager;
 	public bool seenSecondScreen;
 
+	private AudioSource blogSource;
 	private string pathToPostedPhotos;
 	private string pathToUploadQueue;
 
@@ -93,7 +93,6 @@ public class BlogUIManager : MonoBehaviour {
 	void Update () {
 		blogNameText.text = PlayerProfile.profile.blogName;
 		moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
-		//postedPhotosManager.GetComponent<PostedPhotosManager> ().updatePhotos(
 	}
 
 	public void loadMainMenu() {

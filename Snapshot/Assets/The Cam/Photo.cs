@@ -8,7 +8,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class Photo {
 	public Texture2D photo;
 	public string pathname;
-	public List<GameObject> visible = new List<GameObject> ();
 	public float balanceValue = 0f;
 	public float spacingValue = 0f;
 	public float interestingnessValue = 0f;
@@ -18,8 +17,8 @@ public class Photo {
     public bool containsPosingAnimal = false;
     public bool takenWithTelephoto = false;
     public bool takenWithWide = false;
-	public bool hasComment = false;
-	public string comment;
+
+	public List<string> comments = new List<string> ();
 
 
 	// Use this for initialization
@@ -40,7 +39,7 @@ public class Photo {
 	 */
 	public void load() {
 		if (File.Exists(pathname)) {
-			Debug.Log("Loading file at " + pathname);
+			//Debug.Log("Loading file at " + pathname);
 			string fullPath = pathname;
 
 			BinaryFormatter binForm = new BinaryFormatter ();
@@ -52,8 +51,13 @@ public class Photo {
 			balanceValue = saveData.balan;
 			spacingValue = saveData.spaci;
 			interestingnessValue = saveData.inter;
-			comment = saveData.comment;
-			hasComment = saveData.hasComment;
+			containsFox = saveData.containsFox;
+			containsOwl = saveData.containsOwl;
+			containsDeer = saveData.containsDeer;
+			containsPosingAnimal = saveData.containsPosingAnimal;
+			takenWithTelephoto = saveData.takenWithTelephoto;
+			takenWithWide = saveData.takenWithWide;
+			comments = saveData.comments;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
@@ -66,7 +70,7 @@ public class Photo {
 	 * name so we can have multiple save files.
 	 */
 	public void save() {
-		Debug.Log("Saving file to " + pathname);
+		//Debug.Log("Saving file to " + pathname);
 		string fullPath = pathname + ".metaphoto";
 
 		BinaryFormatter binForm = new BinaryFormatter ();
@@ -86,8 +90,7 @@ public class Photo {
         saveData.containsPosingAnimal = containsPosingAnimal;
         saveData.takenWithTelephoto = takenWithTelephoto;
         saveData.takenWithWide = takenWithWide;
-		saveData.comment = comment;
-		saveData.hasComment = hasComment;
+		saveData.comments = comments;
 
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
@@ -106,8 +109,7 @@ public class Photo {
         containsPosingAnimal = false;
         takenWithTelephoto = false;
         takenWithWide = false;
-		comment = "";
-		hasComment = false;
+		comments = new List<string> ();
 		save ();
 	}
     /*
@@ -119,16 +121,15 @@ public class Photo {
 	 */
 	[Serializable]
 	class MetaPhoto {
-	public float balan;
-	public float spaci;
-	ublic float inter;
+		public float balan;
+		public float spaci;
+		public float inter;
         public bool containsFox;
         public bool containsOwl;
         public bool containsDeer;
         public bool containsPosingAnimal;
         public bool takenWithTelephoto;
         public bool takenWithWide;
-	public bool hasComment;
-	public string comment;
+		public List<string> comments;
     }
 }

@@ -39,55 +39,55 @@ public class GenericAgent : MonoBehaviour {
 
 		if (animal == "Fox") {
 			path_waypoints = new Vector3[8];
-			path_waypoints [0] = (new Vector3 (-60f, -10.0f, 85f));
-			path_waypoints [1] = (new Vector3 (-287f, -10.0f, 212.5f));
-			path_waypoints [2] = (new Vector3 (-303f, -10.0f, 253f));
-			path_waypoints [3] = (new Vector3 (-398f, -10.0f, 191f));
-			path_waypoints [4] = (new Vector3 (-270f, -10.0f, 120f));
-			path_waypoints [5] = (new Vector3 (-273f, -10.0f, -15f));
-			path_waypoints [6] = (new Vector3 (-78f, -10.0f, -40f));
-			path_waypoints [7] = (new Vector3 (81f, -10.0f, 22f));
+			path_waypoints [0] = (new Vector3 (-60f, -30.0f, 85f));
+			path_waypoints [1] = (new Vector3 (-287f, -30.0f, 212.5f));
+			path_waypoints [2] = (new Vector3 (-303f, -30.0f, 253f));
+			path_waypoints [3] = (new Vector3 (-398f, -30.0f, 191f));
+			path_waypoints [4] = (new Vector3 (-270f, -30.0f, 120f));
+			path_waypoints [5] = (new Vector3 (-273f, -30.0f, -15f));
+			path_waypoints [6] = (new Vector3 (-78f, -30.0f, -40f));
+			path_waypoints [7] = (new Vector3 (81f, -30.0f, 22f));
 		} else if (animal == "Deer") { 
 			path_waypoints = new Vector3[9];
-			path_waypoints [0] = (new Vector3 ( 67f, -10.0f, 27f));
-			path_waypoints [1] = (new Vector3 ( 132f, -10.0f, 29f));
-			path_waypoints [2] = (new Vector3 ( 194f, -10.0f, 148f));
-			path_waypoints [3] = (new Vector3 ( 175f, -10.0f, 244f));
-			path_waypoints [4] = (new Vector3 ( 278f, -10.0f, 256f));
-			path_waypoints [5] = (new Vector3 ( 327f, -10.0f, 190f));
-			path_waypoints [6] = (new Vector3 ( 229f, -10.0f, 45f));
-			path_waypoints [7] = (new Vector3 ( 176f, -10.0f, -28f));
-			path_waypoints [8] = (new Vector3 ( 157f, -10.0f, 21f));
+			path_waypoints [0] = (new Vector3 ( 67f, -30.0f, 27f));
+			path_waypoints [1] = (new Vector3 ( 132f, -30.0f, 29f));
+			path_waypoints [2] = (new Vector3 ( 194f, -30.0f, 148f));
+			path_waypoints [3] = (new Vector3 ( 175f, -30.0f, 244f));
+			path_waypoints [4] = (new Vector3 ( 278f, -30.0f, 256f));
+			path_waypoints [5] = (new Vector3 ( 327f, -30.0f, 190f));
+			path_waypoints [6] = (new Vector3 ( 229f, -30.0f, 45f));
+			path_waypoints [7] = (new Vector3 ( 176f, -30.0f, -28f));
+			path_waypoints [8] = (new Vector3 ( 157f, -30.0f, 21f));
 
 
 		} else if (animal == "Owl") {
 			path_waypoints = new Vector3[7];
-			path_waypoints [0] = (new Vector3 ( -159f, -7.0f, 79f));
-			path_waypoints [1] = (new Vector3 ( -289f, -7.0f, 139f));
-			path_waypoints [2] = (new Vector3 ( -364f, -7.0f, 93f));
-			path_waypoints [3] = (new Vector3 ( -356f, -7.0f, -7f));
-			path_waypoints [4] = (new Vector3 ( -274f, -7.0f, -53f));
-			path_waypoints [5] = (new Vector3 ( -152f, -7.0f, -58f));
-			path_waypoints [6] = (new Vector3 ( -83f, -7.0f, 11f));
+			path_waypoints[0] = (new Vector3 (  0f, -40f, -225f));
+			path_waypoints[1] = (new Vector3 (-90f, -40f, -225f));
+			path_waypoints[2] = (new Vector3 (-60f, -40f, -285f));
+			path_waypoints[3] = (new Vector3 (-80f, -30f, -155f));
+			path_waypoints[4] = (new Vector3 ( 32f, -12f,  -53f));
+            path_waypoints[5] = (new Vector3 (-80f, -30f, -155f));
+            path_waypoints[6] = (new Vector3 (-60f, -40f, -285f));
 
-		} else {
+        } else {
 			//  Load in the path of the creature here
 			path_waypoints = new Vector3[15];// <--- Don't forget to update this number as the waypoint list grows
-			path_waypoints [0] = (new Vector3 (-60f, -10.0f, 85f));
-			path_waypoints [1] = (new Vector3 (-287f, -10.0f, 212.5f));
-			path_waypoints [2] = (new Vector3 (-303f, -10.0f, 253f));
-			path_waypoints [3] = (new Vector3 (-398f, -10.0f, 191f));
-			path_waypoints [4] = (new Vector3 (-270f, -10.0f, 120f));
-			path_waypoints [5] = (new Vector3 (-273f, -10.0f, -15f));
-			path_waypoints [6] = (new Vector3 (-78f, -10.0f, -40f));
-			path_waypoints [7] = (new Vector3 (81f, -10.0f, 22f));
-			path_waypoints [8] = (new Vector3 (245f, -10.0f, 81f));
-			path_waypoints [9] = (new Vector3 (324f, -10.0f, 124f));
-			path_waypoints [10] = (new Vector3 (285f, -10.0f, -34f));
-			path_waypoints [11] = (new Vector3 (101f, -10.0f, -131f));
-			path_waypoints [12] = (new Vector3 (-65f, -10.0f, -92f));
-			path_waypoints [13] = (new Vector3 (-165f, -10.0f, -44f));
-			path_waypoints [14] = (new Vector3 (14f, -10.0f, 25f));
+			path_waypoints [0] = (new Vector3 (-60f, -30.0f, 85f));
+			path_waypoints [1] = (new Vector3 (-287f, -30.0f, 212.5f));
+			path_waypoints [2] = (new Vector3 (-303f, -30.0f, 253f));
+			path_waypoints [3] = (new Vector3 (-398f, -30.0f, 191f));
+			path_waypoints [4] = (new Vector3 (-270f, -30.0f, 120f));
+			path_waypoints [5] = (new Vector3 (-273f, -30.0f, -15f));
+			path_waypoints [6] = (new Vector3 (-78f, -30.0f, -40f));
+			path_waypoints [7] = (new Vector3 (81f, -30.0f, 22f));
+			path_waypoints [8] = (new Vector3 (245f, -30.0f, 81f));
+			path_waypoints [9] = (new Vector3 (324f, -30.0f, 124f));
+			path_waypoints [10] = (new Vector3 (285f, -30.0f, -34f));
+			path_waypoints [11] = (new Vector3 (101f, -30.0f, -131f));
+			path_waypoints [12] = (new Vector3 (-65f, -30.0f, -92f));
+			path_waypoints [13] = (new Vector3 (-165f, -30.0f, -44f));
+			path_waypoints [14] = (new Vector3 (14f, -30.0f, 25f));
 		}
 
 		//  After loading in the path of the creature, set the direct Waypoint to the first in the array
@@ -162,7 +162,9 @@ public class GenericAgent : MonoBehaviour {
 		//  After we figure out the speed of creature, use it to determine what animation to play
 		if (agent.speed <= 0) {
 			playAnimation ("Idle");
-		} else {
+		} else if (agent.speed >= fear_speed) {
+            playAnimation("Run");
+        } else {
 			playAnimation ("Walk");
 		}
 	}

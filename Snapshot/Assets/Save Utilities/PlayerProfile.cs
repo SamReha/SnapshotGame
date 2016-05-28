@@ -110,6 +110,7 @@ public class PlayerProfile : MonoBehaviour {
 			timeElapsedInMenu = saveData.timeElapsedInMenu;
 			lensesInBag = saveData.lensesInBag;
 			filtersInBag = saveData.filtersInBag;
+
 			blogNamed = saveData.blogNamed;
 			blogName = saveData.blogName;
 			blogNameChangeTipSeen = saveData.blogNameChangeTipSeen;
@@ -161,6 +162,7 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.timeElapsedInMenu = timeElapsedInMenu;
 		saveData.lensesInBag = lensesInBag;
 		saveData.filtersInBag = filtersInBag;
+
 		saveData.blogNamed = blogNamed;
 		saveData.blogNameChangeTipSeen = blogNameChangeTipSeen;
 		saveData.blogName = blogName;

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityStandardAssets.ImageEffects;
 
 public class PhotoEval : MonoBehaviour {
 	public GameObject terrain;
@@ -19,9 +20,15 @@ public class PhotoEval : MonoBehaviour {
 	private Camera cam;
 	private UIManager uimanager;
 
-	public float balance = -1f;
-	public float spacing = -1f;
-	public float interest = -1f;
+	public float balance = 0f;
+	public float spacing = 0f;
+	public float interest = 0f;
+    public bool containsFox = false;
+    public bool containsOwl = false;
+    public bool containsDeer = false;
+    public bool containsPosingAnimal = false;
+    public bool takenWithTelephoto = false;
+    public bool takenWithWideAngle = false;
 
 	// Key: heuristic function Value: weight
 	Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float> spacingHeuristicMap;
@@ -47,6 +54,7 @@ public class PhotoEval : MonoBehaviour {
 		balanceHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 1f);
 		balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 1f);
+		balanceHeuristicMap.Add (BalanceHeuristics.AsymmetricBalance, 1f);
 
 		interestHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
@@ -54,38 +62,6 @@ public class PhotoEval : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (!uimanager.isPaused) {
-			if (Input.GetButtonUp ("Take Photo")) {
-				SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
-				visibleObjs = unobstructedList.Values.ToList ();
-				/*
-				foreach(GameObject obj in unobstructedList.Values){
-					Debug.Log (obj.name);
-				}
-				*/
-				if (unobstructedList.Count == 0) {
-					print ("Empty");
-				}
-				for (int i = 0; i < visibleObjs.Count; i++) {
-					GameObject go = visibleObjs [i];
-					//Debug.Log ("Object: " + go.name);
-					Corners (go);
-					viewPos = cam.WorldToViewportPoint (go.transform.position);
-					//Debug.Log ("Position: " + viewPos.ToString ("F4"));
-					CalcObjPercentage (corners, go);
-					//Debug.Log ("Percent in Frame: " + percentInFrame);
-					//IsFramed (i);
-					//Debug.Log ("Centered: " + percentCentered);
-				}
-				//  Subject might return null if visibleObj's is empty
-				GameObject subject = getSubject (visibleObjs);
-
-				// Evaluate spacing
-				spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);
-				balance = evaluateHeuristics (subject, visibleObjs, balanceHeuristicMap);
-				interest = evaluateHeuristics (subject, visibleObjs, interestHeuristicMap);
-			}
-		}
 		foreach (Ray rayCasted in raysMissed){
 			Debug.DrawRay (rayCasted.origin, rayCasted.direction, Color.blue);
 		}
@@ -100,13 +76,55 @@ public class PhotoEval : MonoBehaviour {
 		}
 	}
 
+	public void evaluatePhoto() {
+		SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
+		visibleObjs = unobstructedList.Values.ToList ();
+
+		if (unobstructedList.Count == 0) {
+			print ("Empty");
+		}
+
+		// Prep animals flags
+		containsFox = false;
+		containsOwl = false;
+		containsDeer = false;
+
+		foreach (GameObject visibleObj in visibleObjs) {
+			Corners (visibleObj);
+			viewPos = cam.WorldToViewportPoint (visibleObj.transform.position);
+			CalcObjPercentage (corners, visibleObj);
+			//IsFramed (i);
+
+			// Check for animals flags
+			if (visibleObj.name == "Fox") {
+				containsFox = true;
+			} else if (visibleObj.name == "Owl") {
+				containsOwl = true;
+			} else if (visibleObj.name == "Deer") {
+				containsDeer = true;
+			}
+		}
+
+		string lensUsedInPhoto = cam.GetComponentInParent<SnapshotCam>().currentLens;
+		if (lensUsedInPhoto.Contains("tele")) {
+			takenWithTelephoto = true;
+		} else takenWithTelephoto = false;
+
+		if (lensUsedInPhoto.Contains("wide")) {
+			takenWithWideAngle = true;
+		} else takenWithWideAngle = false;
+
+		//  Subject might return null if visibleObj's is empty
+		GameObject subject = getSubject (visibleObjs);
+
+		// Evaluate spacing
+		spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);
+		balance = evaluateHeuristics (subject, visibleObjs, balanceHeuristicMap);
+		interest = evaluateHeuristics (subject, visibleObjs, interestHeuristicMap);
+	}
+
 	public void PhotoValues (){
 		SortedList<float, GameObject> unobstructedList = UnobstructedObjs (visibleObjs);
-		/*
-			foreach(GameObject obj in unobstructedList.Values){
-				Debug.Log (obj.name);
-			}
-			*/
 		if (unobstructedList.Count == 0) {
 			print ("Empty");
 		}
@@ -116,14 +134,14 @@ public class PhotoEval : MonoBehaviour {
 		foreach ( KeyValuePair<float, GameObject> kvp in unobstructedList) {
 			i++;  //  i is a temporary solution. I suggest we work around using indecies
 			GameObject go = kvp.Value;
-			Debug.Log ("Object: " + go.name);
+			//Debug.Log ("Object: " + go.name);
 			Corners (go);
 			viewPos = cam.WorldToViewportPoint (go.transform.position);
-			Debug.Log ("Position: " + viewPos.ToString("F4"));
+			//Debug.Log ("Position: " + viewPos.ToString("F4"));
 			CalcObjPercentage (corners, go);
-			Debug.Log ("Percent in Frame: " + percentInFrame);
+			//Debug.Log ("Percent in Frame: " + percentInFrame);
 			IsFramed (i);
-			Debug.Log ("Centered: " + percentCentered);
+			//Debug.Log ("Centered: " + percentCentered);
 		}
 	}
 
@@ -221,11 +239,11 @@ public class PhotoEval : MonoBehaviour {
 			totalVerts = blockedVerts + visibleVerts;
 			//  Remove completely covered instances
 			if (visibleVerts <= 0){
-				Debug.Log ("Raycast missed. Removing " + obj.Value.name + " from the list.");
+				//Debug.Log ("Raycast missed. Removing " + obj.Value.name + " from the list.");
 				obj.Value.GetComponent<Photographable>().percentOccluded = 0;
 				returnList.Remove (obj.Key);
 			} else {
-				Debug.Log(	"Object " + obj.Value.name + " visibility: " + (float)visibleVerts*100f/(totalVerts) + "%");
+				//Debug.Log("Object " + obj.Value.name + " visibility: " + (float)visibleVerts*100f/(totalVerts) + "%");
 				obj.Value.GetComponent<Photographable> ().percentOccluded = (float)visibleVerts / (totalVerts);
 			}
 		}
@@ -422,7 +440,7 @@ public class PhotoEval : MonoBehaviour {
 	void IsFramed(int i){
 		float x = viewPos.x;
 		float y = viewPos.y;
-		Debug.Log ("Percent in frame: size " + percentInFrame.Count + " while i is " + i);
+		//Debug.Log ("Percent in frame: size " + percentInFrame.Count + " while i is " + i);
 		if (percentInFrame[i] > 0) {
 			if (x <= 0.6f && x >= 0.4f) {
 				if (y <= 0.6f && y >= 0.4f) {
@@ -486,19 +504,19 @@ public class PhotoEval : MonoBehaviour {
 	}
 
 	void Corners(GameObject go){
-		Debug.Log ("Game Object name: " + go.name);
+		//Debug.Log ("Game Object name: " + go.name);
 		Bounds bounds = go.GetComponent<MeshFilter>().mesh.bounds;
 		Vector3 v3Center = bounds.center;
 		Vector3 v3Extents = bounds.extents;
 
-		corners[0]  = new Vector3(v3Center.x - v3Extents.x, v3Center.y + v3Extents.y, v3Center.z - v3Extents.z);  // Front top left corner A
-		corners[1]  = new Vector3(v3Center.x + v3Extents.x, v3Center.y + v3Extents.y, v3Center.z - v3Extents.z);  // Front top right corner D 
-		corners[2]  = new Vector3(v3Center.x - v3Extents.x, v3Center.y - v3Extents.y, v3Center.z - v3Extents.z);  // Front bottom left corner E
-		corners[3]  = new Vector3(v3Center.x + v3Extents.x, v3Center.y - v3Extents.y, v3Center.z - v3Extents.z);  // Front bottom right corner H
-		corners[4]  = new Vector3(v3Center.x - v3Extents.x, v3Center.y + v3Extents.y, v3Center.z + v3Extents.z);  // Back top left corner B
-		corners[5]  = new Vector3(v3Center.x + v3Extents.x, v3Center.y + v3Extents.y, v3Center.z + v3Extents.z);  // Back top right corner C
-		corners[6]  = new Vector3(v3Center.x - v3Extents.x, v3Center.y - v3Extents.y, v3Center.z + v3Extents.z);  // Back bottom left corner F
-		corners[7]  = new Vector3(v3Center.x + v3Extents.x, v3Center.y - v3Extents.y, v3Center.z + v3Extents.z);  // Back bottom right corner G
+		corners[0] = new Vector3(v3Center.x - v3Extents.x, v3Center.y + v3Extents.y, v3Center.z - v3Extents.z);  // Front top left corner A
+		corners[1] = new Vector3(v3Center.x + v3Extents.x, v3Center.y + v3Extents.y, v3Center.z - v3Extents.z);  // Front top right corner D 
+		corners[2] = new Vector3(v3Center.x - v3Extents.x, v3Center.y - v3Extents.y, v3Center.z - v3Extents.z);  // Front bottom left corner E
+		corners[3] = new Vector3(v3Center.x + v3Extents.x, v3Center.y - v3Extents.y, v3Center.z - v3Extents.z);  // Front bottom right corner H
+		corners[4] = new Vector3(v3Center.x - v3Extents.x, v3Center.y + v3Extents.y, v3Center.z + v3Extents.z);  // Back top left corner B
+		corners[5] = new Vector3(v3Center.x + v3Extents.x, v3Center.y + v3Extents.y, v3Center.z + v3Extents.z);  // Back top right corner C
+		corners[6] = new Vector3(v3Center.x - v3Extents.x, v3Center.y - v3Extents.y, v3Center.z + v3Extents.z);  // Back bottom left corner F
+		corners[7] = new Vector3(v3Center.x + v3Extents.x, v3Center.y - v3Extents.y, v3Center.z + v3Extents.z);  // Back bottom right corner G
 	}
 
 	/*

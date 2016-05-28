@@ -2,36 +2,73 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+
 public class MainMenuUI : MonoBehaviour {
-	private AudioSource mainMenuSource;
+	public static AudioSource mainMenuSource;
+	public static bool prepMenu = false;
 	// Use this for initialization
 	void Start () {
-		mainMenuSource = GetComponent<AudioSource> ();
+		if (!prepMenu) {
+			mainMenuSource = GetComponent<AudioSource> ();
+			AudioSource.DontDestroyOnLoad (mainMenuSource);
+			mainMenuSource.ignoreListenerPause = true;
+			mainMenuSource.Play ();
+		}
 
-		mainMenuSource.ignoreListenerPause = true;
-		mainMenuSource.Play ();
+		if (prepMenu) {
+			mainMenuSource.volume = 0f;
+		}
+
+		if (ParkPrepUIManager.src) {
+			mainMenuSource.volume = 0f;
+		}
 	}
 	
 	// Update is called once per frame
-	void Update () {}
+	void Update () {Debug.Log(mainMenuSource.isPlaying);}
 
 	public void goToPark() {
-		mainMenuSource.Stop ();
-		SceneManager.LoadScene ("SSV0.0");
+		prepMenu = true;
+		SceneManager.LoadScene ("park_prep");
 	}
 
 	public void goToShop() {
+		prepMenu = false;
 		mainMenuSource.Stop ();
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Stop ();
+		}
 		SceneManager.LoadScene ("camera_shop");
 	}
 
 	public void goToBlog() {
+		prepMenu = false;
 		mainMenuSource.Stop ();
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Stop();
+		}
 		SceneManager.LoadScene ("blog");
 	}
 
-    public void goToCredits()
-    {
+    public void goToBadges() {
+		prepMenu = false;
+        mainMenuSource.Stop();
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Stop ();
+		}
+        SceneManager.LoadScene("badges");
+    }
+
+    public void goToCredits() {
+		prepMenu = false;
+        mainMenuSource.Stop();
+
+		if (ParkPrepUIManager.src != null) {
+			ParkPrepUIManager.src.Stop();
+		}
         SceneManager.LoadScene("credits");
     }
 }
