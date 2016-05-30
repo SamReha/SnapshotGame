@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Linq;
 using System.IO;
@@ -139,6 +140,9 @@ public class AchievementManager : MonoBehaviour {
     private string savePath;
     private bool achievementsLoaded = false;
 
+	public GameObject popUP;
+	public AnimationClip popUpAnim;
+
     void Awake() {
         savePath = Application.persistentDataPath + "/cheevos/";
         //Debug.Log(savePath);
@@ -150,6 +154,7 @@ public class AchievementManager : MonoBehaviour {
         loadAchievements();
         ValidateAchievements();
         UpdateRewardPointTotals();
+
     }
 
     // Make sure some assumptions about achievement data setup are followed.
@@ -186,12 +191,25 @@ public class AchievementManager : MonoBehaviour {
 
     private void AchievementEarned(Achievement achievement) {
         // Handle removing secret property as needed
+
+		popUP.GetComponentInChildren<Text> ().text = achievement.data.Name;
+		Texture cheevoimg = Resources.Load (achievement.data.IconComplete, typeof(Texture)) as Texture;
+		RawImage r = (RawImage) popUP.GetComponentInChildren<RawImage> ();
+		r.texture = cheevoimg;
+
+		Debug.Log("Achievement Earned: " + achievement.data.Name);
         foreach (string name in achievement.data.Desecrefies) {
             Achievement desecrefied = GetAchievementByName(name);
             desecrefied.data.Secret = false;
 
             saveAchievement(desecrefied);
         }
+
+
+
+			//popUP.GetComponentInChildren<MeshRenderer> ().material.SetTexture ("_MainTex", cheevoimg);
+
+		popUP.GetComponent<Animation> ().Play ();
 
         UpdateRewardPointTotals(); // Gamer Score analog - we don't really use it.
         //EarnedSound.Play(); // Need better sound effect, maybe add popup, too?
