@@ -98,7 +98,7 @@ public class CommentGenerator : MonoBehaviour {
 			string[] stuff = new string[1];
 			nt.markups.TryGetValue ("Score", out stuff); 
 			if (stuff != null) {
-				Debug.Log (markup);
+				//Debug.Log (markup);
 				foreach (string s in stuff) {
 					if (s.Equals (markup)) {
 						return nt.expand ();
