@@ -53,8 +53,8 @@ namespace UnityStandardAssets.ImageEffects {
 			cameraAudio = GetComponent<AudioSource> ();
 
 			parent = GameObject.Find("PlayerCam");
-			cameraHeldUp = new Vector3(0.0f, 0.0f, -0.15f);
-			cameraHeldDown = new Vector3(0.293f, -0.499f, 0.16f);
+			cameraHeldUp   = new Vector3( 0.009f, 0.030f,-0.100f);
+            cameraHeldDown = new Vector3( 0.293f,-0.499f, 0.300f);
 
 			// Set portrait lens
 			/*curLens = GameObject.Find (currentLens);
