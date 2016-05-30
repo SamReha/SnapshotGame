@@ -39,6 +39,124 @@ public class BalanceHeuristics {
 			return 10f;
 		}
 	}
+	
+	public static float AsymmetricBalance(GameObject subject, List<GameObject> visibleObjects, Camera cam) {
+		float heuristicWeight = 0f;
+		float percentageLeft = 0f;
+		float percentageRight = 0f;
+
+		List<Vector3> camSpaceCoords = new List<Vector3>();
+		List<Vector3> leftMostCoords = new List<Vector3>();
+		List<Vector3> rightMostCoords = new List<Vector3>();
+
+		List<GameObject> leftMostGameObjs = new List<GameObject>();
+		List<GameObject> rightMostGameObjs = new List<GameObject>();
+
+		for(int i = 0; i < visibleObjects.Count; i++) {
+			Vector3 viewportCoord = visibleObjects[i].transform.TransformPoint(visibleObjects [i].transform.position);
+
+			viewportCoord = cam.WorldToViewportPoint (viewportCoord);
+			camSpaceCoords.Add (viewportCoord);
+		}
+
+		for(int j = 0; j < camSpaceCoords.Count; j++) {
+			if (camSpaceCoords[j].x > 1.0f &&
+			    camSpaceCoords[j].y >= 0.0f &&
+			    camSpaceCoords[j].y <= 1.0f) {
+				rightMostCoords.Add(camSpaceCoords[j]);
+			} else {
+				leftMostCoords.Add(camSpaceCoords[j]);
+			}
+		}
+
+		if (rightMostCoords.Count > 0) {
+			for (int ii = 0; ii < rightMostCoords.Count; ii++) {
+				rightMostGameObjs.Add (visibleObjects [ii]);
+			}
+		}
+
+		for (int jj = 0; jj < visibleObjects.Count; jj++) {
+			if (rightMostGameObjs.Contains(visibleObjects[jj])) {
+				continue;
+			} else {
+				leftMostGameObjs.Add(visibleObjects[jj]);
+			}
+		}
+
+		if (leftMostGameObjs.Count > 0 && rightMostGameObjs.Count > 0) {
+			for (int kk = 0; kk < leftMostGameObjs.Count; kk++) {
+				if (percentageLeft + cam.GetComponentInParent<PhotoEval> ().CalcScreenPercentage (leftMostGameObjs [kk]) <= 100f) {
+					percentageLeft += cam.GetComponentInParent<PhotoEval> ().CalcScreenPercentage (leftMostGameObjs [kk]);
+				} else {
+					break;
+				}
+			}
+
+			for (int kk2 = 0; kk2 < rightMostGameObjs.Count; kk2++) {
+				if (percentageRight + cam.GetComponentInParent<PhotoEval> ().CalcScreenPercentage (rightMostGameObjs [kk2]) <= 100f) {
+					percentageRight += cam.GetComponentInParent<PhotoEval> ().CalcScreenPercentage (rightMostGameObjs [kk2]);
+				} else {
+					break;
+				}
+			}
+
+			float score = 10f;
+
+			if (percentageLeft == percentageRight) {
+				return 10f;
+				Debug.Log ("Asym score: " + score);
+			} else if (Mathf.Approximately (percentageLeft, percentageRight)) {
+				heuristicWeight = 0.8f;
+				score = score * heuristicWeight;
+				//Debug.Log("percents: " + percentageLeft + ", " + percentageRight);
+				Debug.Log ("Asym score: " + score);
+				return score;
+			} else {
+				float difference = Mathf.Abs ((percentageLeft - percentageRight));
+
+				difference *= 0.1f;
+				difference = 10f * difference;
+				score -= difference;
+			//	Debug.Log("percents: " + percentageLeft + ", " + percentageRight);
+				Debug.Log ("Asym score: " + score);
+				return score;
+			}
+
+		} else if (leftMostGameObjs.Count > 0 && rightMostGameObjs.Count == 0) {
+			for (int iii = 0; iii < leftMostGameObjs.Count; iii++) {
+				if (percentageLeft + cam.GetComponentInParent<PhotoEval>().CalcScreenPercentage (leftMostGameObjs [iii]) <= 100f) {
+					percentageLeft += cam.GetComponentInParent<PhotoEval>().CalcScreenPercentage (leftMostGameObjs [iii]);
+				} else {
+					break;
+				}
+			}
+			//Debug.Log ("percentage: " + percentageLeft);
+			float score = 10f;
+			heuristicWeight = percentageLeft * 0.1f;
+			float difference = 10f * heuristicWeight;
+			score -= difference;
+			Debug.Log ("Asym score: " + score);
+			return score;
+
+		} else if (rightMostGameObjs.Count > 0 && leftMostGameObjs.Count == 0) {
+			for (int jjj = 0; jjj < rightMostGameObjs.Count; jjj++) {
+				if (percentageRight + cam.GetComponentInParent<PhotoEval> ().CalcScreenPercentage (rightMostGameObjs [jjj]) <= 100f) {
+					percentageRight += cam.GetComponentInParent<PhotoEval> ().CalcScreenPercentage (rightMostGameObjs [jjj]);
+				} else {
+					break;
+				}
+				//Debug.Log ("percent: " + percentageRight);
+			}
+			float score = 10f;
+			heuristicWeight = percentageRight * 0.1f;
+			float difference = 10f * heuristicWeight;
+			score -= difference;
+			Debug.Log ("Asym score: " + score);
+			return score;
+		} else {
+			return 0f;
+		}
+	}
 
 	public static float CenteredBalance(GameObject subject, List<GameObject> visibleObjects, Camera cam) {
         if (subject == null) return 0.0f;   // if by some mistake we have no subject, bail out!

@@ -29,7 +29,7 @@ public class BlogUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		moneyText.text = "$" + PlayerProfile.profile.money;
+		moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
 		//postedPhotosManager.GetComponent<PostedPhotosManager> ().updatePhotos();
 	}
 

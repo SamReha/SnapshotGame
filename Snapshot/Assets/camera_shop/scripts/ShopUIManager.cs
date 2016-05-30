@@ -314,7 +314,7 @@ public class ShopUIManager : MonoBehaviour {
 			bagTenH.interactable = true;
 		}
 
-		moneyText.text = "$" + PlayerProfile.profile.money;
+        moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
 	}
 
 	void Awake() {}

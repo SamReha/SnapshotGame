@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Collections;
+using System;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -67,27 +68,33 @@ public class PostedPhotosManager : MonoBehaviour {
 			photo.pathname = pathToPostedPhotos +  filename;
 			photo.load ();
 
-			//Debug.Log ("Meta data found");
 			Transform child = transform.Find (filename.Replace (".metaphoto", ""));
 			GameObject metaData = new GameObject ();
 			metaData.transform.position.Set(20f, 0f, 0f);
 			Text textData = metaData.AddComponent<Text> ();
-			string markup = "";
-			float score = photo.balanceValue + photo.spacingValue + photo.interestingnessValue;
-			Debug.Log (score);
-			if (score <= 10f) {
-				markup = "bad";
-			} else if (score <= 20f) {
-				markup = "good";
-			} else {
-				markup = "perfect";
+
+			// Configure comments for photo
+			if (photo.comments.Count == 0) {
+				string markup = "";
+				float score = Math.Max(photo.balanceValue, Math.Max(photo.spacingValue, photo.interestingnessValue));
+				//Debug.Log (score);
+				if (score <= 20f) {
+					markup = "bad";
+				} else if (score <= 70f) {
+					markup = "good";
+				} else {
+					markup = "perfect";
+				}
+
+				photo.comments.Add(gameObject.GetComponent<CommentGenerator>().GenerateComment (markup));
+				photo.save ();
 			}
 
-			textData.text = gameObject.GetComponent<CommentGenerator>().GenerateComment (markup);
-			//Debug.Log (textData.text);
+			//Debug.Log (filename + " - " + photo.comments [0]);
+
+			textData.text = photo.comments[0];
 			textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 			metaData.GetComponent<RectTransform> ().position = new Vector3 (0f, -90f, 0f);
-			//Debug.Log ("CHILD: " + child);
 
 			metaData.transform.SetParent (child, false);
 		}

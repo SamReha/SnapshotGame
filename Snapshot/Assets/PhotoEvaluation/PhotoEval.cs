@@ -54,6 +54,7 @@ public class PhotoEval : MonoBehaviour {
 		balanceHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 1f);
 		balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 1f);
+		balanceHeuristicMap.Add (BalanceHeuristics.AsymmetricBalance, 1f);
 
 		interestHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
@@ -83,21 +84,25 @@ public class PhotoEval : MonoBehaviour {
 			print ("Empty");
 		}
 
+		// Prep animals flags
+		containsFox = false;
+		containsOwl = false;
+		containsDeer = false;
+
 		foreach (GameObject visibleObj in visibleObjs) {
 			Corners (visibleObj);
 			viewPos = cam.WorldToViewportPoint (visibleObj.transform.position);
 			CalcObjPercentage (corners, visibleObj);
 			//IsFramed (i);
 
+			// Check for animals flags
 			if (visibleObj.name == "Fox") {
 				containsFox = true;
-			} else containsFox = false;
-			if (visibleObj.name == "Owl") {
+			} else if (visibleObj.name == "Owl") {
 				containsOwl = true;
-			} else containsOwl = false;
-			if (visibleObj.name == "Deer") {
+			} else if (visibleObj.name == "Deer") {
 				containsDeer = true;
-			} else containsDeer = false;
+			}
 		}
 
 		string lensUsedInPhoto = cam.GetComponentInParent<SnapshotCam>().currentLens;
