@@ -25,10 +25,12 @@ namespace UnityStandardAssets.ImageEffects {
 		// These are the presets for the size of the aperture and the amount of light the aperture takes in and the shutter speed
 		float[] apertureSize = {0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
 		float[] apertureLight = {0.0f, 0.3f, 0.6f, 0.9f, 1.2f , 1.5f};
-		float[] shutterSpeed = { 0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
+		float[] shutterSpeed = { 1.0f, 5.0f, 10.0f, 20.0f, 35.0f, 50.0f};
+		float[] focus = { 0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f, 1.2f, 1.4f, 1.6f, 1.8f, 2.0f, };
 		// Aperture and Shutter initialized at index 3
 		int apertureInt = 3;
 		int shutterInt = 3;
+		int focusInt = 5;
 
 		// Color for the white balance
 		Color whiteBalanceColor = new Color(1.0f, 1.0f, 1.0f, 0.5f);
@@ -53,8 +55,8 @@ namespace UnityStandardAssets.ImageEffects {
 			cameraAudio = GetComponent<AudioSource> ();
 
 			parent = GameObject.Find("PlayerCam");
-			cameraHeldUp = new Vector3(0.0f, 0.0f, -0.15f);
-			cameraHeldDown = new Vector3(0.293f, -0.499f, 0.16f);
+			cameraHeldUp   = new Vector3( 0.009f, 0.030f,-0.100f);
+            cameraHeldDown = new Vector3( 0.293f,-0.499f, 0.300f);
 
 			// Set portrait lens
 			/*curLens = GameObject.Find (currentLens);
@@ -180,10 +182,16 @@ namespace UnityStandardAssets.ImageEffects {
 			// Currently only effects r value of the base white texture
 			// Plan to implement color wheel selector for more control/options
 			// Decrease Red
-			if (Input.GetButtonDown("White Balance Down") && whiteBalanceColor.r > 0.0f) {
+			if (Input.GetButtonDown("White Balance Down")) {
 				ScreenOverlay so = GameObject.Find ("PlayerCam").GetComponent<ScreenOverlay> ();	// Access component Screen Overlay
 				Texture2D t2d = so.texture;	// Copy Screen Overlay texture to a Texture2D
-				whiteBalanceColor.r = whiteBalanceColor.r - 0.01f;
+				if (whiteBalanceColor.b >= 1.0f && whiteBalanceColor.r >= 0.0f) {
+					Debug.Log ("Test 1");
+					whiteBalanceColor.r = whiteBalanceColor.r - 0.01f;
+				} else if (whiteBalanceColor.r >= 1.0f && whiteBalanceColor.b < 1.0f) {
+					Debug.Log ("Test 2");
+					whiteBalanceColor.b = whiteBalanceColor.b + 0.01f;
+				}
 				Color[] newColor = new Color[256 * 16];
 				// Sets each pixel color to new color
 				for (int i = 0; i < newColor.Length; i++) {
@@ -194,10 +202,17 @@ namespace UnityStandardAssets.ImageEffects {
 				t2d.Apply ();
 			}
 			// Increase Red
-			if (Input.GetButtonDown("White Balance Up") && whiteBalanceColor.r < 1.0f) {
+			if (Input.GetButtonDown("White Balance Up")) {
 				ScreenOverlay so = GameObject.Find ("PlayerCam").GetComponent<ScreenOverlay> ();	// Access component Screen Overlay
 				Texture2D t2d = so.texture;	// Copy Screen Overlay texture to a Texture2D
-				whiteBalanceColor.r = whiteBalanceColor.r + 0.01f;
+				if (whiteBalanceColor.r >= 1.0f && whiteBalanceColor.b >= 0.0f) {
+					Debug.Log ("Test 3");
+					whiteBalanceColor.b = whiteBalanceColor.b - 0.01f;
+				} else if (whiteBalanceColor.b >= 1.0f && whiteBalanceColor.r < 1.0f) {
+					Debug.Log ("Test 4");
+					whiteBalanceColor.r = whiteBalanceColor.r + 0.01f;
+				}
+				Debug.Log (whiteBalanceColor.r + " , " + whiteBalanceColor.b);
 				Color[] newColor = new Color[256 * 16];
 				// Sets each pixel color to new color
 				for (int i = 0; i < newColor.Length; i++) {
@@ -288,6 +303,20 @@ namespace UnityStandardAssets.ImageEffects {
 				shutterInt -= 1;
 				// Set shutter speed based on presets
 				cmb.velocityScale = shutterSpeed[shutterInt];
+			}
+
+			if (Input.GetButtonDown ("Focus In") && focusInt > 0) {
+				DepthOfField dof = GameObject.Find ("PlayerCam").GetComponent<DepthOfField> ();
+				focusInt -= 1;
+				dof.focalSize = focus [focusInt];
+				Debug.Log (dof.focalSize);
+			}
+
+			if (Input.GetButtonDown ("Focus Out") && focusInt < 10) {
+				DepthOfField dof = GameObject.Find ("PlayerCam").GetComponent<DepthOfField> ();
+				focusInt += 1;
+				dof.focalSize = focus [focusInt];
+				Debug.Log (dof.focalSize);
 			}
 		}
 	}

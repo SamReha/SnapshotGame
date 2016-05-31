@@ -200,9 +200,13 @@ public class AchievementManager : MonoBehaviour {
 		Debug.Log("Achievement Earned: " + achievement.data.Name);
         foreach (string name in achievement.data.Desecrefies) {
             Achievement desecrefied = GetAchievementByName(name);
-            desecrefied.data.Secret = false;
 
-            saveAchievement(desecrefied);
+            if (desecrefied != null) {
+                desecrefied.data.Secret = false;
+                saveAchievement(desecrefied);
+            }
+            else
+                Debug.Log("Hey like not to bother you or anything but '" + achievement.data.Name + "' is trying to desecrefy '" + name + "', which doesn't exist.");
         }
 
 

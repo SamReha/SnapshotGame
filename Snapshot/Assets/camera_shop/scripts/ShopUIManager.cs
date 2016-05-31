@@ -9,49 +9,66 @@ public class ShopUIManager : MonoBehaviour {
 	public Text moneyText;
     public EquipmentManager equipManager;
 
-	public Button wideButton;
+	public Button wideButtonL;
+	public Button wideButtonH;
 	float widePrice = 250f;
 	string wideName = "wide1";
 
-	public Button portButton;
+	public Button portButtonL;
+	public Button portButtonH;
 	float portPrice = 100f;
 	string portName = "port1";
 
-	public Button teleButton;
+	public Button teleButtonL;
+	public Button teleButtonH;
 	float telePrice = 400f;
 	string teleName = "tele1";
 
-	public Button filterB;
+	public Button filterBL;
+	public Button filterBH;
 	float fBPrice = 100f;
 	string fBName = "bluefilter";
 
-	public Button filterO;
+	public Button filterOL;
+	public Button filterOH;
 	float fOPrice = 100f;
 	string fOName = "orangefilter";
 
-	public Button filterBO;
+	public Button filterBOL;
+	public Button filterBOH;
 	float fBOPrice = 100f;
 	string fBOName = "blueorangefilter";
 
-	public Button filterBC;
+	public Button filterBCL;
+	public Button filterBCH;
 	float fBCPrice = 100f;
 	string fBCName = "bluefadefilter";
 
-	public Button filterOC;
+	public Button filterOCL;
+	public Button filterOCH;
 	float fOCPrice = 100f;
 	string fOCName = "orangefadefilter";
 
-	public Button filterR;
+	public Button filterRL;
+	public Button filterRH;
 	float fRPrice = 100f;
 	string fRName = "rainbowfilter";
 
-	public Button bagFive;
+	public Button bagFiveL;
+	public Button bagFiveH;
 	float bFPrice = 100f;
 
-	public Button bagTen;
+	public Button bagTenL;
+	public Button bagTenH;
 	float bTPrice = 1000f;
 
-	public List<Button> memoryCardButtons = new List<Button>();
+	public List<Button> memoryCardButtonsSortH = new List<Button> ();
+	public List<Button> memoryCardButtonsSortL = new List<Button> ();
+	public List<Button> filterButtons = new List<Button> ();
+	public List<Button> lensButtons = new List<Button> ();
+	public List<Button> bagButtons = new List<Button> ();
+
+	public List<Button> specialButtons = new List<Button> ();
 
 	// Use this for initialization
 	void Start () {
@@ -64,152 +81,240 @@ public class ShopUIManager : MonoBehaviour {
 
 		shopSource.ignoreListenerPause = true;
 		shopSource.Play ();
-		//Panel panel = GameObject.Find ("/CanvasShop/PanelShop");
-		/*
-		purchaseButtons = new Dictionary<string,PurchaseButton> ();
-		purchaseButtons ["tele1"] = new PurchaseButton ();
-		purchaseButtons ["tele1"].price = 399.99f;
-		purchaseButtons ["tele1"].name = "tele1";
-		purchaseButtons ["tele1"].btn = UnityEngine.Resources.Load<Button>("UI/Button");
-		purchaseButtons ["tele1"].btn.onClick.AddListener(
-			delegate() {
-				buyLens(purchaseButtons ["tele1"].price, purchaseButtons ["tele1"].name);
-			}
-		);
-		purchaseButtons ["tele1"].btn.transform.parent = panel.transform;
 
-		purchaseButtons ["port1"] = new PurchaseButton ();
-		purchaseButtons ["port1"].price = 99.99f;
-		purchaseButtons ["port1"].name = "port1";
-		purchaseButtons ["port1"].btn = UnityEngine.Resources.Load<Button>("UI/Button");
-		purchaseButtons ["port1"].btn.onClick.AddListener(
-			delegate() {
-				buyLens(purchaseButtons ["port1"].price, purchaseButtons ["port1"].name);
-			}
-		);
-		purchaseButtons ["port1"].btn.transform.parent = panel.transform;
+		foreach (Button b in specialButtons) {
+			int x = Random.Range (0, 4);
+			int y;
+			float price;
+			string name;
+			switch(x)
+			{
+			case 0:
+				y = Random.Range (0, memoryCardButtonsSortL.Count);
+				b.GetComponentInChildren<Text> ().text = memoryCardButtonsSortL [y].GetComponentInChildren<Text> ().text;
+				if (b.GetComponentInChildren<Text> ().text.Contains ("Already Owned")) {
+					b.interactable = false;
+				} else if (PlayerProfile.profile.money < checkPrice (b.GetComponentInChildren<Text> ().text)) {
+					b.interactable = false;
+				} else {
+					uint i = checkMemory (b.GetComponentInChildren<Text> ().text);
+					switch (i) {
+					case 8:
+						i = 0;
+						break;
+					case 16:
+						i = 1;
+						break;
+					case 32:
+						i = 2;
+						break;
+					}
+					b.onClick.AddListener (() => {
+						buyMemoryCard (equipManager.memCards [(int)i]);
+					});
+				}
+				break;
+			case 1:
+				y = Random.Range (0, filterButtons.Count);
+				b.GetComponentInChildren<Text> ().text = filterButtons [y].GetComponentInChildren<Text> ().text;
+				price = checkPrice (b.GetComponentInChildren<Text> ().text);
+				name = convertName (b.GetComponentInChildren<Text> ().text);
+				Debug.Log (b.GetComponentInChildren<Text> ().text + " , " + name + " , " + price);
+				if (b.GetComponentInChildren<Text> ().text.Contains ("Already Owned") || PlayerProfile.profile.filters.Contains (name)) {
+					b.GetComponentInChildren<Text> ().text = b.GetComponentInChildren<Text> ().text.Substring (0, b.GetComponentInChildren<Text> ().text.IndexOf ("$")) + "Already Owned"; 
 
-		purchaseButtons ["wide1"] = new PurchaseButton ();
-		purchaseButtons ["wide1"].price = 299.99f;
-		purchaseButtons ["wide1"].name = "wide1";
-		purchaseButtons ["wide1"].btn = UnityEngine.Resources.Load<Button>("UI/Button");
-		purchaseButtons ["wide1"].btn.onClick.AddListener(
-			delegate() {
-				buyLens(purchaseButtons ["wide1"].price, purchaseButtons ["wide1"].name);
+					b.interactable = false;
+				} else if (PlayerProfile.profile.money < price) {
+					b.interactable = false;
+				} else {
+					b.onClick.AddListener (() => {
+						buyFilter (price, name);
+					});
+				}
+
+				break;
+			case 2:
+				y = Random.Range (0, lensButtons.Count);
+				b.GetComponentInChildren<Text> ().text = lensButtons [y].GetComponentInChildren<Text> ().text;
+				price = checkPrice (b.GetComponentInChildren<Text> ().text);
+				name = convertName (b.GetComponentInChildren<Text> ().text);
+				Debug.Log(name +  " , " + price);
+				if (b.GetComponentInChildren<Text> ().text.Contains ("Already Owned") || PlayerProfile.profile.lenses.Contains (name)) {
+					b.GetComponentInChildren<Text> ().text = b.GetComponentInChildren<Text> ().text.Substring (0, b.GetComponentInChildren<Text> ().text.IndexOf ("$")) + "Already Owned"; 
+					b.interactable = false;
+				} else if (PlayerProfile.profile.money < price) {
+					b.interactable = false;
+				}
+				b.onClick.AddListener(() => {buyLens(price , name);});
+				break;
+			case 3:
+				y = Random.Range (0, bagButtons.Count);
+				b.GetComponentInChildren<Text> ().text = bagButtons [y].GetComponentInChildren<Text> ().text;
+				price = checkPrice (b.GetComponentInChildren<Text> ().text);
+				name = convertName (b.GetComponentInChildren<Text> ().text);
+				float xyz = float.Parse (name);
+				if (PlayerProfile.profile.bagSize == xyz) {
+					b.GetComponentInChildren<Text> ().text = b.GetComponentInChildren<Text> ().text.Substring (0, b.GetComponentInChildren<Text> ().text.IndexOf ("$")) + "Already Owned"; 
+					b.interactable = false;
+				} else if (PlayerProfile.profile.money < price) {
+					b.interactable = false;
+				} else {
+					b.onClick.AddListener (() => {
+						buyBag (xyz, price);
+					});
+				}
+				break;
 			}
-		);
-		purchaseButtons ["wide1"].btn.transform.parent = panel.transform;*/
+
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (PlayerProfile.profile.lenses.Contains (wideName)) {
-			wideButton.GetComponentInChildren<Text> ().text = "Already Owned";
-			wideButton.interactable = false;
+			wideButtonL.GetComponentInChildren<Text> ().text = "Wide Angle Lens Already Owned";
+			wideButtonL.interactable = false;
+			wideButtonH.GetComponentInChildren<Text> ().text = "Wide Angle Lens Already Owned";
+			wideButtonH.interactable = false;
 		} else if (PlayerProfile.profile.money < widePrice) {
-			wideButton.interactable = false;
+			wideButtonL.interactable = false;
+			wideButtonH.interactable = false;
 		} else {
-			wideButton.interactable = true;
+			wideButtonL.interactable = true;
+			wideButtonH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.lenses.Contains (teleName)) {
-			teleButton.GetComponentInChildren<Text> ().text = "Already Owned";
-			teleButton.interactable = false;
+			teleButtonL.GetComponentInChildren<Text> ().text = "telephoto Lens Already Owned";
+			teleButtonL.interactable = false;
+			teleButtonH.GetComponentInChildren<Text> ().text = "telephoto Lens Already Owned";
+			teleButtonH.interactable = false;
 		} else if (PlayerProfile.profile.money < telePrice) {
-			teleButton.interactable = false;
+			teleButtonL.interactable = false;
+			teleButtonH.interactable = false;
 		} else {
-			teleButton.interactable = true;
+			teleButtonL.interactable = true;
+			teleButtonH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.lenses.Contains (portName)) {
-			portButton.GetComponentInChildren<Text> ().text = "Already Owned";
-			portButton.interactable = false;
+			portButtonL.GetComponentInChildren<Text> ().text = "Portrait Lens Already Owned";
+			portButtonL.interactable = false;
+			portButtonH.GetComponentInChildren<Text> ().text = "Portrait Lens Already Owned";
+			portButtonH.interactable = false;
 		} else if (PlayerProfile.profile.money < portPrice) {
-			portButton.interactable = false;
+			portButtonL.interactable = false;
+			portButtonH.interactable = false;
 		} else {
-			portButton.interactable = true;
+			portButtonL.interactable = true;
+			portButtonH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.filters.Contains (fBName)) {
-			filterB.GetComponentInChildren<Text> ().text = "Already Owned";
-			filterB.interactable = false;
+			filterBL.GetComponentInChildren<Text> ().text = "Blue Filter Already Owned";
+			filterBL.interactable = false;
+			filterBH.GetComponentInChildren<Text> ().text = "Blue Filter Already Owned";
+			filterBH.interactable = false;
 		} else if (PlayerProfile.profile.money < fBPrice) {
-			filterB.interactable = false;
+			filterBL.interactable = false;
+			filterBH.interactable = false;
 		} else {
-			filterB.interactable = true;
+			filterBL.interactable = true;
+			filterBH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.filters.Contains (fOName)) {
-			filterO.GetComponentInChildren<Text> ().text = "Already Owned";
-			filterO.interactable = false;
+			filterOL.GetComponentInChildren<Text> ().text = "Orange Filter Already Owned";
+			filterOL.interactable = false;
+			filterOH.GetComponentInChildren<Text> ().text = "Orange Filter Already Owned";
+			filterOH.interactable = false;
 		} else if (PlayerProfile.profile.money < fOPrice) {
-			filterO.interactable = false;
+			filterOL.interactable = false;
+			filterOH.interactable = false;
 		} else {
-			filterO.interactable = true;
+			filterOL.interactable = true;
+			filterOH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.filters.Contains (fBOName)) {
-			filterBO.GetComponentInChildren<Text> ().text = "Already Owned";
-			filterBO.interactable = false;
+			filterBOL.GetComponentInChildren<Text> ().text = "Blue Orange Filter Already Owned";
+			filterBOL.interactable = false;
+			filterBOH.GetComponentInChildren<Text> ().text = "Blue Orange Filter Already Owned";
+			filterBOH.interactable = false;
 		} else if (PlayerProfile.profile.money < fBOPrice) {
-			filterBO.interactable = false;
+			filterBOL.interactable = false;
+			filterBOH.interactable = false;
 		} else {
-			filterBO.interactable = true;
+			filterBOL.interactable = true;
+			filterBOH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.filters.Contains (fBCName)) {
-			filterBC.GetComponentInChildren<Text> ().text = "Already Owned";
-			filterBC.interactable = false;
+			filterBCL.GetComponentInChildren<Text> ().text = "Blue Clear Filter Already Owned";
+			filterBCL.interactable = false;
+			filterBCH.GetComponentInChildren<Text> ().text = "Blue Clear Filter Already Owned";
+			filterBCH.interactable = false;
 		} else if (PlayerProfile.profile.money < fBCPrice) {
-			filterBC.interactable = false;
+			filterBCL.interactable = false;
+			filterBCH.interactable = false;
 		} else {
-			filterBC.interactable = true;
+			filterBCL.interactable = true;
+			filterBCH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.filters.Contains (fOCName)) {
-			filterOC.GetComponentInChildren<Text> ().text = "Already Owned";
-			filterOC.interactable = false;
+			filterOCL.GetComponentInChildren<Text> ().text = "Orange Clear Filter Already Owned";
+			filterOCL.interactable = false;
+			filterOCH.GetComponentInChildren<Text> ().text = "Orange Clear Filter Already Owned";
+			filterOCH.interactable = false;
 		} else if (PlayerProfile.profile.money < fOCPrice) {
-			filterOC.interactable = false;
+			filterOCL.interactable = false;
+			filterOCH.interactable = false;
 		} else {
-			filterOC.interactable = true;
+			filterOCL.interactable = true;
+			filterOCH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.filters.Contains (fRName)) {
-			filterR.GetComponentInChildren<Text> ().text = "Already Owned";
-			filterR.interactable = false;
+			filterRL.GetComponentInChildren<Text> ().text = "Rainbow Filter Already Owned";
+			filterRL.interactable = false;
+			filterRH.GetComponentInChildren<Text> ().text = "Rainbow Filter Already Owned";
+			filterRH.interactable = false;
 		} else if (PlayerProfile.profile.money < fRPrice) {
-			filterR.interactable = false;
+			filterRL.interactable = false;
+			filterRH.interactable = false;
 		} else {
-			filterR.interactable = true;
+			filterRL.interactable = true;
+			filterRH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.bagSize == 5) {
-			bagFive.GetComponentInChildren<Text> ().text = "Already Owned";
-			bagFive.interactable = false;
+			bagFiveL.GetComponentInChildren<Text> ().text = "Small Bag Already Owned";
+			bagFiveL.interactable = false;
+			bagFiveH.GetComponentInChildren<Text> ().text = "Small Bag Already Owned";
+			bagFiveH.interactable = false;
 		} else if (PlayerProfile.profile.money < bFPrice) {
-			bagFive.interactable = false;
+			bagFiveL.interactable = false;
+			bagFiveH.interactable = false;
 		} else {
-			bagFive.interactable = true;
+			bagFiveL.interactable = true;
+			bagFiveH.interactable = true;
 		}
 
 		if (PlayerProfile.profile.bagSize == 10) {
-			bagTen.GetComponentInChildren<Text> ().text = "Already Owned";
-			bagTen.interactable = false;
+			bagTenL.GetComponentInChildren<Text> ().text = "Large Bag Already Owned";
+			bagTenL.interactable = false;
+			bagTenH.GetComponentInChildren<Text> ().text = "Large Bag Already Owned";
+			bagTenH.interactable = false;
 		} else if (PlayerProfile.profile.money < bTPrice) {
-			bagTen.interactable = false;
+			bagTenL.interactable = false;
+			bagTenH.interactable = false;
 		} else {
-			bagTen.interactable = true;
+			bagTenL.interactable = true;
+			bagTenH.interactable = true;
 		}
 
-		moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
-
-		/*foreach (KeyValuePair<string, PurchaseButton> entry in purchaseButtons) {
-			if (PlayerProfile.profile.lenses.Contains (entry.Key)
-				|| PlayerProfile.profile.money < entry.Value.price) {
-				purchaseButtons [entry.Key].btn.interactable = false;
-			}
-		}*/
+        moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
 	}
 
 	void Awake() {}
@@ -247,8 +352,27 @@ public class ShopUIManager : MonoBehaviour {
 	}
 
     private void configureMemoryCardButtons() {
-		for (int i = 0; i < memoryCardButtons.Count; i++) {
-			Button button = memoryCardButtons [i];
+		for (int i = 0; i < memoryCardButtonsSortL.Count; i++) {
+			Button button = memoryCardButtonsSortL [i];
+			EquipmentManager.Equipment<EquipmentManager.MemCardData> memoryCard = equipManager.memCards [i];
+
+			if (memoryCard.data.owned) {
+				button.GetComponentInChildren<Text> ().text = memoryCard.data.name + "\nAlready Owned";
+				button.interactable = false;
+			} else {
+				float cost = memoryCard.data.cost;
+				button.GetComponentInChildren<Text> ().text = memoryCard.data.name + "\n$" + cost;
+
+				if (cost > PlayerProfile.profile.money) {
+					button.interactable = false;
+				}
+
+				button.onClick.AddListener (() => {buyMemoryCard (memoryCard);});
+			}
+
+		}
+		for (int i = 0; i < memoryCardButtonsSortH.Count; i++) {
+			Button button = memoryCardButtonsSortH [i];
 			EquipmentManager.Equipment<EquipmentManager.MemCardData> memoryCard = equipManager.memCards [i];
 
 			if (memoryCard.data.owned) {
@@ -267,7 +391,7 @@ public class ShopUIManager : MonoBehaviour {
 
 		}
     }
-
+		
 	private void buyMemoryCard(EquipmentManager.Equipment<EquipmentManager.MemCardData> memCard) {
 		// If it's not already owned and the player has enough money
 		if (memCard.data.owned == false && PlayerProfile.profile.money >= memCard.data.cost) {
@@ -341,7 +465,84 @@ public class ShopUIManager : MonoBehaviour {
 			ParkPrepUIManager.src.Play();
 		}
 	}
+
+	public float checkPrice(string item){
+		int x = item.IndexOf ("$");
+		float price = float.Parse (item.Substring (x+1));
+		return price;
+	}
+
+	public uint checkMemory (string mem){
+		uint x = uint.Parse (mem.Substring (0, 1));
+		switch (x) {
+		case 8:
+			return x;
+		case 3:
+			return x = 32;
+		case 1:
+			return x = 16;
+		default:
+			return x = 0;
+		}
+	}
+
+	public string convertName (string name){
+		switch (name) {
+		case "Portrait Lens\n$100":
+			return "port1";
+		case "Wide Angle Lens\n$250":
+			return "wide1";
+		case "Telephoto Lens\n$450":
+			return "tele1";
+		case "Blue\n$100":
+			return "bluefilter";
+		case "Orange\n$100":
+			return "orangefilter";
+		case "Blue Orange Gradient\n$100":
+			return "blueorangefilter";
+		case "Blue Clear Gradient\n$100":
+			return "bluefadefilter";
+		case "Orange Clear Gradient\n$100":
+			return "orangefadefilter";
+		case "Rainbow\n$100":
+			return "rainbowfilter";
+		case "Small Bag\n$100":
+			return "5";
+		case "Large Bag\n$1000":
+			return "10";
+		case "Portrait Lens\nAlready Owned":
+			return "port1";
+		case "Wide Angle Lens\nAlready Owned":
+			return "wide1";
+		case "Telephoto Lens\nAlready Owned":
+			return "tele1";
+		case "Blue\nAlready Owned":
+			return "bluefilter";
+		case "Orange\nAlready Owned":
+			return "orangefilter";
+		case "Blue Orange Gradient\nAlready Owned":
+			return "blueorangefilter";
+		case "Blue Clear Gradient\nAlready Owned":
+			return "bluefadefilter";
+		case "Orange Clear Gradient\nAlready Owned":
+			return "orangefadefilter";
+		case "Rainbow\nAlready Owned":
+			return "rainbowfilter";
+		case "Small Bag\nAlready Owned":
+			return "5";
+		case "Large Bag\nAlready Owned":
+			return "10";
+		default:
+			return "";
+		}
+	}
+
+	public void specialButton(Button b){
+		b.GetComponentInChildren<Text>().text = b.GetComponentInChildren<Text> ().text.Substring (0, b.GetComponentInChildren<Text> ().text.IndexOf ("$")) + "Already Owned";
+		b.interactable = false;
+	}
 }
+
 
 /*class PurchaseButton {
 	public float price;
