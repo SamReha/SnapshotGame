@@ -6,12 +6,13 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: trunk
+  m_Name: Water
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _ALPHABLEND_ON _SPECGLOSSMAP
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -39,6 +40,34 @@ Material:
       data:
         first:
           name: _ParallaxMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Fresnel
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _ReflectiveColor
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _ReflectionTex
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _RefractionTex
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -78,15 +107,22 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _SpecGlossMap
+        second:
+          m_Texture: {fileID: 2800000, guid: c97fefd341ed1ce4aa67c574f869f7f6, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
           name: _SrcBlend
-        second: 1
+        second: 5
       data:
         first:
           name: _DstBlend
-        second: 0
+        second: 10
       data:
         first:
           name: _Cutoff
@@ -97,12 +133,24 @@ Material:
         second: 0.02
       data:
         first:
+          name: _WaveScale
+        second: 0.0754
+      data:
+        first:
+          name: _ReflDistort
+        second: 0.345
+      data:
+        first:
+          name: _RefrDistort
+        second: 0.609
+      data:
+        first:
           name: _ZWrite
-        second: 1
+        second: 0
       data:
         first:
           name: _Glossiness
-        second: 0
+        second: 0.814
       data:
         first:
           name: _BumpScale
@@ -122,11 +170,11 @@ Material:
       data:
         first:
           name: _Mode
-        second: 0
+        second: 2
       data:
         first:
           name: _Metallic
-        second: 0
+        second: 0.273
     m_Colors:
       data:
         first:
@@ -135,4 +183,20 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.38039216, g: 0.26666668, b: 0.11764706, a: 1}
+        second: {r: 0.627451, g: 0.8, b: 0.7529412, a: 0.49}
+      data:
+        first:
+          name: _SpecColor
+        second: {r: 0.9191176, g: 0.95966697, b: 0.95966697, a: 1}
+      data:
+        first:
+          name: _RefrColor
+        second: {r: 0.59261465, g: 0.8021259, b: 0.8308824, a: 1}
+      data:
+        first:
+          name: WaveSpeed
+        second: {r: 19, g: 9, b: -16, a: -7}
+      data:
+        first:
+          name: _HorizonColor
+        second: {r: 0.28114188, g: 0.7647059, b: 0.7181774, a: 1}
