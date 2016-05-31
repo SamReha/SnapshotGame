@@ -6,37 +6,43 @@ public class BalanceHeuristics {
 	public BalanceHeuristics () {}
 
 	public static float StandardDeviation(GameObject subject, List<GameObject> visibleObjects, Camera cam){
-		List<float> screenPercents = new List<float> ();
-		float mean = 0f;
-		Debug.Log ("Objects: " + visibleObjects.Count);
-		for(int i = 0; i < visibleObjects.Count; i++){
-			float x = GameObject.Find("Camera Prefab").GetComponent<PhotoEval>().CalcScreenPercentage(visibleObjects[i]);
-			screenPercents.Add (x);
-			mean += x;
-		}
-      	mean = mean / visibleObjects.Count;
-		List<float> deviation = new List<float>();
-		float variance = 0;
-		for(int i = 0; i < screenPercents.Count; i++){
-			float x = screenPercents[i] - mean;
-			variance += x * x;
-		}
-      		variance = variance / visibleObjects.Count;
-		float standardDeviation = Mathf.Sqrt(variance);
-		if (standardDeviation != 0.0f) {
-			float score = mean / standardDeviation;
-            // NaN protection!
-            //if (score == float.NaN) return Mathf.Infinity;
-            if (score == float.NaN) return 0f;
-
-            // Guard against negative scores
-            if (score < 0f) {
-                score = 0f;
-            }
-
-            return Mathf.Min(score, 10f);
+		if (visibleObjects.Count < 2) {
+			return 0f;
 		} else {
-			return 10f;
+			List<float> screenPercents = new List<float> ();
+			float mean = 0f;
+			Debug.Log ("Objects: " + visibleObjects.Count);
+			for (int i = 0; i < visibleObjects.Count; i++) {
+				float x = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().CalcScreenPercentage (visibleObjects [i]);
+				screenPercents.Add (x);
+				mean += x;
+			}
+			mean = mean / visibleObjects.Count;
+			List<float> deviation = new List<float> ();
+			float variance = 0;
+			for (int i = 0; i < screenPercents.Count; i++) {
+				float x = screenPercents [i] - mean;
+				variance += x * x;
+			}
+			variance = variance / visibleObjects.Count;
+			float standardDeviation = Mathf.Sqrt (variance);
+			if (standardDeviation != 0.0f) {
+				float score = mean / standardDeviation;
+				// NaN protection!
+				//if (score == float.NaN) return Mathf.Infinity;
+				if (score == float.NaN)
+					return 0f;
+
+				// Guard against negative scores
+				if (score < 0f) {
+					score = 0f;
+				}
+				Debug.Log ("Balance 1 " + Mathf.Min (score, 10f) * 10f);
+				return Mathf.Min (score, 10f) * 10f;
+			} else {
+				Debug.Log ("Balance 1 100 ");
+				return 100f;
+			}
 		}
 	}
 	
@@ -103,7 +109,7 @@ public class BalanceHeuristics {
 			float score = 10f;
 
 			if (percentageLeft == percentageRight) {
-				return 10f;
+				return 100f;
 				Debug.Log ("Asym score: " + score);
 			} else if (Mathf.Approximately (percentageLeft, percentageRight)) {
 				heuristicWeight = 0.8f;
@@ -115,10 +121,13 @@ public class BalanceHeuristics {
 				float difference = Mathf.Abs ((percentageLeft - percentageRight));
 
 				difference *= 0.1f;
-				difference = 10f * difference;
+				difference = 100f * difference;
 				score -= difference;
 			//	Debug.Log("percents: " + percentageLeft + ", " + percentageRight);
 				Debug.Log ("Asym score: " + score);
+				if (score < 0f) {
+					return 0f;
+				}
 				return score;
 			}
 
@@ -131,10 +140,13 @@ public class BalanceHeuristics {
 				}
 			}
 			//Debug.Log ("percentage: " + percentageLeft);
-			float score = 10f;
+			float score = 100f;
 			heuristicWeight = percentageLeft * 0.1f;
-			float difference = 10f * heuristicWeight;
+			float difference = 100f * heuristicWeight;
 			score -= difference;
+			if (score < 0f) {
+				return 0f;
+			}
 			Debug.Log ("Asym score: " + score);
 			return score;
 
@@ -147,11 +159,14 @@ public class BalanceHeuristics {
 				}
 				//Debug.Log ("percent: " + percentageRight);
 			}
-			float score = 10f;
+			float score = 100f;
 			heuristicWeight = percentageRight * 0.1f;
-			float difference = 10f * heuristicWeight;
+			float difference = 100f * heuristicWeight;
 			score -= difference;
 			Debug.Log ("Asym score: " + score);
+			if (score < 0f) {
+				return 0f;
+			}
 			return score;
 		} else {
 			return 0f;
@@ -243,7 +258,7 @@ public class BalanceHeuristics {
         }
         heuristicWeight *= 0.1f;
 
-        float actualScore = 10f * heuristicWeight;
+        float actualScore = 100f * heuristicWeight;
 
         if (actualScore == float.NaN)
         {
@@ -255,7 +270,10 @@ public class BalanceHeuristics {
         {
             actualScore = 0f;
         }
-
+		Debug.Log ("Balance 3 " + actualScore);
+		if (actualScore < 0f) {
+			return 0f;
+		}
         return actualScore;
 	}
 }
