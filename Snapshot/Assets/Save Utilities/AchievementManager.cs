@@ -188,9 +188,13 @@ public class AchievementManager : MonoBehaviour {
         // Handle removing secret property as needed
         foreach (string name in achievement.data.Desecrefies) {
             Achievement desecrefied = GetAchievementByName(name);
-            desecrefied.data.Secret = false;
 
-            saveAchievement(desecrefied);
+            if (desecrefied != null) {
+                desecrefied.data.Secret = false;
+                saveAchievement(desecrefied);
+            }
+            else
+                Debug.Log("Hey like not to bother you or anything but '" + achievement.data.Name + "' is trying to desecrefy '" + name + "', which doesn't exist.");
         }
 
         UpdateRewardPointTotals(); // Gamer Score analog - we don't really use it.
