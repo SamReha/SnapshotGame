@@ -1445,7 +1445,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 318207308}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3092,7 +3092,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1431364690}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.07218905
+  m_Size: 0.07218904
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4151,7 +4151,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: e4af348cef6cf324fb2128c968d314aa, type: 3}
+  m_Texture: {fileID: 2800000, guid: eaf6ee4ddcb421c44961854740ec403a, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -4617,7 +4617,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2955.0781}
+  m_AnchoredPosition: {x: 0, y: 3185}
   m_SizeDelta: {x: 0, y: 3185}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2107425625
@@ -4666,4 +4666,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newPicture: {fileID: 132628, guid: 460f570b3bc64d145ac631c0c8c8ac8a, type: 2}
-  currentPosition: 0
