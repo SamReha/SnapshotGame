@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.IO;
@@ -13,6 +13,8 @@ public class PostedPhotosManager : MonoBehaviour {
 	public GameObject newPicture;
 
     private string pathToPostedPhotos;
+	private int numPhotos = 0;
+	private int rectTransforms = 0; //debug
 
 #if UNITY_EDITOR
     [MenuItem ("AssetDatabase/Snapshot")]
@@ -40,18 +42,63 @@ public class PostedPhotosManager : MonoBehaviour {
 
 		DirectoryInfo dir = new DirectoryInfo(pathToPostedPhotos);
 		FileInfo[] info = dir.GetFiles("*.png");
+
 		foreach (FileInfo file in info) {
 			string filename = file.Name;
 			GameObject curPicture = (GameObject) Instantiate(newPicture);
+			curPicture.GetComponentInChildren<Toggle> ().gameObject.SetActive (false);
+			curPicture.AddComponent<Button> ();
+			curPicture.GetComponentInChildren<Button> ().enabled = true;
+			curPicture.GetComponentInChildren<Button> ().tag = "imagebtn";
+			curPicture.GetComponentInChildren<Button> ().onClick.AddListener (() => {
+				GameObject[] objs = GameObject.FindGameObjectsWithTag("imagebtn");
+				List<Button> btns = new List<Button>();
+
+				foreach(GameObject go in objs) {
+					btns.Add(go.GetComponent<Button>());
+				}
+
+				foreach(Button b in btns) {
+					if(!b.Equals(curPicture.GetComponentInChildren<Button>())) {
+						b.enabled = false;
+					}
+				}
+				viewComments ();
+			});
+
 			Texture2D pic = new Texture2D (2, 2);
 			byte[] bytes = File.ReadAllBytes (pathToPostedPhotos + filename);
 			pic.LoadImage (bytes);
 			RawImage r = (RawImage) curPicture.GetComponent<RawImage> ();
 			r.texture = pic;
 			curPicture.GetComponent<RawImage> ().name = filename.Replace (".png", "");
-			curPicture.GetComponentInChildren<Toggle> ().GetComponentInChildren<Image> ().enabled = false;
 			curPicture.transform.SetParent(this.transform, false);
 		}
+	}
+
+	public string getPhotoComment(Photo p) {
+		//Photo p = new Photo ();
+		p.load ();
+		return p.comments[0];
+	}
+
+	public void viewComments() {
+		RawImage riSelectedPhoto;
+		GameObject[] objs = GameObject.FindGameObjectsWithTag ("imagebtn");
+		GameObject parent = GameObject.FindGameObjectWithTag("imagebtn");
+
+		foreach (GameObject go in objs) {
+			if (go.GetComponent<Button> ().enabled) {
+				parent = go;
+			}
+		}
+		riSelectedPhoto = BlogUIManager.photoPanel.GetComponentInChildren<RawImage> ();
+		Texture2D pic = new Texture2D (2, 2);
+		byte[] bytes = File.ReadAllBytes(pathToPostedPhotos + parent.GetComponent<RawImage>().name + ".png");
+		pic.LoadImage (bytes);
+		riSelectedPhoto.texture = pic;
+		getMetaData ();
+		BlogUIManager.photoPanel.SetActive (true);
 	}
 
 	public void getMetaData() {
@@ -95,7 +142,6 @@ public class PostedPhotosManager : MonoBehaviour {
 			textData.text = photo.comments[0];
 			textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 			metaData.GetComponent<RectTransform> ().position = new Vector3 (0f, -90f, 0f);
-
 			metaData.transform.SetParent (child, false);
 		}
 	}

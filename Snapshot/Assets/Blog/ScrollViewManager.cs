@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
@@ -10,9 +10,7 @@ using UnityEditor;
 
 public class ScrollViewManager : MonoBehaviour {
 	public GameObject newPicture;
-
 	public List<string> imagesToPost;
-
     public Toggle toggle;
     public List<GameObject> curNames = new List<GameObject>();
 
@@ -46,10 +44,19 @@ public class ScrollViewManager : MonoBehaviour {
 		imagesToPost = imageBuffer;
 	}
 
+	public void selectAll() {
+		var images = GetComponentsInChildren<RawImage> ();
+
+		foreach(RawImage img in images) {
+			Toggle t = img.GetComponentInChildren<Toggle> ();
+			t.isOn = true;
+		}
+	}
 	public void updatePostableImages() {
 		foreach (Transform child in transform) {
 			Destroy (child.gameObject);
 		}
+
 
 		#if UNITY_EDITOR
 		//  Make sure pictures are loaded into resources

@@ -6,31 +6,93 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BlogUIManager : MonoBehaviour {
-	private AudioSource blogSource;
 	public GameObject scrollManager;
 	public GameObject postedPhotosManager;
+	public GameObject namePrompt;
+	public GameObject nameChangeScreen; 
+	public GameObject uploadedPhotoScreen;
+	public InputField name_field;
+	public static GameObject photoPanel;
 	public Text moneyText;
+	public Text blogNameText;
     public AchievementManager achievementManager;
+	public bool seenSecondScreen;
 
+	private AudioSource blogSource;
 	private string pathToPostedPhotos;
 	private string pathToUploadQueue;
 
 	// Use this for initialization
 	void Start () {
-		PlayerProfile.profile.load ();
+		PlayerProfile.profile.load();
+		uploadedPhotoScreen = GameObject.FindGameObjectWithTag ("postedscreen");
+		photoPanel = GameObject.FindGameObjectWithTag ("photopanel");
+		blogNameText = GameObject.FindGameObjectWithTag ("blogname").GetComponent<Text>();
+		namePrompt = GameObject.FindGameObjectWithTag ("blogprompt");
+		nameChangeScreen = GameObject.FindGameObjectWithTag ("changenamescreen");
+		name_field = GameObject.FindGameObjectWithTag ("blogprompt").GetComponentInChildren<InputField> ();
+		seenSecondScreen = PlayerProfile.profile.blogNameChangeTipSeen;
 		blogSource = GetComponent<AudioSource> ();
 
+		if (!PlayerProfile.profile.blogNamed) {
+			namePrompt.SetActive(true);
+			nameChangeScreen.SetActive (false);
+
+		} else {
+			namePrompt.SetActive (false);
+			nameChangeScreen.SetActive (false);
+		}
+		photoPanel.SetActive (false);
 		blogSource.ignoreListenerPause = true;
-		blogSource.Play ();
+		blogSource.Play();
 
 		pathToPostedPhotos = Application.dataPath + "/Resources/PostedImages/";
 		pathToUploadQueue = Application.dataPath + "/Resources/UploadQueue/";
 	}
-	
+
+	public void toPostedPhotos() {
+		GameObject[] objs = GameObject.FindGameObjectsWithTag ("imagebtn");
+
+		foreach (GameObject go in objs) {
+			go.GetComponentInChildren<Button> ().enabled = true;
+		}
+		photoPanel.GetComponentInChildren<Text> ().text = "";
+		photoPanel.SetActive (false);
+	}
+
+	public void nameBlog() {
+		Text promptText = namePrompt.GetComponentInChildren<Text> ();
+
+		PlayerProfile.profile.blogName = name_field.text;
+
+		if (!seenSecondScreen) {
+			nameChangeScreen.SetActive (true);
+			namePrompt.SetActive (false);
+			nameChangeScreen.GetComponentInChildren<InputField> ().gameObject.SetActive (false);
+			PlayerProfile.profile.blogNameChangeTipSeen = true;
+		} else {
+			namePrompt.SetActive (false);
+		}
+		PlayerProfile.profile.blogNamed = true;
+		PlayerProfile.profile.save();
+	}
+
+	public void displayNameTip() {
+		nameChangeScreen.SetActive (false);
+		seenSecondScreen = true;
+	}
+
+	public void renameBlog() {
+		namePrompt.SetActive(true);
+		Text promptText = namePrompt.GetComponentInChildren<Text>();
+		promptText.text = "Use the prompt below to enter your new blog name!";
+		name_field.text = "";
+	}
+		
 	// Update is called once per frame
 	void Update () {
+		blogNameText.text = PlayerProfile.profile.blogName;
 		moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
-		//postedPhotosManager.GetComponent<PostedPhotosManager> ().updatePhotos();
 	}
 
 	public void loadMainMenu() {

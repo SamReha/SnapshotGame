@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.IO;
 using System.Collections;
@@ -33,6 +33,10 @@ public class PlayerProfile : MonoBehaviour {
 	public bool tutFlagChangeLens;
 	public bool tutFlagShutterSpeed;
 	public bool tutFlagViewControls;
+
+	public bool blogNamed;
+	public bool blogNameChangeTipSeen;
+	public string blogName = "New Photographer";
 
 	public float timeElapsedInPark = 0;  //Park time added in Snapshotcam.cs
 	public float timeElapsedInMenu = 0;  //Park time added in Snapshotcam.cs
@@ -106,6 +110,10 @@ public class PlayerProfile : MonoBehaviour {
 			timeElapsedInMenu = saveData.timeElapsedInMenu;
 			lensesInBag = saveData.lensesInBag;
 			filtersInBag = saveData.filtersInBag;
+
+			blogNamed = saveData.blogNamed;
+			blogName = saveData.blogName;
+			blogNameChangeTipSeen = saveData.blogNameChangeTipSeen;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
 			createProfile ();
@@ -155,6 +163,10 @@ public class PlayerProfile : MonoBehaviour {
 		saveData.lensesInBag = lensesInBag;
 		saveData.filtersInBag = filtersInBag;
 
+		saveData.blogNamed = blogNamed;
+		saveData.blogNameChangeTipSeen = blogNameChangeTipSeen;
+		saveData.blogName = blogName;
+
 		binForm.Serialize (saveFile, saveData);
 		saveFile.Close ();
 	}
@@ -192,6 +204,11 @@ public class PlayerProfile : MonoBehaviour {
 		tutFlagShutterSpeed = false;
 		tutFlagViewControls = false;
 
+		//blog flags
+		blogNamed = false;
+		blogNameChangeTipSeen = false;
+		blogName = "New Photographer";
+
 		timeElapsedInPark = 0;
 		timeElapsedInMenu = 0;
 
@@ -218,6 +235,8 @@ class InternalProfile {
 	public float maxInterestTotal;
 	public float maxInterestIndividual;
 
+	public string blogName;
+
 	//  Tutorial flags
 	public bool tutFlagMovement;
 	public bool tutFlagAim;
@@ -230,6 +249,10 @@ class InternalProfile {
 	public bool tutFlagChangeLens;
 	public bool tutFlagShutterSpeed;
 	public bool tutFlagViewControls;
+
+	//blog flags
+	public bool blogNamed;
+	public bool blogNameChangeTipSeen;
 
 	public float timeElapsedInPark;
 	public float timeElapsedInMenu;

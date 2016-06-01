@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.IO;
 using System.Collections;
@@ -17,6 +17,7 @@ public class Photo {
     public bool containsPosingAnimal = false;
     public bool takenWithTelephoto = false;
     public bool takenWithWide = false;
+
 	public List<string> comments = new List<string> ();
 
 
@@ -130,6 +131,5 @@ public class Photo {
         public bool takenWithTelephoto;
         public bool takenWithWide;
 		public List<string> comments;
-
     }
 }
