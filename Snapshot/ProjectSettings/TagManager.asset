@@ -8,6 +8,13 @@ TagManager:
   - Camera Ignores
   - UIMan
   - camera
+  - blogname
+  - selectedImage
+  - changenamescreen
+  - blogprompt
+  - photopanel
+  - postedscreen
+  - imagebtn
   layers:
   - Default
   - TransparentFX
