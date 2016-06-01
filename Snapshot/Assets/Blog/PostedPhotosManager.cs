@@ -13,8 +13,7 @@ public class PostedPhotosManager : MonoBehaviour {
 	public GameObject newPicture;
 
     private string pathToPostedPhotos;
-	private int numPhotos = 0;
-	private int rectTransforms = 0; //debug
+	public int currentPosition = 0;
 
 #if UNITY_EDITOR
     [MenuItem ("AssetDatabase/Snapshot")]
@@ -23,7 +22,6 @@ public class PostedPhotosManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         pathToPostedPhotos = Application.dataPath + "/Resources/PostedImages/";
-
         updatePhotos();
         getMetaData ();
 	}
@@ -75,8 +73,8 @@ public class PostedPhotosManager : MonoBehaviour {
 			curPicture.transform.SetParent(this.transform, false);
 		}
 	}
-
-	public string getPhotoComment(Photo p) {
+	//a now deprecated method to get a single comment for a photo
+	public string getPhotoComment(Photo p) { 
 		//Photo p = new Photo ();
 		p.load ();
 		return p.comments[0];
@@ -84,21 +82,21 @@ public class PostedPhotosManager : MonoBehaviour {
 
 	public void viewComments() {
 		RawImage riSelectedPhoto;
-		GameObject[] objs = GameObject.FindGameObjectsWithTag ("imagebtn");
-		GameObject parent = GameObject.FindGameObjectWithTag("imagebtn");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag ("imagebtn"); //get all of the photo buttons
+		GameObject parent = GameObject.FindGameObjectWithTag("imagebtn"); //it's a temporary value
 
 		foreach (GameObject go in objs) {
-			if (go.GetComponent<Button> ().enabled) {
-				parent = go;
+			if (go.GetComponent<Button> ().enabled) { //find the enabled photo button
+				parent = go; //make it the parent
 			}
 		}
-		riSelectedPhoto = BlogUIManager.photoPanel.GetComponentInChildren<RawImage> ();
-		Texture2D pic = new Texture2D (2, 2);
-		byte[] bytes = File.ReadAllBytes(pathToPostedPhotos + parent.GetComponent<RawImage>().name + ".png");
-		pic.LoadImage (bytes);
-		riSelectedPhoto.texture = pic;
-		getMetaData ();
-		BlogUIManager.photoPanel.SetActive (true);
+		riSelectedPhoto = BlogUIManager.photoPanel.GetComponentInChildren<RawImage> (); //grapb the photo panel raw image
+		Texture2D pic = new Texture2D (2, 2); //set up a texture
+		byte[] bytes = File.ReadAllBytes(pathToPostedPhotos + parent.GetComponent<RawImage>().name + ".png"); //read the photo's bytes
+		pic.LoadImage (bytes); // load the image
+		riSelectedPhoto.texture = pic; // texture the photo image
+		getMetaData (); // get the comments
+		BlogUIManager.photoPanel.SetActive (true); //display the photo
 	}
 
 	public void getMetaData() {
@@ -132,14 +130,19 @@ public class PostedPhotosManager : MonoBehaviour {
 				} else {
 					markup = "perfect";
 				}
-
 				photo.comments.Add(gameObject.GetComponent<CommentGenerator>().GenerateComment (markup));
 				photo.save ();
 			}
 
 			//Debug.Log (filename + " - " + photo.comments [0]);
+			if (photo.comments.Count > 0) {
+				if (photo.comments.Count == 1) {
+					BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text += photo.comments [0] + "\n\n"; //spacing the comments
+				} else {
+					BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text += photo.comments [photo.comments.Count - 1] + "\n\n";
+				}
+			}
 
-			textData.text = photo.comments[0];
 			textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 			metaData.GetComponent<RectTransform> ().position = new Vector3 (0f, -90f, 0f);
 			metaData.transform.SetParent (child, false);
