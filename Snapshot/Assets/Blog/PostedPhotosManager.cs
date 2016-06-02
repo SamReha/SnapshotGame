@@ -77,7 +77,10 @@ public class PostedPhotosManager : MonoBehaviour {
 	public string getPhotoComment(Photo p) { 
 		//Photo p = new Photo ();
 		p.load ();
-		return p.comments[0];
+
+		if (p.comments.Count == 0) {
+			return "";
+		} else return p.comments[0];
 	}
 
 	public void viewComments() {
@@ -95,7 +98,13 @@ public class PostedPhotosManager : MonoBehaviour {
 		byte[] bytes = File.ReadAllBytes(pathToPostedPhotos + parent.GetComponent<RawImage>().name + ".png"); //read the photo's bytes
 		pic.LoadImage (bytes); // load the image
 		riSelectedPhoto.texture = pic; // texture the photo image
-		getMetaData (); // get the comments
+		riSelectedPhoto.rectTransform.sizeDelta = new Vector2(Screen.width - (Screen.width - Screen.height), Screen.height);
+		//riSelectedPhoto.RecalculateClipping ();
+		// Load appropriate photo metadata and get comment from that
+		Photo photoData = new Photo();
+		photoData.pathname = pathToPostedPhotos + parent.GetComponent<RawImage> ().name + ".metaphoto";
+		BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text = getPhotoComment (photoData);
+
 		BlogUIManager.photoPanel.SetActive (true); //display the photo
 	}
 
@@ -107,8 +116,8 @@ public class PostedPhotosManager : MonoBehaviour {
 
 		DirectoryInfo dir = new DirectoryInfo(pathToPostedPhotos);
 		FileInfo[] info = dir.GetFiles("*.metaphoto");
-		Photo photo = new Photo ();
 		foreach (FileInfo file in info) {
+			Photo photo = new Photo ();
 			string filename = file.Name;
 			photo.pathname = pathToPostedPhotos +  filename;
 			photo.load ();
@@ -120,6 +129,7 @@ public class PostedPhotosManager : MonoBehaviour {
 
 			// Configure comments for photo
 			if (photo.comments.Count == 0) {
+				Debug.Log ("It looks like there are no comments!");
 				string markup = "";
 				float score = Math.Max(photo.balanceValue, Math.Max(photo.spacingValue, photo.interestingnessValue));
 				//Debug.Log (score);
@@ -135,13 +145,7 @@ public class PostedPhotosManager : MonoBehaviour {
 			}
 
 			//Debug.Log (filename + " - " + photo.comments [0]);
-			if (photo.comments.Count > 0) {
-				if (photo.comments.Count == 1) {
-					BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text += photo.comments [0] + "\n\n"; //spacing the comments
-				} else {
-					BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text += photo.comments [photo.comments.Count - 1] + "\n\n";
-				}
-			}
+			BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text = getPhotoComment(photo); //spacing the comments
 
 			textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 			metaData.GetComponent<RectTransform> ().position = new Vector3 (0f, -90f, 0f);
