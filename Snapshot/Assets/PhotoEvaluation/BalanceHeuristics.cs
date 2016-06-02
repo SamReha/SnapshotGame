@@ -37,10 +37,10 @@ public class BalanceHeuristics {
 				if (score < 0f) {
 					score = 0f;
 				}
-				Debug.Log ("Balance 1 " + Mathf.Min (score, 10f) * 10f);
+				Debug.Log ("Balance A " + Mathf.Min (score, 10f) * 10f);
 				return Mathf.Min (score, 10f) * 10f;
 			} else {
-				Debug.Log ("Balance 1 100 ");
+				Debug.Log ("Balance A 100 ");
 				return 100f;
 			}
 		}
@@ -115,19 +115,18 @@ public class BalanceHeuristics {
 				heuristicWeight = 0.8f;
 				score = score * heuristicWeight;
 				//Debug.Log("percents: " + percentageLeft + ", " + percentageRight);
+				score = Mathf.Max(Mathf.Min(score, 100),0);
 				Debug.Log ("Asym score: " + score);
 				return score;
 			} else {
 				float difference = Mathf.Abs ((percentageLeft - percentageRight));
 
-				difference *= 0.1f;
-				difference = 100f * difference;
+				score = 100;
+				//difference = 100f * difference;
 				score -= difference;
 			//	Debug.Log("percents: " + percentageLeft + ", " + percentageRight);
-				Debug.Log ("Asym score: " + score);
-				if (score < 0f) {
-					return 0f;
-				}
+				Debug.Log ("Balance B(Asym) score: " + score);
+				score = Mathf.Max(Mathf.Min(score, 100),0);
 				return score;
 			}
 
@@ -270,7 +269,7 @@ public class BalanceHeuristics {
         {
             actualScore = 0f;
         }
-		Debug.Log ("Balance 3 " + actualScore);
+		Debug.Log ("Balance C " + actualScore);
 		if (actualScore < 0f) {
 			return 0f;
 		}
