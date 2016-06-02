@@ -36,8 +36,6 @@ public class BadgeUIManager : MonoBehaviour {
         Rect labelTextRect = new Rect(0, 0, 200.0f, 25.0f);
         labelTextRect.center = new Vector2(Screen.width / 2, Screen.height / 2);
 
-        //GUI.Label(labelTextRect, "Your Badges");
-
         achievementScrollviewLocation = GUI.BeginScrollView(scrollViewPosition,
                                                             achievementScrollviewLocation,
                                                             scrollViewRect);
