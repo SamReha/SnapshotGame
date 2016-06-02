@@ -84,12 +84,14 @@ public class UIManager : MonoBehaviour {
 			playerData.tutFlagRun = true;
 			timeAfterTip = tutTimer;
 			MovementTip.SetActive(false);
+			playerData.save ();
 		}
 
 		if (Input.GetButtonDown ("Camera Switch")) {
 			playerData.tutFlagAim = true;
 			timeAfterTip = tutTimer;
 			BasicCameraTip.SetActive(false);
+			playerData.save ();
 
 		}
 		if (Input.GetButtonUp ("View Controls")) {
@@ -97,6 +99,7 @@ public class UIManager : MonoBehaviour {
 			//  Shows controls the first time the button is pressed (fix)
 			PanelControls.SetActive(!PanelControls.activeSelf);
 			SeeControlsTip.SetActive(false);
+			playerData.save ();
 		}
 
 		//  If the player has not moved yet, show a message
