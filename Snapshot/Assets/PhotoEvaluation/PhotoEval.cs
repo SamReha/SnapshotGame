@@ -52,9 +52,9 @@ public class PhotoEval : MonoBehaviour {
 		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.avoidsEmptyCenters, 1f);
 
 		balanceHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
-		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 0.33f);
-		balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 0.33f);
-		balanceHeuristicMap.Add (BalanceHeuristics.AsymmetricBalance, 0.34f);
+		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 0.60f);
+		balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 0.30f);
+		balanceHeuristicMap.Add (BalanceHeuristics.AsymmetricBalance, 0.10f);
 
 		interestHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
@@ -120,7 +120,7 @@ public class PhotoEval : MonoBehaviour {
 		// Evaluate spacing
 		spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);
 		balance = evaluateHeuristics (subject, visibleObjs, balanceHeuristicMap);
-		Debug.Log ("Total " + balance);
+		Debug.Log ("Total bal " + balance);
 		interest = evaluateHeuristics (subject, visibleObjs, interestHeuristicMap);
 	}
 
