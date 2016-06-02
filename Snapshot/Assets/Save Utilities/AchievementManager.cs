@@ -105,7 +105,8 @@ public class Achievement {
         }
 
         GUI.BeginGroup(position);
-        GUI.Box(new Rect(0.0f, 0.0f, position.width, position.height), "");
+		GUI.Box(new Rect(0.0f, 0.0f, position.width, position.height), "");
+		GUI.Box(new Rect(0.0f, 0.0f, position.width, position.height), "");
 
         if (data.Earned) {
             GUI.Box(new Rect(0.0f, 0.0f, position.height, position.height), complete);

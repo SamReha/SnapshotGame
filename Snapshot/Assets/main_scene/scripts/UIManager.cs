@@ -61,15 +61,15 @@ public class UIManager : MonoBehaviour {
 
 		//  Tutorial logic ---------------------
 		if (tutTimer > movementTipTime &&
-			!playerData.tutFlagMovement){
+			!playerData.tutFlagRun){
 			Debug.Log ("Movement flag active");
 			MovementTip.SetActive(true);
 		}
-		if (playerData.tutFlagMovement && tutTimer - timeAfterTip > 5f && !playerData.tutFlagSnap) {
+		if (playerData.tutFlagRun && tutTimer - timeAfterTip > 5f && !playerData.tutFlagAim) {
 			Debug.Log ("BasicCam flag active");
 			BasicCameraTip.SetActive(true);
 		}
-		if (playerData.tutFlagSnap && tutTimer - timeAfterTip > 5f && !playerData.tutFlagViewControls) {
+		if (playerData.tutFlagAim && tutTimer - timeAfterTip > 5f && !playerData.tutFlagViewControls) {
 			Debug.Log ("ADVANCED flag active");
 			SeeControlsTip.SetActive(true);
 		}
@@ -78,18 +78,16 @@ public class UIManager : MonoBehaviour {
 		//Debug.Log ("Camera flag: " + playerData.tutFlagSnap);
 		//Debug.Log ("Advanced flag: " + playerData.tutFlagViewControls);
 		//Debug.Log ("elapsed time: " + tutTimer ); Don't you dare leave a log like this in! It floods the console. >:(
-		Debug.Log ("tiptime: " + movementTipTime);
-		Debug.Log ("Flag is off: " + (bool)(!playerData.tutFlagMovement));
 
 		if (Input.GetButtonDown ("Horizontal") ||
 			Input.GetButtonDown ("Vertical") && tutTimer > movementTipTime) {
-			playerData.tutFlagMovement = true;
+			playerData.tutFlagRun = true;
 			timeAfterTip = tutTimer;
 			MovementTip.SetActive(false);
 		}
 
-		if (Input.GetButtonDown ("Take Photo")) {
-			playerData.tutFlagSnap = true;
+		if (Input.GetButtonDown ("Camera Switch")) {
+			playerData.tutFlagAim = true;
 			timeAfterTip = tutTimer;
 			BasicCameraTip.SetActive(false);
 
