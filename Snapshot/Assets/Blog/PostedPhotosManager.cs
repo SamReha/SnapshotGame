@@ -98,8 +98,32 @@ public class PostedPhotosManager : MonoBehaviour {
 		byte[] bytes = File.ReadAllBytes(pathToPostedPhotos + parent.GetComponent<RawImage>().name + ".png"); //read the photo's bytes
 		pic.LoadImage (bytes); // load the image
 		riSelectedPhoto.texture = pic; // texture the photo image
-		riSelectedPhoto.rectTransform.sizeDelta = new Vector2(Screen.width - (Screen.width - Screen.height), Screen.height);
-		//riSelectedPhoto.RecalculateClipping ();
+
+		// Let's do a little jazz to figure out the aspect ratio of our image, and how large it should appear on screen.
+		float pixelsPerUnit = riSelectedPhoto.canvas.referencePixelsPerUnit;
+		float imageHeight = riSelectedPhoto.texture.height;
+		float imageWidth  = riSelectedPhoto.texture.width;
+		float aspectRatio = imageWidth / imageHeight;
+
+		float displayHeight;
+		float displayWidth;
+		if (aspectRatio > 1) {	// If our image is wider than it is tall
+			displayWidth = Screen.width;
+			displayHeight = Screen.height / aspectRatio;
+		} else { // else our image is either sqaure or taller than it is wide
+			displayWidth = Screen.height * aspectRatio;
+			displayHeight = Screen.height;
+		}
+
+		riSelectedPhoto.rectTransform.sizeDelta = new Vector2(displayWidth, displayHeight);
+		//riSelectedPhoto.SetNativeSize ();
+
+		Debug.Log ("Pixels Per Unit: " + pixelsPerUnit);
+		Debug.Log ("ImageHeight: " + imageHeight + ", " + "ImageWidth: " + imageWidth);
+		Debug.Log ("Aspect Ratio: " + aspectRatio);
+		Debug.Log ("ScreenWidth: " + Screen.width + ", " + "ScreenHeight: " + Screen.height);
+		Debug.Log ("Width: " + displayWidth + ", " + "Height: " + displayHeight);
+
 		// Load appropriate photo metadata and get comment from that
 		Photo photoData = new Photo();
 		photoData.pathname = pathToPostedPhotos + parent.GetComponent<RawImage> ().name + ".metaphoto";
