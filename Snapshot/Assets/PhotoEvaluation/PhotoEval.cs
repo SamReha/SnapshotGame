@@ -50,14 +50,18 @@ public class PhotoEval : MonoBehaviour {
 		// Heuristic Setup
 		spacingHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.avoidsEmptyCenters, 1f);
+		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.bottomThird, 1f);
+		spacingHeuristicMap.Add (AssemblyCSharp.SpacingHeuristics.hotSpots, 1f);
 
 		balanceHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
-		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 0.33f);
-		balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 0.33f);
-		balanceHeuristicMap.Add (BalanceHeuristics.AsymmetricBalance, 0.34f);
+		balanceHeuristicMap.Add (BalanceHeuristics.StandardDeviation, 0.60f);
+		balanceHeuristicMap.Add (BalanceHeuristics.CenteredBalance, 0.30f);
+		balanceHeuristicMap.Add (BalanceHeuristics.AsymmetricBalance, 0.10f);
 
 		interestHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
+		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.rawThresholdInterest, 1f);
+		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.mostInterestingObjectHeuristic, 1f);
 	}
 
 	// Update is called once per frame
@@ -120,7 +124,7 @@ public class PhotoEval : MonoBehaviour {
 		// Evaluate spacing
 		spacing = evaluateHeuristics (subject, visibleObjs, spacingHeuristicMap);
 		balance = evaluateHeuristics (subject, visibleObjs, balanceHeuristicMap);
-		Debug.Log ("Total " + balance);
+		Debug.Log ("Total bal " + balance);
 		interest = evaluateHeuristics (subject, visibleObjs, interestHeuristicMap);
 	}
 
@@ -558,7 +562,7 @@ public class PhotoEval : MonoBehaviour {
 		foreach (var func in heuristcs) {
 			metric += func.Key (subject, visibleObjs, cam) * func.Value;
 		}
-
-		return metric;
+			
+		return (metric > 100f) ? 100f : metric;
 	}
 }
