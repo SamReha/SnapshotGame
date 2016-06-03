@@ -27,7 +27,7 @@ namespace AssemblyCSharp {
 			//  Will be more than the same situation with only 1 fox, But If you take a photo of a fox every day it won't be worth as much.
 			//  
 			//  First, load the player profile
-			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerProfile>();
+			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<PlayerProfile>();
 			if (playerData == null) {
 				Debug.Log ("Could not load playerData from InterestingnessHeuristics");
 				return 0;  //  "Eject button"

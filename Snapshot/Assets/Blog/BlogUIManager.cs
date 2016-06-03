@@ -5,12 +5,17 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class BlogUIManager : MonoBehaviour {
 	public GameObject scrollManager;
 	public GameObject postedPhotosManager;
 	public GameObject namePrompt;
 	public GameObject nameChangeScreen; 
 	public GameObject uploadedPhotoScreen;
+	public GameObject uploadQueueScreen;
 	public InputField name_field;
 	public static GameObject photoPanel;
 	public Text moneyText;
@@ -26,28 +31,45 @@ public class BlogUIManager : MonoBehaviour {
 	void Start () {
 		PlayerProfile.profile.load();
 		uploadedPhotoScreen = GameObject.FindGameObjectWithTag ("postedscreen");
+		uploadQueueScreen = GameObject.Find ("PanelUploads");
 		photoPanel = GameObject.FindGameObjectWithTag ("photopanel");
 		blogNameText = GameObject.FindGameObjectWithTag ("blogname").GetComponent<Text>();
 		namePrompt = GameObject.FindGameObjectWithTag ("blogprompt");
 		nameChangeScreen = GameObject.FindGameObjectWithTag ("changenamescreen");
-		name_field = GameObject.FindGameObjectWithTag ("blogprompt").GetComponentInChildren<InputField> ();
+		name_field = namePrompt.GetComponentInChildren<InputField> ();
 		seenSecondScreen = PlayerProfile.profile.blogNameChangeTipSeen;
 		blogSource = GetComponent<AudioSource> ();
 
 		if (!PlayerProfile.profile.blogNamed) {
 			namePrompt.SetActive(true);
 			nameChangeScreen.SetActive (false);
-
 		} else {
 			namePrompt.SetActive (false);
 			nameChangeScreen.SetActive (false);
 		}
+
 		photoPanel.SetActive (false);
 		blogSource.ignoreListenerPause = true;
 		blogSource.Play();
 
 		pathToPostedPhotos = Application.dataPath + "/Resources/PostedImages/";
 		pathToUploadQueue = Application.dataPath + "/Resources/UploadQueue/";
+
+		if (nothingToUpload ()) {
+			uploadQueueScreen.SetActive (false);
+		}
+	}
+
+	private bool nothingToUpload() {
+		#if UNITY_EDITOR
+		//  Make sure pictures are loaded into resources
+		AssetDatabase.Refresh();
+		#endif
+
+		DirectoryInfo dir = new DirectoryInfo(pathToUploadQueue);
+		FileInfo[] info = dir.GetFiles("*.png");
+
+		return info.Length == 0;
 	}
 
 	public void toPostedPhotos() {
@@ -61,8 +83,6 @@ public class BlogUIManager : MonoBehaviour {
 	}
 
 	public void nameBlog() {
-		Text promptText = namePrompt.GetComponentInChildren<Text> ();
-
 		PlayerProfile.profile.blogName = name_field.text;
 
 		if (!seenSecondScreen) {
@@ -92,7 +112,7 @@ public class BlogUIManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		blogNameText.text = PlayerProfile.profile.blogName;
-		moneyText.text = "$" + PlayerProfile.profile.money.ToString("F2");
+		moneyText.text = "Your Money: $" + PlayerProfile.profile.money.ToString("F2");
 	}
 
 	public void loadMainMenu() {
@@ -154,7 +174,7 @@ public class BlogUIManager : MonoBehaviour {
                 achievementManager.SetProgressToAchievement("Wide Awake", 1.0f);
             }
 
-			Debug.Log (imageName);
+			// Debug.Log (imageName);
 			// Finally, move the photo from .../Resources/UploadQueue/ to .../Resources/PostedImages/
 			File.Move(pathToUploadQueue + imageName + ".metaphoto", pathToPostedPhotos + imageName + ".metaphoto");
 			File.Move(pathToUploadQueue + imageName + ".png", pathToPostedPhotos + imageName + ".png");

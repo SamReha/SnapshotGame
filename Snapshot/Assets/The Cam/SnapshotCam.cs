@@ -134,10 +134,10 @@ namespace UnityStandardAssets.ImageEffects {
 						byte[] bytes = photoTexture.EncodeToPNG ();
 
 						// Note that pictures now get saved to the UploadQueue directory
-						photoMetaData.pathname = Application.dataPath + "/Resources/UploadQueue/screen"
-						+ System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
-						//  Save image
-						string filename = photoMetaData.pathname + ".png"; 
+						string genericPath = Application.dataPath + "/Resources/UploadQueue/screen"
+						                     + System.DateTime.Now.ToString ("yyyy-MM-dd_HH-mm-ss");
+						string filename = genericPath + ".png"; 
+						photoMetaData.pathname = genericPath + ".metaphoto";
 						System.IO.File.WriteAllBytes (filename, bytes);
 						Debug.Log (string.Format ("Took screenshot to: {0}", filename));
 						//  Save meta

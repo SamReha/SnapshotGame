@@ -27,9 +27,7 @@ public class Photo {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update () {}
 
 	/*
 	 * Tries to open a save file for the current player.
