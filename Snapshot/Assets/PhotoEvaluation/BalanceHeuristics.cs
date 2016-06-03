@@ -18,7 +18,7 @@ public class BalanceHeuristics {
 				mean += x;
 			}
 			mean = mean / visibleObjects.Count;
-			List<float> deviation = new List<float> ();
+
 			float variance = 0;
 			for (int i = 0; i < screenPercents.Count; i++) {
 				float x = screenPercents [i] - mean;
@@ -110,7 +110,6 @@ public class BalanceHeuristics {
 
 			if (percentageLeft == percentageRight) {
 				return 100f;
-				Debug.Log ("Asym score: " + score);
 			} else if (Mathf.Approximately (percentageLeft, percentageRight)) {
 				heuristicWeight = 0.8f;
 				score = score * heuristicWeight;
