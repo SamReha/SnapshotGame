@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -47,6 +47,8 @@ namespace AssemblyCSharp {
 			float finalScore = score / playerData.maxInterestTotal;
 			if (finalScore < 0f) {
 				finalScore = 0f;
+			} else if (finalScore > 100f) {
+				finalScore = 100f;
 			}
 
 			return finalScore;
@@ -72,6 +74,10 @@ namespace AssemblyCSharp {
 
 			// Guard against potential negative score
 			float finalScore = score / capOver;
+
+			if (finalScore > 100f) {
+				finalScore = 100f;
+			}
 			return finalScore;
 		}
 
@@ -100,6 +106,8 @@ namespace AssemblyCSharp {
 			float finalScore = score / playerData.maxInterestIndividual;
 			if (finalScore < 0f) {
 				finalScore = 0f;
+			} else if (finalScore > 100f) {
+				finalScore = 100f;
 			}
 
 			return finalScore;
