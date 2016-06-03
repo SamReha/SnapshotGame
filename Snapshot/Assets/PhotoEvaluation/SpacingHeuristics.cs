@@ -119,31 +119,31 @@ namespace AssemblyCSharp {
 			// value[0] and value[1] are the min and max x values
 			// value[2] and value[3] are the min and max y values
 			Dictionary<int, List<float>> hotSpotBoundaries = new Dictionary<int, List<float>> ();
-			hotSpotBoundaries.Add (0, new List<float> (){0.000f, 0.200f, 0.000f, 0.200f});
-			hotSpotBoundaries.Add (1, new List<float> (){0.200f, 0.400f, 0.000f, 0.200f});
-			hotSpotBoundaries.Add (2, new List<float> (){0.400f, 0.600f, 0.000f, 0.200f});
-			hotSpotBoundaries.Add (3, new List<float> (){0.600f, 08.00f, 0.000f, 0.200f});
-			hotSpotBoundaries.Add (4, new List<float> (){0.800f, 1.000f, 0.000f, 0.200f});
-			hotSpotBoundaries.Add (0, new List<float> (){0.000f, 0.200f, 0.200f, 0.400f});
-			hotSpotBoundaries.Add (1, new List<float> (){0.200f, 0.400f, 0.200f, 0.400f});
-			hotSpotBoundaries.Add (2, new List<float> (){0.400f, 0.600f, 0.200f, 0.400f});
-			hotSpotBoundaries.Add (3, new List<float> (){0.600f, 08.00f, 0.200f, 0.400f});
-			hotSpotBoundaries.Add (4, new List<float> (){0.800f, 1.000f, 0.200f, 0.400f});
-			hotSpotBoundaries.Add (0, new List<float> (){0.000f, 0.200f, 0.400f, 0.600f});
-			hotSpotBoundaries.Add (1, new List<float> (){0.200f, 0.400f, 0.400f, 0.600f});
-			hotSpotBoundaries.Add (2, new List<float> (){0.400f, 0.600f, 0.400f, 0.600f});
-			hotSpotBoundaries.Add (3, new List<float> (){0.600f, 08.00f, 0.400f, 0.600f});
-			hotSpotBoundaries.Add (4, new List<float> (){0.800f, 1.000f, 0.400f, 0.600f});
-			hotSpotBoundaries.Add (0, new List<float> (){0.000f, 0.200f, 0.600f, 0.800f});
-			hotSpotBoundaries.Add (1, new List<float> (){0.200f, 0.400f, 0.600f, 0.800f});
-			hotSpotBoundaries.Add (2, new List<float> (){0.400f, 0.600f, 0.600f, 0.800f});
-			hotSpotBoundaries.Add (3, new List<float> (){0.600f, 08.00f, 0.600f, 0.800f});
-			hotSpotBoundaries.Add (4, new List<float> (){0.800f, 1.000f, 0.600f, 1.000f});
-			hotSpotBoundaries.Add (0, new List<float> (){0.000f, 0.200f, 0.800f, 1.000f});
-			hotSpotBoundaries.Add (1, new List<float> (){0.200f, 0.400f, 0.800f, 1.000f});
-			hotSpotBoundaries.Add (2, new List<float> (){0.400f, 0.600f, 0.800f, 1.000f});
-			hotSpotBoundaries.Add (3, new List<float> (){0.600f, 08.00f, 0.800f, 1.000f});
-			hotSpotBoundaries.Add (4, new List<float> (){0.800f, 1.000f, 0.800f, 1.000f});
+			hotSpotBoundaries.Add ( 0, new List<float> (){0.000f, 0.200f, 0.000f, 0.200f});
+			hotSpotBoundaries.Add ( 1, new List<float> (){0.200f, 0.400f, 0.000f, 0.200f});
+			hotSpotBoundaries.Add ( 2, new List<float> (){0.400f, 0.600f, 0.000f, 0.200f});
+			hotSpotBoundaries.Add ( 3, new List<float> (){0.600f, 08.00f, 0.000f, 0.200f});
+			hotSpotBoundaries.Add ( 4, new List<float> (){0.800f, 1.000f, 0.000f, 0.200f});
+			hotSpotBoundaries.Add ( 5, new List<float> (){0.000f, 0.200f, 0.200f, 0.400f});
+			hotSpotBoundaries.Add ( 6, new List<float> (){0.200f, 0.400f, 0.200f, 0.400f});
+			hotSpotBoundaries.Add ( 7, new List<float> (){0.400f, 0.600f, 0.200f, 0.400f});
+			hotSpotBoundaries.Add ( 8, new List<float> (){0.600f, 08.00f, 0.200f, 0.400f});
+			hotSpotBoundaries.Add ( 9, new List<float> (){0.800f, 1.000f, 0.200f, 0.400f});
+			hotSpotBoundaries.Add (10, new List<float> (){0.000f, 0.200f, 0.400f, 0.600f});
+			hotSpotBoundaries.Add (11, new List<float> (){0.200f, 0.400f, 0.400f, 0.600f});
+			hotSpotBoundaries.Add (12, new List<float> (){0.400f, 0.600f, 0.400f, 0.600f});
+			hotSpotBoundaries.Add (13, new List<float> (){0.600f, 08.00f, 0.400f, 0.600f});
+			hotSpotBoundaries.Add (14, new List<float> (){0.800f, 1.000f, 0.400f, 0.600f});
+			hotSpotBoundaries.Add (15, new List<float> (){0.000f, 0.200f, 0.600f, 0.800f});
+			hotSpotBoundaries.Add (16, new List<float> (){0.200f, 0.400f, 0.600f, 0.800f});
+			hotSpotBoundaries.Add (17, new List<float> (){0.400f, 0.600f, 0.600f, 0.800f});
+			hotSpotBoundaries.Add (18, new List<float> (){0.600f, 08.00f, 0.600f, 0.800f});
+			hotSpotBoundaries.Add (19, new List<float> (){0.800f, 1.000f, 0.600f, 1.000f});
+			hotSpotBoundaries.Add (20, new List<float> (){0.000f, 0.200f, 0.800f, 1.000f});
+			hotSpotBoundaries.Add (21, new List<float> (){0.200f, 0.400f, 0.800f, 1.000f});
+			hotSpotBoundaries.Add (22, new List<float> (){0.400f, 0.600f, 0.800f, 1.000f});
+			hotSpotBoundaries.Add (23, new List<float> (){0.600f, 08.00f, 0.800f, 1.000f});
+			hotSpotBoundaries.Add (24, new List<float> (){0.800f, 1.000f, 0.800f, 1.000f});
 
 			// Compute object density for each sector (just the sum of every object in that sector)
 			foreach (GameObject obj in visibleObjects) {
