@@ -58,6 +58,8 @@ public class PhotoEval : MonoBehaviour {
 
 		interestHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
 		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.interestAndBoredomHeuristic, 1f);
+		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.rawThresholdInterest, 1f);
+		interestHeuristicMap.Add (AssemblyCSharp.InterestingnessHeuristics.mostInterestingObjectHeuristic, 1f);
 	}
 
 	// Update is called once per frame
@@ -558,7 +560,7 @@ public class PhotoEval : MonoBehaviour {
 		foreach (var func in heuristcs) {
 			metric += func.Key (subject, visibleObjs, cam) * func.Value;
 		}
-
-		return metric;
+			
+		return (metric > 100f) ? 100f : metric;
 	}
 }
