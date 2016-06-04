@@ -78,7 +78,6 @@ public class ParkPrepUIManager : MonoBehaviour {
 			itemCountTxt.color = Color.black; // the player has at most 5 items 
 			parkBtn.interactable = true; //reeable button
 		}
-		bagEmpty = bagEmpty;
 	}
 
 	//test function

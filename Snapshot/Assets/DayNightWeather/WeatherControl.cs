@@ -7,6 +7,11 @@ public class WeatherControl : MonoBehaviour {
 
 	public int chanceOfRain = 20;
 
+	private float sunriseTrigger = 0.0f;
+	private float dayTrigger = 0.02f;
+	private float sunsetTrigger = 0.375f;
+	private float nightTrigger = 0.45f;
+
 	WeatherProfile cloudynight;
 	public Texture cloudynight_top;
 	public Texture cloudynight_front;
@@ -177,25 +182,16 @@ public class WeatherControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		float timeOfDay;
-		int timeZone;
 		timeOfDay = GetComponent<DayNightCycle>().getTimeOfDay();
-		timeZone = -1;  //  Prevents weather switcher from calling twice
+
         //  Decrement the steps timer
 		transitionTimer--;
-		//Debug.Log ("Time:   " + timeOfDay);
 		if (transitionTimer >= 0) {
 			float progress = (originalTimeSet - transitionTimer) / originalTimeSet; /*  timePassed/total */
 			skyMat.SetFloat ("_Blend", progress);
 		} else {
 			skyMat.SetFloat ("_Blend", 0);
 		}
-
-		//Debug.Log ("PM: " + pm + " TOD: " + timeOfDay + " Tick: " + transitionTimer);
-
-		float sunriseTrigger = 0.0f;
-		float dayTrigger = 0.02f;
-		float sunsetTrigger = 0.375f;
-		float nightTrigger = 0.45f;
 
 		//  If the weathercontroller is not already busy mreging weathers
 		if (transitionTimer < 0) {

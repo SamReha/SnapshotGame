@@ -6,10 +6,8 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 
 public class CommentGenerator : MonoBehaviour {
-
 	string json;
 	public Comments comment = new Comments();
-	char[] delimiters = { '[', ']' };
 
 
 	// Use this for initialization

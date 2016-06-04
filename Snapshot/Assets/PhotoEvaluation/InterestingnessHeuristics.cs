@@ -4,13 +4,11 @@ using System.Collections.Generic;
 
 namespace AssemblyCSharp {
 	public class InterestingnessHeuristics {
+		// private static float forgetRateTotal = 1f;
+		// private static float forgetRateIndividual = 0.1f;
+		// Maps names to familiarity. +1 for every new instance
 
-		private static float forgetRateTotal = 1f;
-		private static float forgetRateIndividual = 0.1f;
-		//  Maps names to familiarity. +1 for every new instance
-
-		public InterestingnessHeuristics () {
-		}
+		public InterestingnessHeuristics () {}
 
 		//  Main Interest Heuristic
 		public static float interestAndBoredomHeuristic(GameObject subject, List<GameObject> visibleObjects, Camera cam){

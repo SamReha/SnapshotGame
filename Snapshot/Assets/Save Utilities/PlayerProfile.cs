@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Collections;
@@ -58,15 +59,13 @@ public class PlayerProfile : MonoBehaviour {
 	}
 
 	void Update(){
-		if (Application.loadedLevel == 1) {
+		if (SceneManager.GetActiveScene().name == "SSV0.0") {
 			//  Player is in the park
 			timeElapsedInPark += Time.deltaTime;
 		} else {
 			//  Player is not in the park
 			timeElapsedInMenu += Time.deltaTime;
 		}
-		//Debug.Log ("Time in park: "+ timeElapsedInPark);
-		//Debug.Log ("Time in menu: "+ timeElapsedInMenu);
 	}
 
 	/*

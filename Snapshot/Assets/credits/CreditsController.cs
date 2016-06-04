@@ -8,7 +8,7 @@ public class CreditsController : MonoBehaviour {
     public GameObject rump;
 
     private GameObject credits;
-	private float scrollSpeed = 20.0f;
+	//private float scrollSpeed = 20.0f;
     private Vector3 fallBackScrollSpeed = new Vector3(0.0f, 0.4f, 0.0f);
     private bool showButton = false;
     private bool scrolling = true;
