@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 using System.Collections;
 using System.IO;
 
@@ -8,6 +9,7 @@ using UnityEditor;
 #endif
 
 public class CameraMenuManager : MonoBehaviour {
+	public FirstPersonController player;
     public Canvas cameraCanvas;
     public GameObject cameraMenuViewPortContents;
     public Text photoCounter;
@@ -15,15 +17,26 @@ public class CameraMenuManager : MonoBehaviour {
     public MemoryCardReader memCardReader;
 	public GameObject photoReview;
     public GameObject newPicture;
+	public Button deleteBttn;
 
     private bool reviewingPhotos = false;
     private float warningTime = 0f;
+
+	private GameObject parent;
+	private Vector3 cameraHeldUp;
+	private Vector3 cameraHeldDown;
 
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
         updatePhotoCounter();
         updatePhotoReviewUI();
+
+		deleteBttn.interactable = false;
+
+		parent = GameObject.Find("PlayerCam");
+		cameraHeldUp   = new Vector3( 0.009f, 0.030f,-0.100f);
+		cameraHeldDown = new Vector3( 0.293f,-0.499f, 0.300f);
     }
 	
 	// Update is called once per frame
@@ -34,19 +47,53 @@ public class CameraMenuManager : MonoBehaviour {
 		// Check to see if the user wants to review their photos
 		if (Input.GetButtonUp ("Photo Review")) {
 			reviewingPhotos = !reviewingPhotos;
+			if (reviewingPhotos) {
+				player.m_MouseLook.SetCursorLock (!reviewingPhotos);
+				player.m_MouseLook.XSensitivity = 0f;
+				player.m_MouseLook.YSensitivity = 0f;
+				parent.transform.localPosition = cameraHeldUp;
+			} else {
+				player.m_MouseLook.SetCursorLock (reviewingPhotos);
+				player.m_MouseLook.XSensitivity = 2f;
+				player.m_MouseLook.YSensitivity = 2f;
+				parent.transform.localPosition = cameraHeldDown;
+			}
 		}
 
         // Handle warning timer
-        if (warningTime <= 0f) {
-            memoryCardFullWarning.gameObject.SetActive(false);
-        } else {
-            warningTime -= Time.deltaTime;
-        }
+		if (warningTime <= 0f) {
+			memoryCardFullWarning.gameObject.SetActive (false);
+		} else {
+			warningTime -= Time.deltaTime;
+		}
+
+		foreach (Transform child in cameraMenuViewPortContents.transform) {
+			if (child.gameObject.GetComponentInChildren<Toggle> ().isOn) {
+				deleteBttn.interactable = true;
+				break;
+			} else {
+				deleteBttn.interactable = false;
+			}
+		}
+
+	}
+
+	public void deletePhotos(){
+		foreach (Transform child in cameraMenuViewPortContents.transform) {
+			if (child.gameObject.GetComponentInChildren<Toggle> ().isOn) {
+				string name = child.name;
+				Destroy (child.gameObject);
+				File.Delete (Application.dataPath + "/Resources/UploadQueue/" + name + ".png");
+				File.Delete (Application.dataPath + "/Resources/UploadQueue/" + name + ".metaphoto");
+			}
+		}
+		//updatePhotoReviewUI ();
+		updatePhotoCounter ();
 	}
 
     public void updatePhotoReviewUI() {
         foreach (Transform child in cameraMenuViewPortContents.transform) {
-            Destroy(child.gameObject);
+			Destroy (child.gameObject);
         }
 
         #if UNITY_EDITOR

@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour {
 	public float basicCameraTipTime = 7;
 	public float seeControlsTipTime = 15;
 	public FirstPersonController player;
+	public GameObject mainCamera;
     public AchievementManager manager;
 	public bool isPaused;
 	public bool isOpen;
@@ -54,9 +55,9 @@ public class UIManager : MonoBehaviour {
 
 		if (Input.GetButtonDown("Cancel")) {
 			isPaused = !isPaused;
-		}
-		if (Input.GetKeyDown (KeyCode.K)) {
-			isOpen = !isOpen;
+			setPause(isPaused);
+			Cursor.visible = isPaused;
+
 		}
 
 		//  Tutorial logic ---------------------
@@ -107,33 +108,24 @@ public class UIManager : MonoBehaviour {
 		//BasicCameraTip.SetActive(!playerData.tutFlagSnap);
 		//SeeControlsTip.SetActive(!playerData.tutFlagViewControls);
 		//  End tutorial logic ------------------
-
-		OpenBag (isOpen);
-		setPause(isPaused);
-	}
-
-	public void OpenBag(bool bagState){
-		player.m_MouseLook.SetCursorLock (!bagState);
-
-		PanelBag.SetActive(bagState);
-		if (bagState) {
-			Time.timeScale = 0.0f;
-		} else {
-			Time.timeScale = 1.0f;
-		}
 	}
 
 	public void setPause(bool pauseState) {
-		player.m_MouseLook.SetCursorLock (!pauseState);
+
 
 		PanelPause.SetActive(pauseState);
 		if (pauseState) {
+			player.m_MouseLook.SetCursorLock (!pauseState);
+			player.m_MouseLook.XSensitivity = 0f;
+			player.m_MouseLook.YSensitivity = 0f;
 			Time.timeScale = 0.0f;
 			AudioListener.pause = true;
 
 			pauseSource.UnPause ();
 		} else {
 			Time.timeScale = 1.0f;
+			player.m_MouseLook.XSensitivity = 2f;
+			player.m_MouseLook.YSensitivity = 2f;
 			AudioListener.pause = false;
 
 			pauseSource.Pause ();
@@ -143,6 +135,8 @@ public class UIManager : MonoBehaviour {
 	// A handy method for when passing args is difficult
 	public void unPause() {
 		isPaused = false;
+		setPause(isPaused);
+		Cursor.visible = false;
 	}
 
 	public void exitPark() {
