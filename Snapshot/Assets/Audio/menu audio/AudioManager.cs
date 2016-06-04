@@ -2,25 +2,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class AudioManager : MonoBehaviour
-{
+public class AudioManager : MonoBehaviour {
+	public DayNightCycle dayNightCycle;
+
 	private static AudioManager instance;
 
+	float timeOfDay;
+	string timeLabel;
 	private bool isNoon = true;
 	private float deerVolume = 0.0f;
 	private float foxVolume = 0.0f;
 	public  static bool exitToMenu = false;
 
-	void Awake()
-	{
-		if (instance)
-		{
+	void Awake() {
+		if (instance) {
 			Debug.LogError("More than one instance.");
 		}
 		instance = this;
 
 		if (!exitToMenu) {
-
 			Fabric.EventManager.Instance.PostEvent ("PlayMusic");
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Noon", 1.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox", 0.0f, null);
@@ -37,15 +37,27 @@ public class AudioManager : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start ()
-	{
+	void Start () {
 		exitToMenu = exitToMenu; //NOT A REDUNDANT STATEMENT needed for the value to remain persistant - Jamie
 	}
 		
 
 	void Update() {
+		timeOfDay = dayNightCycle.getTimeOfDay ();
+
+		if (timeOfDay >= 0f && timeOfDay < 0.125f) {
+			timeLabel = "Dawn";
+		} else if (timeOfDay >= 0.125f && timeOfDay < 0.25f) {
+			timeLabel = "Morning";
+		} else if (timeOfDay >= 0.25f && timeOfDay < 0.375f) {
+			timeLabel = "Noon";
+		} else if (timeOfDay >= 0.375f && timeOfDay < 0.50f) {
+			timeLabel = "Afternoon";
+		} else
+			timeLabel = "Night";
+
+		updateTimeOfDayTracks ();
 		updateAnimalVolume ();
-		updateTimeOfDayTrack ();
 	}
 
 	private void silenceAll() {
@@ -57,28 +69,22 @@ public class AudioManager : MonoBehaviour
 		setRainVolume (0f);
 		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Noon", 0.0f, null);
 		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Dawn", 0.0f, null);
-
-		Debug.Log ("I am trying to silence all!");
 	}
 
 	public void setDeerVolume(float value = 0.0f)
 	{
 		deerVolume = value;
 
-
 		setFoxVolume ();
-		if(isNoon)
-		{
+		if(isNoon) {
 				Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer", deerVolume, null);
 		}
-		else
-		{
+		else {
 				Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer2", deerVolume, null);
 		}
 	}
 
-	public void setFoxVolume(float value = 0f)
-	{
+	public void setFoxVolume(float value = 0f) {
 		foxVolume = value;
 		
 		if (isNoon) {
@@ -221,21 +227,19 @@ public class AudioManager : MonoBehaviour
    		*/
 	}
 
-	/*
- 	 * Simply checks the DayNightCycle component to see what time of day it is, and
- 	 * sets the Time of Day track as appropriate.
- 	 */
-	private void updateTimeOfDayTrack () {
-		GameObject sun = GameObject.Find ("/sun");
+	private void updateTimeOfDayTracks () {
+		Fabric.EventManager.Instance.SetParameter ("PlayMusic", timeLabel, 1.0f, null);
 
-		float time = 0;
-		if (null != sun) {
-			DayNightCycle dayNightCycle = sun.GetComponent<DayNightCycle> ();
-		    time = dayNightCycle.getTimeOfDay ();
+		if (timeLabel == "Dawn") {
+
+		} else if (timeLabel == "Morning") {
+
+		} else if (timeLabel == "Noon") {
+
+		} else if (timeLabel == "Afternoon") {
+
+		} else { // Else it's night
+
 		}
-
-		if (time >= 0.0 && time < 0.25) {
-			setDawn ();
-		} else setNoon ();
 	}
 }
