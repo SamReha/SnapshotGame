@@ -20,9 +20,11 @@ public class WeatherProfile {
 	public float dayAtmosphereThickness;
 	public float nightAtmosphereThickness;
 
+	public string name;
+
 
 	// Use this for initialization
-	public WeatherProfile( Texture top_, Texture front_, Texture bottom_, Texture left_, Texture right_, Texture back_ ,
+	public WeatherProfile( string name_, Texture top_, Texture front_, Texture bottom_, Texture left_, Texture right_, Texture back_ ,
 		                   Gradient dayNightColor_, float maxIntensity_, float minIntensity_, float maxAmbient_, float minAmbient_,
 		                   Gradient nightDayFogColor_, AnimationCurve fogDensityCurve_, float fogScale_, float dayAtmosphereThickness_,
 		                   float nightAtmosphereThickness_ ){
@@ -43,6 +45,7 @@ public class WeatherProfile {
 		fogScale=fogScale_;
 		dayAtmosphereThickness = dayAtmosphereThickness_;
 		nightAtmosphereThickness = nightAtmosphereThickness_;
+		name = name_;
 	}
 }
 

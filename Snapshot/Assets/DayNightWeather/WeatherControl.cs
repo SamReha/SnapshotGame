@@ -116,35 +116,35 @@ public class WeatherControl : MonoBehaviour {
 		storming = false;
 		skyMat = RenderSettings.skybox;
 		//  Create the weather profiles
-		cloudynight = new WeatherProfile (cloudynight_top,
+		cloudynight = new WeatherProfile ("cloudy", cloudynight_top,
 			cloudynight_front, cloudynight_bottom,
 			cloudynight_left, cloudynight_right,
 			cloudynight_back, cloudynight_dayNightColor, cloudynight_maxIntensity, cloudynight_minIntensity, cloudynight_maxAmbient, cloudynight_minAmbient,
 			cloudynight_nightDayFogColor, cloudynight_fogDensityCurve, cloudynight_fogScale, cloudynight_dayAtmosphereThickness,
 			cloudynight_nightAtmosphereThickness 
 		);
-		overcast = new WeatherProfile (overcast_top,
+		overcast = new WeatherProfile ("overcast", overcast_top,
 			overcast_front, overcast_bottom,
 			overcast_left, overcast_right,
 			overcast_back, overcast_dayNightColor, overcast_maxIntensity, overcast_minIntensity, overcast_maxAmbient, overcast_minAmbient,
 			overcast_nightDayFogColor, overcast_fogDensityCurve, overcast_fogScale, overcast_dayAtmosphereThickness,
 			overcast_nightAtmosphereThickness 
 		);
-		sunny = new WeatherProfile (sunny_top,
+		sunny = new WeatherProfile ("sunny", sunny_top,
 			sunny_front, sunny_bottom,
 			sunny_left, sunny_right,
 			sunny_back, sunny_dayNightColor, sunny_maxIntensity, sunny_minIntensity, sunny_maxAmbient, sunny_minAmbient,
 			sunny_nightDayFogColor, sunny_fogDensityCurve, sunny_fogScale, sunny_dayAtmosphereThickness,
 			sunny_nightAtmosphereThickness 
 		);
-		sunset = new WeatherProfile (sunset_top,
+		sunset = new WeatherProfile ("sunset", sunset_top,
 			sunset_front, sunset_bottom,
 			sunset_left, sunset_right,
 			sunset_back, sunset_dayNightColor, sunset_maxIntensity, sunset_minIntensity, sunset_maxAmbient, sunset_minAmbient,
 			sunset_nightDayFogColor, sunset_fogDensityCurve, sunset_fogScale, sunset_dayAtmosphereThickness,
 			sunset_nightAtmosphereThickness 
 		);
-		sunrise = new WeatherProfile (sunrise_top,
+		sunrise = new WeatherProfile ("sunrise", sunrise_top,
 			sunrise_front, sunrise_bottom,
 			sunrise_left, sunrise_right,
 			sunrise_back, sunrise_dayNightColor, sunrise_maxIntensity, sunrise_minIntensity, sunrise_maxAmbient, sunrise_minAmbient,

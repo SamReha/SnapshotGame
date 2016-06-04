@@ -112,8 +112,7 @@ public class AudioManager : MonoBehaviour {
 		Fabric.EventManager.Instance.SetParameter("PlayWeather", weather, value, null);
 	}
 
-	public void setNoon()
-	{
+	public void setNoon() {
 		isNoon = true;
 		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Noon", 1.0f, null);
 		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Dawn", 0.0f, null);
@@ -125,8 +124,7 @@ public class AudioManager : MonoBehaviour {
 		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Fox", foxVolume, null);
 	}
 
-	public void setDawn()
-	{
+	public void setDawn() {
 		isNoon = false;
 		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Noon", 0.0f, null);
 		Fabric.EventManager.Instance.SetParameter("PlayMusic", "Dawn", 1.0f, null);
@@ -146,7 +144,7 @@ public class AudioManager : MonoBehaviour {
 	/*
   	 * Sets each animals' volume as appropriate using the following rule:
   	 *     If the animal is further away from the player than the minThreshold, then that
-  	 *     animal is too far away to to heard and it's layer is set to 0. If the animal is
+  	 *     animal is too far away to be heard and it's layer is set to 0. If the animal is
   	 *     closer to the player than the maxThreshold, then the animal is close enough
   	 *     that it should be heard at max volume no matter what. If the animal is in between
   	 *     the two thresholds, then it uses the formula:
