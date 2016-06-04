@@ -90,12 +90,6 @@ public class DayNightCycle : MonoBehaviour {
         }
 		//  Rotate the stars slower than the sun to give a sense of distance
 		stars.transform.rotation = this.gameObject.transform.rotation;
-
-
-        //  For debugging purposes, map keys to control day/night cycle speed
-        if (Input.GetKeyDown(KeyCode.Z)) skySpeed *= 0.5f;
-        if (Input.GetKeyDown(KeyCode.X)) skySpeed *= 2f;
-        
     }
 
 	/*
