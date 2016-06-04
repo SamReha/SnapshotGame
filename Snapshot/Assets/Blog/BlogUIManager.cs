@@ -206,7 +206,7 @@ public class BlogUIManager : MonoBehaviour {
         Debug.Log("This photo has a score of: Balance: " + photo.balanceValue
                   + " Spacing: " + photo.spacingValue + " Interest: " + photo.interestingnessValue);
 
-        return Mathf.Max(0, bestScore(photo) * 10.0f);
+        return Mathf.Max(0, bestScore(photo) * 2.0f);
 	}
 
     float bestScore(Photo photo) {
