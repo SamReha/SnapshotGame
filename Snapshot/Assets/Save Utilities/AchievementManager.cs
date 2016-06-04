@@ -323,7 +323,7 @@ public class AchievementManager : MonoBehaviour {
         ));
 
         List<string> experiencedPhotographerDesecrefies = new List<string>();
-        journeymanPhotographerDesecrefies.Add("Experienced Photographer");
+		experiencedPhotographerDesecrefies.Add("Expert Photographer");
         Achievements.Add(new Achievement(
             "Experienced Photographer",
             "Post 50 photos to your blog.",
