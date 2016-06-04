@@ -22,7 +22,6 @@ public class UIManager : MonoBehaviour {
 	public bool isOpen;
 	public bool cameraUP;
 
-    PlayerProfile playerData;
 	private float timeAfterTip = 0;
 
 	private float tutTimer;
@@ -33,8 +32,7 @@ public class UIManager : MonoBehaviour {
 		isPaused = false;
 		isOpen = false;
 
-		pauseSource = GetComponent<AudioSource> ();
-		playerData = player.GetComponentInChildren<PlayerProfile> ();
+		PlayerProfile.profile.load ();
 
 		pauseSource.ignoreListenerPause = true;
 		pauseSource.Play ();
@@ -45,13 +43,14 @@ public class UIManager : MonoBehaviour {
 		BasicCameraTip.SetActive(false);
 		SeeControlsTip.SetActive(false);
 
-		tutTimer = playerData.timeElapsedInPark;
+		tutTimer = PlayerProfile.profile.timeElapsedInPark;
+
 	}
 
 	// Update is called once per frame
 	void Update () {
 		tutTimer += Time.deltaTime;
-		playerData.timeElapsedInPark = tutTimer;
+		PlayerProfile.profile.timeElapsedInPark = tutTimer;
 
 		if (Input.GetButtonDown("Cancel")) {
 			isPaused = !isPaused;
@@ -62,51 +61,49 @@ public class UIManager : MonoBehaviour {
 
 		//  Tutorial logic ---------------------
 		if (tutTimer > movementTipTime &&
-			!playerData.tutFlagRun){
+		    !PlayerProfile.profile.tutFlagRun) {
 			Debug.Log ("Movement flag active");
-			MovementTip.SetActive(true);
-		}
-		if (playerData.tutFlagRun && tutTimer - timeAfterTip > 5f && !playerData.tutFlagAim) {
+			MovementTip.SetActive (true);
+		} else if (PlayerProfile.profile.tutFlagRun && tutTimer - timeAfterTip > 5f && !PlayerProfile.profile.tutFlagAim) {
 			Debug.Log ("BasicCam flag active");
-			BasicCameraTip.SetActive(true);
-		}
-		if (playerData.tutFlagAim && tutTimer - timeAfterTip > 5f && !playerData.tutFlagViewControls) {
+			BasicCameraTip.SetActive (true);
+		} else if (PlayerProfile.profile.tutFlagAim && tutTimer - timeAfterTip > 5f && !PlayerProfile.profile.tutFlagViewControls) {
 			Debug.Log ("ADVANCED flag active");
-			SeeControlsTip.SetActive(true);
+			SeeControlsTip.SetActive (true);
 		}
 
-		//Debug.Log ("Movement flag: " + playerData.tutFlagMovement);
-		//Debug.Log ("Camera flag: " + playerData.tutFlagSnap);
-		//Debug.Log ("Advanced flag: " + playerData.tutFlagViewControls);
+		//Debug.Log ("Movement flag: " + PlayerProfile.profile.tutFlagMovement);
+		//Debug.Log ("Camera flag: " + PlayerProfile.profile.tutFlagSnap);
+		//Debug.Log ("Advanced flag: " + PlayerProfile.profile.tutFlagViewControls);
 		//Debug.Log ("elapsed time: " + tutTimer ); Don't you dare leave a log like this in! It floods the console. >:(
 
 		if (Input.GetButtonDown ("Horizontal") ||
 			Input.GetButtonDown ("Vertical") && tutTimer > movementTipTime) {
-			playerData.tutFlagRun = true;
+			PlayerProfile.profile.tutFlagRun = true;
 			timeAfterTip = tutTimer;
 			MovementTip.SetActive(false);
-			playerData.save ();
+			PlayerProfile.profile.save ();
 		}
 
 		if (Input.GetButtonDown ("Camera Switch")) {
-			playerData.tutFlagAim = true;
+			PlayerProfile.profile.tutFlagAim = true;
 			timeAfterTip = tutTimer;
 			BasicCameraTip.SetActive(false);
-			playerData.save ();
+			PlayerProfile.profile.save ();
 
 		}
 		if (Input.GetButtonUp ("View Controls")) {
-			playerData.tutFlagViewControls = true;
+			PlayerProfile.profile.tutFlagViewControls = true;
 			//  Shows controls the first time the button is pressed (fix)
 			PanelControls.SetActive(!PanelControls.activeSelf);
 			SeeControlsTip.SetActive(false);
-			playerData.save ();
+			PlayerProfile.profile.save ();
 		}
 
 		//  If the player has not moved yet, show a message
-		//MovementTip.SetActive(!playerData.tutFlagMovement);
-		//BasicCameraTip.SetActive(!playerData.tutFlagSnap);
-		//SeeControlsTip.SetActive(!playerData.tutFlagViewControls);
+		//MovementTip.SetActive(!PlayerProfile.profile.tutFlagMovement);
+		//BasicCameraTip.SetActive(!PlayerProfile.profile.tutFlagSnap);
+		//SeeControlsTip.SetActive(!PlayerProfile.profile.tutFlagViewControls);
 		//  End tutorial logic ------------------
 	}
 
