@@ -474,7 +474,6 @@ public class AchievementManager : MonoBehaviour {
             owlDesecrefies
         ));
 
-		// Check if earnable
         List<string> MountaineerDesecrefies = new List<string>();;
         Achievements.Add(new Achievement(
             "Mountaineer",
@@ -486,8 +485,7 @@ public class AchievementManager : MonoBehaviour {
             true,
             MountaineerDesecrefies
         ));
-
-		// Check if earnable
+			
         List<string> MementoDesecrefies = new List<string>(); ;
         Achievements.Add(new Achievement(
             "Memento",

@@ -27,7 +27,7 @@ public class AchievementTracker : MonoBehaviour {
             timeOfLastUpdate = Time.time;
         }
 
-        if (player.transform.position.y >= 200) {
+        if (player.transform.position.y >= 20) {
             manager.SetProgressToAchievement("Mountaineer", 1.0f);
         }
 	}

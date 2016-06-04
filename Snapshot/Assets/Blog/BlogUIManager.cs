@@ -174,6 +174,10 @@ public class BlogUIManager : MonoBehaviour {
                 achievementManager.SetProgressToAchievement("Wide Awake", 1.0f);
             }
 
+			if (photo.takenWithFilter && bestScore(photo) >= 50.0f) {
+				achievementManager.SetProgressToAchievement("Hipstergram", 1.0f);
+			}
+
 			// Debug.Log (imageName);
 			// Finally, move the photo from .../Resources/UploadQueue/ to .../Resources/PostedImages/
 			File.Move(pathToUploadQueue + imageName + ".metaphoto", pathToPostedPhotos + imageName + ".metaphoto");

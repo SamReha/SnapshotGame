@@ -29,6 +29,7 @@ public class PhotoEval : MonoBehaviour {
     public bool containsPosingAnimal = false;
     public bool takenWithTelephoto = false;
     public bool takenWithWideAngle = false;
+	public bool takenWithFilter = false;
 
 	// Key: heuristic function Value: weight
 	Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float> spacingHeuristicMap;
@@ -117,6 +118,11 @@ public class PhotoEval : MonoBehaviour {
 		if (lensUsedInPhoto.Contains("wide")) {
 			takenWithWideAngle = true;
 		} else takenWithWideAngle = false;
+
+		string filterUsedInPhoto = cam.GetComponentInParent<SnapshotCam>().currentFilter ();
+		if (filterUsedInPhoto != "clear" && filterUsedInPhoto != "") {
+			takenWithFilter = true;
+		}
 
 		//  Subject might return null if visibleObj's is empty
 		GameObject subject = getSubject (visibleObjs);
