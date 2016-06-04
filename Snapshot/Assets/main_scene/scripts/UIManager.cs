@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour {
 
 		PlayerProfile.profile.load ();
 
+		pauseSource = GetComponent<AudioSource> ();
 		pauseSource.ignoreListenerPause = true;
 		pauseSource.Play ();
 		pauseSource.Pause ();
