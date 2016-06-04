@@ -136,6 +136,7 @@ namespace UnityStandardAssets.ImageEffects {
 							photoMetaData.containsFox = photoEvaluator.containsFox;
 							photoMetaData.takenWithTelephoto = photoEvaluator.takenWithTelephoto;
 							photoMetaData.takenWithWide = photoEvaluator.takenWithWideAngle;
+							photoMetaData.takenWithFilter = photoEvaluator.takenWithFilter;
 
 							parentCamera.targetTexture = null;
 							RenderTexture.active = null;
@@ -328,6 +329,11 @@ namespace UnityStandardAssets.ImageEffects {
 					Debug.Log (dof.focalSize);
 				}
 			}
+		}
+
+		public string currentFilter() {
+			if (PlayerProfile.profile.filtersInBag.Count == 0) return "";
+			return PlayerProfile.profile.filtersInBag [filterIter];
 		}
 	}
 }

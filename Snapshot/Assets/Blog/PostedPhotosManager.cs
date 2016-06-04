@@ -77,7 +77,10 @@ public class PostedPhotosManager : MonoBehaviour {
 	public string getPhotoComment(Photo p) { 
 		//Photo p = new Photo ();
 		p.load ();
-		return p.comments[0];
+
+		if (p.comments.Count == 0) {
+			return "";
+		} else return p.comments[0];
 	}
 
 	public void viewComments() {
@@ -95,7 +98,37 @@ public class PostedPhotosManager : MonoBehaviour {
 		byte[] bytes = File.ReadAllBytes(pathToPostedPhotos + parent.GetComponent<RawImage>().name + ".png"); //read the photo's bytes
 		pic.LoadImage (bytes); // load the image
 		riSelectedPhoto.texture = pic; // texture the photo image
-		getMetaData (); // get the comments
+
+		// Let's do a little jazz to figure out the aspect ratio of our image, and how large it should appear on screen.
+		float pixelsPerUnit = riSelectedPhoto.canvas.referencePixelsPerUnit;
+		float imageHeight = riSelectedPhoto.texture.height;
+		float imageWidth  = riSelectedPhoto.texture.width;
+		float aspectRatio = imageWidth / imageHeight;
+
+		float displayHeight;
+		float displayWidth;
+		if (aspectRatio > 1) {	// If our image is wider than it is tall
+			displayWidth = Screen.width;
+			displayHeight = Screen.height / aspectRatio;
+		} else { // else our image is either sqaure or taller than it is wide
+			displayWidth = Screen.height * aspectRatio;
+			displayHeight = Screen.height;
+		}
+
+		riSelectedPhoto.rectTransform.sizeDelta = new Vector2(displayWidth, displayHeight);
+		//riSelectedPhoto.SetNativeSize ();
+
+		Debug.Log ("Pixels Per Unit: " + pixelsPerUnit);
+		Debug.Log ("ImageHeight: " + imageHeight + ", " + "ImageWidth: " + imageWidth);
+		Debug.Log ("Aspect Ratio: " + aspectRatio);
+		Debug.Log ("ScreenWidth: " + Screen.width + ", " + "ScreenHeight: " + Screen.height);
+		Debug.Log ("Width: " + displayWidth + ", " + "Height: " + displayHeight);
+
+		// Load appropriate photo metadata and get comment from that
+		Photo photoData = new Photo();
+		photoData.pathname = pathToPostedPhotos + parent.GetComponent<RawImage> ().name + ".metaphoto";
+		BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text = getPhotoComment (photoData);
+
 		BlogUIManager.photoPanel.SetActive (true); //display the photo
 	}
 
@@ -107,8 +140,8 @@ public class PostedPhotosManager : MonoBehaviour {
 
 		DirectoryInfo dir = new DirectoryInfo(pathToPostedPhotos);
 		FileInfo[] info = dir.GetFiles("*.metaphoto");
-		Photo photo = new Photo ();
 		foreach (FileInfo file in info) {
+			Photo photo = new Photo ();
 			string filename = file.Name;
 			photo.pathname = pathToPostedPhotos +  filename;
 			photo.load ();
@@ -120,6 +153,7 @@ public class PostedPhotosManager : MonoBehaviour {
 
 			// Configure comments for photo
 			if (photo.comments.Count == 0) {
+				Debug.Log ("It looks like there are no comments!");
 				string markup = "";
 				float score = Math.Max(photo.balanceValue, Math.Max(photo.spacingValue, photo.interestingnessValue));
 				//Debug.Log (score);
@@ -135,13 +169,7 @@ public class PostedPhotosManager : MonoBehaviour {
 			}
 
 			//Debug.Log (filename + " - " + photo.comments [0]);
-			if (photo.comments.Count > 0) {
-				if (photo.comments.Count == 1) {
-					BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text += photo.comments [0] + "\n\n"; //spacing the comments
-				} else {
-					BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text += photo.comments [photo.comments.Count - 1] + "\n\n";
-				}
-			}
+			BlogUIManager.photoPanel.GetComponentInChildren<Text> ().text = getPhotoComment(photo); //spacing the comments
 
 			textData.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 			metaData.GetComponent<RectTransform> ().position = new Vector3 (0f, -90f, 0f);

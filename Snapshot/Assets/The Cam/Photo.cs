@@ -17,6 +17,7 @@ public class Photo {
     public bool containsPosingAnimal = false;
     public bool takenWithTelephoto = false;
     public bool takenWithWide = false;
+	public bool takenWithFilter = false;
 
 	public List<string> comments = new List<string> ();
 
@@ -27,9 +28,7 @@ public class Photo {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update () {}
 
 	/*
 	 * Tries to open a save file for the current player.
@@ -57,6 +56,7 @@ public class Photo {
 			containsPosingAnimal = saveData.containsPosingAnimal;
 			takenWithTelephoto = saveData.takenWithTelephoto;
 			takenWithWide = saveData.takenWithWide;
+			takenWithFilter = saveData.takenWithFilter;
 			comments = saveData.comments;
 		} else {
 			Debug.Log("Save file does not exist! Creating an empty one...");
@@ -71,14 +71,13 @@ public class Photo {
 	 */
 	public void save() {
 		//Debug.Log("Saving file to " + pathname);
-		string fullPath = pathname + ".metaphoto";
 
 		BinaryFormatter binForm = new BinaryFormatter ();
 
 		FileStream saveFile;
-		if (File.Exists (fullPath)) {
-			saveFile = File.Open (fullPath, FileMode.Open);
-		} else saveFile = File.Create (fullPath);
+		if (File.Exists (pathname)) {
+			saveFile = File.Open (pathname, FileMode.Open);
+		} else saveFile = File.Create (pathname);
 
 		MetaPhoto saveData = new MetaPhoto ();
 		saveData.balan = balanceValue;
@@ -90,6 +89,7 @@ public class Photo {
         saveData.containsPosingAnimal = containsPosingAnimal;
         saveData.takenWithTelephoto = takenWithTelephoto;
         saveData.takenWithWide = takenWithWide;
+		saveData.takenWithFilter = takenWithFilter;
 		saveData.comments = comments;
 
 		binForm.Serialize (saveFile, saveData);
@@ -109,6 +109,7 @@ public class Photo {
         containsPosingAnimal = false;
         takenWithTelephoto = false;
         takenWithWide = false;
+		takenWithFilter = false;
 		comments = new List<string> ();
 		save ();
 	}
@@ -130,6 +131,7 @@ public class Photo {
         public bool containsPosingAnimal;
         public bool takenWithTelephoto;
         public bool takenWithWide;
+		public bool takenWithFilter;
 		public List<string> comments;
     }
 }

@@ -34,6 +34,9 @@ public class Achievement {
     public Texture2D iconIncomplete;
     public Texture2D iconComplete;
 
+	private Texture2D iconSecret;
+	private string iconSecretPath = "badge_icons/secret";
+
     public Achievement(string name, string desc, string iconIncompletePath, string iconCompletePath, int rewardPoints, float targetProgress, bool secret, List<string> desecrefies) {
         data = new SerializeableBadgeData();
         data.Name = name;
@@ -49,6 +52,7 @@ public class Achievement {
 
         iconIncomplete = Resources.Load(iconIncompletePath) as Texture2D;
         iconComplete = Resources.Load(iconCompletePath) as Texture2D;
+		iconSecret = Resources.Load (iconSecretPath) as Texture2D;
     }
 
     public Achievement(SerializeableBadgeData badgeData) {
@@ -56,6 +60,7 @@ public class Achievement {
 
         iconIncomplete = Resources.Load(data.IconIncomplete) as Texture2D;
         iconComplete = Resources.Load(data.IconComplete) as Texture2D;
+		iconSecret = Resources.Load (iconSecretPath) as Texture2D;
     }
 
     // Returns true if this progress added results in the Achievement being earned.
@@ -108,11 +113,13 @@ public class Achievement {
 		GUI.Box(new Rect(0.0f, 0.0f, position.width, position.height), "");
 		GUI.Box(new Rect(0.0f, 0.0f, position.width, position.height), "");
 
-        if (data.Earned) {
-            GUI.Box(new Rect(0.0f, 0.0f, position.height, position.height), complete);
-        } else {
-            GUI.Box(new Rect(0.0f, 0.0f, position.height, position.height), incomplete);
-        }
+		if (data.Earned) {
+			GUI.Box (new Rect (0.0f, 0.0f, position.height, position.height), complete);
+		} else if (data.Secret) {
+			GUI.Box(new Rect(0.0f, 0.0f, position.height, position.height), iconSecret);
+		} else {
+			GUI.Box(new Rect(0.0f, 0.0f, position.height, position.height), incomplete);
+		}
 
         GUI.Label(new Rect(80.0f, 5.0f, position.width - 80.0f - 50.0f, 25.0f), data.Name, style);
 
@@ -256,8 +263,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Day Tripper",
             "Walk a total of 1 kilometer.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Day Tripper_unearned",
+			"badge_icons/Day Tripper",
             0,
             1000f,
             false,
@@ -269,8 +276,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Marathoner",
             "Walk an entire marathon... 42.19 kilometers!",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Marathoner_unearned",
+			"badge_icons/Marathoner",
             0,
             42190f,
             true,
@@ -282,8 +289,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Seasoned Hiker",
             "Walk a total of 100 kilometers. That's the distance from Washington, DC to Chicago!",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Seasoned Hiker_unearned",
+			"badge_icons/Seasoned Hiker",
             0,
             100000f,
             true,
@@ -294,8 +301,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Master Backpacker",
             "Walk a total of 500 kilometers. That's the same as the distance between San Francisco and LA!",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Master Backpacker_unearned",
+			"badge_icons/Master Backpacker",
             0,
             500000f,
             true,
@@ -307,8 +314,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Journeyman Photographer",
             "Post a photo to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Journeyman Photographer_unearned",
+			"badge_icons/Journeyman Photographer",
             0,
             1f,
             false,
@@ -316,12 +323,12 @@ public class AchievementManager : MonoBehaviour {
         ));
 
         List<string> experiencedPhotographerDesecrefies = new List<string>();
-        journeymanPhotographerDesecrefies.Add("Experienced Photographer");
+		experiencedPhotographerDesecrefies.Add("Expert Photographer");
         Achievements.Add(new Achievement(
             "Experienced Photographer",
             "Post 50 photos to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Experienced Photographer_unearned",
+			"badge_icons/Experienced Photographer",
             0,
             50f,
             true,
@@ -332,8 +339,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Expert Photographer",
             "Post 200 photos to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Expert Photographer_unearned",
+			"badge_icons/Expert Photographer",
             0,
             200f,
             true,
@@ -345,8 +352,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Balanced Breakfast",
             "Post a perfectly balanced photo to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Balanced Breakfast_unearned",
+			"badge_icons/Balanced Breakfast",
             0,
             1f,
             false,
@@ -358,8 +365,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "The Most Interesting Photo in The World",
             "Post a perfectly interesting photo to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/The most interesting photo in the world_unearned",
+			"badge_icons/The most interesting photo in the world",
             0,
             1f,
             false,
@@ -371,8 +378,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "The Final Frontier",
             "Post a perfectly well-spaced photo to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/The final frontier_unearned",
+			"badge_icons/The final frontier",
             0,
             1f,
             false,
@@ -383,8 +390,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Perfection Incarnate",
             "Post an absolutely perfect photo to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Pefection Incarnate_unearned",
+			"badge_icons/Pefection Incarnate",
             0,
             1f,
             true,
@@ -395,8 +402,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Telemachus",
             "Post a good photo taken with a telephoto lens to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Telemachus_unearned",
+			"badge_icons/Telemachus",
             0,
             1f,
             false,
@@ -407,33 +414,34 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Wide Awake",
             "Post a good photo taken using a wide-angle lens to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Wide Awake_unearned",
+			"badge_icons/Wide Awake",
             0,
             1f,
             false,
             WideAwakeDesecrefies
         ));
 
-        /*List<string> HipstergramDesecrefies = new List<string>();
+		// Check if earnable
+        List<string> HipstergramDesecrefies = new List<string>();
         Achievements.Add(new Achievement(
             "Hipstergram",
             "Post a good photo taking using a lens filter to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Hipstergram_unearned",
+			"badge_icons/Hipstergram",
             0,
             1f,
             false,
             HipstergramDesecrefies
-        ));*/
+        ));
 
         List<string> doeDesecrefies = new List<string>();
         doeDesecrefies.Add("Say Cheese");
         Achievements.Add(new Achievement(
             "Doe, a Deer, a Female Deer",
             "Post a good photo containing a deer to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Doe a Deer a Female Deer_unearned",
+			"badge_icons/Doe a Deer a Female Deer",
             0,
             1f,
             false,
@@ -458,8 +466,8 @@ public class AchievementManager : MonoBehaviour {
         Achievements.Add(new Achievement(
             "Owl Have What She's Having",
             "Post a good photo containing an owl to your blog.",
-            "badge_icons/AchievementIncompleteIcon",
-            "badge_icons/AchievementCompleteIcon",
+			"badge_icons/Owl Have What Shes Having_unearned",
+			"badge_icons/Owl Have What Shes Having",
             0,
             1f,
             false,
@@ -477,8 +485,8 @@ public class AchievementManager : MonoBehaviour {
             true,
             MountaineerDesecrefies
         ));
-
-        /*List<string> MementoDesecrefies = new List<string>(); ;
+			
+        List<string> MementoDesecrefies = new List<string>(); ;
         Achievements.Add(new Achievement(
             "Memento",
             "Unlock the largest memory card.",
@@ -488,7 +496,7 @@ public class AchievementManager : MonoBehaviour {
             1f,
             false,
             MementoDesecrefies
-        ));*/
+        ));
 
         /*List<string> cheeseDesecrefies = new List<string>(); ;
         Achievements.Add(new Achievement(

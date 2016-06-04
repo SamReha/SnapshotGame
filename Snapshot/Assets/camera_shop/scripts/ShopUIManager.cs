@@ -70,6 +70,8 @@ public class ShopUIManager : MonoBehaviour {
 
 	public List<Button> specialButtons = new List<Button> ();
 
+	public AchievementManager achievementManager;
+
 	// Use this for initialization
 	void Start () {
 		PlayerProfile.profile.load ();
@@ -400,6 +402,11 @@ public class ShopUIManager : MonoBehaviour {
 
 			if (PlayerProfile.profile.memoryCardCapacity < memCard.data.capacity) {
 				PlayerProfile.profile.memoryCardCapacity = memCard.data.capacity;
+			}
+
+			// Check to see if this should unlock the "Memento" achievement
+			if (memCard.data.capacity == 32) {
+				achievementManager.SetProgressToAchievement ("Memento", 1f);
 			}
 
 			PlayerProfile.profile.save ();
