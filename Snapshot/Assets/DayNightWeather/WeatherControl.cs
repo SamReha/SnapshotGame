@@ -5,6 +5,7 @@ public class WeatherControl : MonoBehaviour {
 
 	public WeatherProfile currentWeather;
 
+
 	public int chanceOfRain = 20;
 
 	private float sunriseTrigger = 0.0f;
@@ -212,36 +213,68 @@ public class WeatherControl : MonoBehaviour {
 				//  Night
 				if (Random.Range (0, 100) > 100-chanceOfRain) {
 					SetCurrentWeather (overcast, 1600);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Cloudy", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.0f);
 					storming = true;
 				} else {
 					SetCurrentWeather (cloudynight, 1600);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Cloudy", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.0f);
 					storming = false;
 				}
 			} else if (timeOfDay >= sunriseTrigger && timeOfDay < dayTrigger && !pm) {
 				//  Sunrise
 				if (Random.Range (0, 100) > 100-chanceOfRain) {
 					SetCurrentWeather (overcast, 1200);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Cloudy", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.0f);
 					storming = true;
 				} else {
 					SetCurrentWeather (sunrise, 1200);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Cloudy", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.0f);
 					storming = false;
 				}
 			} else if (timeOfDay >= dayTrigger && timeOfDay < sunsetTrigger && !pm) {
 				//  Day
 				if (Random.Range (0, 100) > 100-chanceOfRain) {
 					SetCurrentWeather (overcast, 1200);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Coudy", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.0f);
 					storming = true;
 				} else {
 					SetCurrentWeather (sunny, 1200);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Cloudy", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.0f);
 					storming = false;
 				}
 			} else if (timeOfDay >= sunsetTrigger && timeOfDay < nightTrigger && !pm) {
 				//  sunset
 				if (Random.Range (0, 100) > 100-chanceOfRain) {
 					SetCurrentWeather (overcast, 200);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Cloudy", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.0f);
 					storming = true;
 				} else {
 					SetCurrentWeather (sunset, 200);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Clear", 0.5f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Cloudy", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Overcast", 0.0f);
+					GameObject.Find("Audio").GetComponent<AudioManager>().setWeatherVolume ("Rain", 0.0f);
 					storming = false;
 				}
 			} 
