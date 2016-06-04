@@ -18,7 +18,6 @@ public class PhotoEval : MonoBehaviour {
 	public List<float> percentInFrame;
 	public List<float> percentCentered;
 	private Camera cam;
-	private UIManager uimanager;
 
 	public float balance = 0f;
 	public float spacing = 0f;
@@ -46,7 +45,6 @@ public class PhotoEval : MonoBehaviour {
 		percentInFrame = new List<float> ();
 		percentCentered = new List<float> ();
 		cam = GameObject.Find ("PlayerCam").GetComponent<Camera> ();
-		uimanager = GameObject.Find ("/UIManager").GetComponent<UIManager> ();
 
 		// Heuristic Setup
 		spacingHeuristicMap = new Dictionary<System.Func<GameObject, List<GameObject>, Camera, float>, float>();
@@ -516,7 +514,14 @@ public class PhotoEval : MonoBehaviour {
 
 	void Corners(GameObject go){
 		//Debug.Log ("Game Object name: " + go.name);
-		Bounds bounds = go.GetComponent<MeshFilter>().mesh.bounds;
+		MeshFilter meshFilter = go.GetComponent<MeshFilter>();
+		Bounds bounds;
+		if (meshFilter == null) {
+			bounds = go.GetComponent<Collider> ().bounds;
+		} else {
+			bounds = go.GetComponent<MeshFilter>().mesh.bounds;
+		}
+
 		Vector3 v3Center = bounds.center;
 		Vector3 v3Extents = bounds.extents;
 

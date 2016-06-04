@@ -11,7 +11,6 @@ public class BalanceHeuristics {
 		} else {
 			List<float> screenPercents = new List<float> ();
 			float mean = 0f;
-			Debug.Log ("Objects: " + visibleObjects.Count);
 			for (int i = 0; i < visibleObjects.Count; i++) {
 				float x = GameObject.Find ("Camera Prefab").GetComponent<PhotoEval> ().CalcScreenPercentage (visibleObjects [i]);
 				screenPercents.Add (x);
@@ -37,10 +36,8 @@ public class BalanceHeuristics {
 				if (score < 0f) {
 					score = 0f;
 				}
-				Debug.Log ("Balance A " + Mathf.Min (score, 10f) * 10f);
 				return Mathf.Min (score, 10f) * 10f;
 			} else {
-				Debug.Log ("Balance A 100 ");
 				return 100f;
 			}
 		}

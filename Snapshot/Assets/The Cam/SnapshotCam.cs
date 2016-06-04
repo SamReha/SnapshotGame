@@ -86,12 +86,12 @@ namespace UnityStandardAssets.ImageEffects {
 			parent.GetComponentInParent<DepthOfField> ().focalSize = curLens.GetComponent<Lens> ().focalSize;
 			parent.GetComponentInParent<DepthOfField> ().focalLength = curLens.GetComponent<Lens> ().focalDistance;
 			parent.GetComponentInParent<Camera> ().fieldOfView = curLens.GetComponent<Lens> ().fieldOfView;
-			foreach (string s in PlayerProfile.profile.lensesInBag) {
+			/*foreach (string s in PlayerProfile.profile.lensesInBag) {
 				Debug.Log ("Lens " + s);
 			}
 			foreach (string s in PlayerProfile.profile.filtersInBag) {
 				Debug.Log ("Filters " + s);
-			}
+			}*/
 		}
 
 		void Update () {
