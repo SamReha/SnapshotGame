@@ -86,7 +86,7 @@ namespace AssemblyCSharp {
 			//  Works exactly like interest and boredom, except it only evaluates the score of the most 
 
 			//  Load the player profile
-			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerProfile>();
+			PlayerProfile playerData = GameObject.FindGameObjectWithTag ("PlayerCam").GetComponent<PlayerProfile>();
 			if (playerData == null) {
 				Debug.Log ("Could not load playerData from InterestingnessHeuristics");
 				return 0;  //  "Eject button"
