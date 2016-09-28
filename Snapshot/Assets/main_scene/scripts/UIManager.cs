@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+	Time.timeScale = 1.0f;
         manager.loadAchievements();
 		isPaused = false;
 		isOpen = false;
@@ -140,6 +141,7 @@ public class UIManager : MonoBehaviour {
 	public void exitPark() {
         manager.saveAchievements();
 		//  Upload pictures from the camera to the photo buffer.
+		Time.timeScale = 0.0f;
 		pauseSource.Stop();
 		SceneManager.LoadScene("main_menu");
 		ParkPrepUIManager.src.Play ();
