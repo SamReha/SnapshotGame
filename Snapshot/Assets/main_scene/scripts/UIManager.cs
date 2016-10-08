@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour {
 		MovementTip.SetActive(false);
 		BasicCameraTip.SetActive(false);
 		SeeControlsTip.SetActive(false);
-
+		setPause (false);
 		tutTimer = PlayerProfile.profile.timeElapsedInPark;
 
 	}
@@ -128,6 +128,8 @@ public class UIManager : MonoBehaviour {
 			AudioListener.pause = false;
 
 			pauseSource.Pause ();
+			Fabric.EventManager.Instance.PostEvent ("PlayMusic");
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", AudioManager.timeLabel, 1.0f, null);
 		}
 	}
 
