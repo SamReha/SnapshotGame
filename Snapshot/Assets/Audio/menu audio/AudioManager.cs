@@ -21,7 +21,7 @@ public class AudioManager : MonoBehaviour {
 		}
 		instance = this;
 
-		//if (!exitToMenu) {
+		if (!exitToMenu) {
 			Fabric.EventManager.Instance.PostEvent ("PlayMusic");
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Dawn", 1.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Morning", 0.0f, null);
@@ -50,7 +50,7 @@ public class AudioManager : MonoBehaviour {
 			setWeatherVolume ("Rain", 0.0f);
 			setWeatherVolume ("Cloudy", 0.0f);
 			setWeatherVolume ("Overcast", 0.0f);
-		//}
+		}
 	}
 
 	// Use this for initialization
@@ -230,6 +230,8 @@ public class AudioManager : MonoBehaviour {
 			silenceDeer ();
 			silenceFox ();
 			silenceOwl ();
+			silenceTime();
+			Fabric.EventManager.Instance.SetParameter("PlayMusic", "Dawn", 1.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox0", foxVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer0", deerVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Owl0", owlVolume, null);
