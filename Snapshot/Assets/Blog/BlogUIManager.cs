@@ -26,6 +26,8 @@ public class BlogUIManager : MonoBehaviour {
 	private AudioSource blogSource;
 	private string pathToPostedPhotos;
 	private string pathToUploadQueue;
+	public Scrollbar scrollBarPostedPhotos;
+	public ScrollRect postedPhotosSR;
 
 	// Use this for initialization
 	void Start () {
@@ -39,6 +41,10 @@ public class BlogUIManager : MonoBehaviour {
 		name_field = namePrompt.GetComponentInChildren<InputField> ();
 		seenSecondScreen = PlayerProfile.profile.blogNameChangeTipSeen;
 		blogSource = GetComponent<AudioSource> ();
+		scrollBarPostedPhotos = GameObject.Find ("ScrollViewPostedPhotos").GetComponentInChildren<Scrollbar> ();
+		postedPhotosSR = GameObject.Find ("ScrollViewPostedPhotos").GetComponentInChildren<ScrollRect> ();
+		postedPhotosSR.movementType = ScrollRect.MovementType.Clamped;
+		scrollBarPostedPhotos.value = 1f;
 
 		if (!PlayerProfile.profile.blogNamed) {
 			namePrompt.SetActive(true);
