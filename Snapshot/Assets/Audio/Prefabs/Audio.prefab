@@ -7652,7 +7652,7 @@ MonoBehaviour:
   m_Script: {fileID: -139544205, guid: 4b4e8768ed04d6a4f98af6f4f83be984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 1
+  _dontDestroyOnLoad: 0
   _audioSourcePool: 0
   _audioSourcePoolFadeInTime: 0
   _audioSourcePoolFadeOutTime: 0
