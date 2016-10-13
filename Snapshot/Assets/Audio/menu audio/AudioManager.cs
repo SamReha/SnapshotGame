@@ -17,6 +17,7 @@ public class AudioManager : MonoBehaviour {
 
 	void Awake() {
 		if (instance) {
+			AudioManager.Destroy (AudioManager.getInstance ());
 			Debug.LogError("More than one instance.");
 		}
 		instance = this;
@@ -230,8 +231,10 @@ public class AudioManager : MonoBehaviour {
 			silenceDeer ();
 			silenceFox ();
 			silenceOwl ();
-			silenceTime();
-			Fabric.EventManager.Instance.SetParameter("PlayMusic", "Dawn", 1.0f, null);
+			//Fabric.EventManager.Instance.SetParameter("PlayMusic", "Dawn", 1.0f, null);
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Morning", 0.0f, null);
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Noon", 0.0f, null);
+			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Afternoon", 0.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox0", foxVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer0", deerVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Owl0", owlVolume, null);
@@ -242,7 +245,7 @@ public class AudioManager : MonoBehaviour {
 			silenceFox ();
 			silenceOwl ();
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Dawn", 0.0f, null);
-			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Morning", 1.0f, null);
+		   // Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Morning", 1.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox1", foxVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer1", deerVolume, null);	
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Owl1", owlVolume, null);
@@ -252,7 +255,7 @@ public class AudioManager : MonoBehaviour {
 			silenceFox ();
 			silenceOwl ();
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Morning", 0.0f, null);
-			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Noon", 1.0f, null);
+			//Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Noon", 1.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox2", foxVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer2", deerVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Owl2", owlVolume, null);
@@ -262,7 +265,7 @@ public class AudioManager : MonoBehaviour {
 			silenceFox ();
 			silenceOwl ();
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Noon", 0.0f, null);
-			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Afternoon", 1.0f, null);
+			//Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Afternoon", 1.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox3", foxVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer3", deerVolume, null);			
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Owl3", owlVolume, null);
@@ -272,7 +275,7 @@ public class AudioManager : MonoBehaviour {
 			silenceFox ();
 			silenceOwl ();
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Afternoon", 0.0f, null);
-			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Night", 1.0f, null);
+			//Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Night", 1.0f, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Fox4", foxVolume, null);
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Deer4", deerVolume, null);			
 			Fabric.EventManager.Instance.SetParameter ("PlayMusic", "Owl4", owlVolume, null);
