@@ -147,6 +147,7 @@ public class UIManager : MonoBehaviour {
 		pauseSource.Stop();
 		SceneManager.LoadScene("main_menu");
 		ParkPrepUIManager.src.Play ();
+		AudioManager.Destroy (AudioManager.getInstance ());
 		AudioManager.getInstance().setExitToMenu (true);
 	}
 }
